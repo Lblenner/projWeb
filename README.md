@@ -19,3 +19,24 @@ Un site de partage de recettes.
   - Notifier ceux qui l'ont ajouter a leur liste favorite
 - Modifier/ Supprimer commentaire/ rating
 - Suivre des gens pour etre notifier des nouvelle recettes qu'ils publient
+
+## Données
+
+- Users
+  - pseudo
+  - mail
+  - mdp
+- Recette
+  - nom
+  - ingredients
+  - recette
+  - lienyt
+  - userid
+- Commentaire
+  - rating
+  - critique
+  - recetteid
+  - userid
+- Favoris
+  - userid
+  - recetteid
