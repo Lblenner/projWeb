@@ -2,6 +2,13 @@
 
 Un site de partage de recettes.  
 
+Pour lancer front sur localhost:3000
+```
+npm i
+npm run dev
+```
+
+
 ### Fonctionnalités
 
 - Creer une page recette.
