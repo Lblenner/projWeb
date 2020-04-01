@@ -6,6 +6,7 @@ Un site de partage de recettes.
 
 - Creer une page recette.
   - Inclure un vidéo yt
+  - Ajout mot clefs (desert
 - Noter une recette.
 - Ajouter un commentaire à une recette.
 - Chercher une recette.
@@ -20,7 +21,13 @@ Un site de partage de recettes.
 - Modifier/ Supprimer commentaire/ rating
 - Suivre des gens pour etre notifier des nouvelle recettes qu'ils publient
 
-## Données
+### Pages
+
+- 
+
+
+
+### Données
 
 - Users
   - pseudo
