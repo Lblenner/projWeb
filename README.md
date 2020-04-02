@@ -30,7 +30,12 @@ npm run dev
 
 ### Pages
 
-- 
+- Page d'acceuil
+  - Liste de recettes
+  - Barre de recette
+  - Bouton ajout de recette
+- Page ajout de recette
+- Page recette
 
 
 
