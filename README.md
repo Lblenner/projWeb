@@ -7,12 +7,6 @@ Pour lancer front sur localhost:3000
 npm i
 npm run dev
 ```
-Bonjour,
-Notre groupe est composé de Camille Dufour IMM, Mahé Tardy ASR et Louis Blenner ASR.
-Nous souhaitons developper un site de partage de recettes de cuisine (genre Marmiton).
-Voici une premiere liste de fonctionnalités, de pages et un premier jet sur la gestion des données.
-Ce qui est marqué en Principales est ce sur quoi nous nous pencherons en priorité pour avoir un fonctionnement minimale du site.
-
 ### Fonctionnalités
 
 ##### Principales
