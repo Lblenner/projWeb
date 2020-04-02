@@ -9,14 +9,15 @@ npm run dev
 ```
 
 
+
 ### Fonctionnalités
 
-###### Principales
+##### Principales
 - Afficher une liste de recette
 - Creer une page recette.
 - Afficher un page de recette
 
-###### Secondaires
+##### Secondaires
 
 - Noter une recette.
 - Avoir un compte utilisateur
@@ -38,7 +39,7 @@ npm run dev
 
 ### Pages
 
-###### Principales
+##### Principales
 
 - Page d'acceuil
   - Liste de recettes
@@ -50,9 +51,7 @@ npm run dev
 
 ### Données
 
-
-
-###### Principales
+##### Principales
 
 - Recette
   - nom
@@ -63,7 +62,7 @@ npm run dev
   - userid  
   )
   
-###### Secondaires
+##### Secondaires
 
 - Users
   - pseudo
