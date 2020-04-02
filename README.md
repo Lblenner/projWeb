@@ -54,10 +54,8 @@ npm run dev
   - nom
   - ingredients: liste
   - recette  
-  (
   - lien (photo/yt)
   - userid  
-  )
   
 ##### Secondaires
 
