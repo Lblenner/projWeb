@@ -11,15 +11,23 @@ npm run dev
 
 ### Fonctionnalités
 
+###### Principales
+- Afficher une liste de recette
 - Creer une page recette.
-  - Inclure un vidéo yt
-  - Ajout mot clefs (desert
+- Afficher un page de recette
+
+###### Secondaires
+
 - Noter une recette.
+- Avoir un compte utilisateur
 - Ajouter un commentaire à une recette.
+- Creer une page recette avec
+  - Inclure un vidéo yt
+  - Ajout mot clefs (dessert...)
 - Chercher une recette.
   - Mot clefs
   - Ingrédients
-- Afficher une liste de recette
+- Afficher une liste de recette selon
   - Les plus récentes
   - Les mieux noté
 - Avoir une liste de recettes favorites
@@ -30,6 +38,8 @@ npm run dev
 
 ### Pages
 
+###### Principales
+
 - Page d'acceuil
   - Liste de recettes
   - Barre de recette
@@ -38,19 +48,27 @@ npm run dev
 - Page recette
 
 
-
 ### Données
+
+
+
+###### Principales
+
+- Recette
+  - nom
+  - ingredients: liste
+  - recette  
+  (
+  - lien (photo/yt)
+  - userid  
+  )
+  
+###### Secondaires
 
 - Users
   - pseudo
   - mail
   - mdp
-- Recette
-  - nom
-  - ingredients
-  - recette
-  - lienyt
-  - userid
 - Commentaire
   - rating
   - critique
