@@ -1,9 +1,16 @@
 import Layout from '../components/Layout';
+import Head from 'next/head'
+import Link from 'next/link'
 
-export default function About() {
+export default function Index() {
   return (
-    <Layout>
-      <p>This is the home page</p>
-    </Layout>
+    <div>
+      <Head>
+        <title>Les recettes de Martine</title>
+      </Head>
+      <Layout>
+
+      </Layout>
+    </div>
   );
 }
