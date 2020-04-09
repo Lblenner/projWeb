@@ -10,6 +10,11 @@ const titre = {
 const Header = () => (
   <nav className="navbar navbar-expand-md navbar-dark bg-primary">
 
+    {/*<a className="navbar-brand" href="#">
+        <img src={require('./Logo.jpg')} alt="" width="50px" height="50px">
+        </img>
+</a>*/}
+
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
       < GiHamburgerMenu /> Les recettes de Martine
     </button>
