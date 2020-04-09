@@ -1,6 +1,5 @@
 import Layout from '../components/Layout';
 import Head from 'next/head'
-import Link from 'next/link'
 
 export default function Index() {
   return (
@@ -9,7 +8,7 @@ export default function Index() {
         <title>Les recettes de Martine</title>
       </Head>
       <Layout>
-
+        INDEX !!!!!
       </Layout>
     </div>
   );
