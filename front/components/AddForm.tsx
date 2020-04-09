@@ -1,5 +1,6 @@
 import React from 'react'
 import TextArea from './TextArea';
+import Ingredients from './Ingredients';
 
 type MyProps = {};
 type MyState = {};
@@ -19,7 +20,7 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} id="form">
 
         <div className="form-group">
           <label htmlFor="titre">Titre</label>
@@ -32,8 +33,8 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Ingrédients</label>
-          <input type="text" className="form-control" id="description" placeholder="Une recette original pour les friands de nouvelles expériences" />
+          <label htmlFor="">Ingrédients</label>
+          <Ingredients/>
         </div>
 
         <div className="form-group">
@@ -42,6 +43,12 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
         </div>
 
         <button type="submit" className="btn btn-primary">Créer la recette</button>
+
+        <style jsx>{`
+        #form {
+          margin-top: 20px
+        }
+        `}</style>
 
       </form>
     );
