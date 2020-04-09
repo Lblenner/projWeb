@@ -36,17 +36,17 @@ const Header = () => (
 
       <ul className="navbar-nav ml-auto" id="right">
         <li className="nav-item">
-          <Link href="/profile">
+          <Link href="/profil">
             <a className="nav-link active" id="button">Favoris</a>
           </Link>
         </li>
         <li className="nav-item">
-          <Link href="/profile">
+          <Link href="/profil">
             <a className="nav-link active" id="button">Mes recettes</a>
           </Link>
         </li>
         <li className="nav-item">
-          <Link href="/profile">
+          <Link href="/profil">
             <a className="nav-link active" id="button">Profil</a>
           </Link>
         </li>
