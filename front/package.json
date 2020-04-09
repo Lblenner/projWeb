@@ -13,7 +13,10 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
     "next": "^9.3.3",
+    "next-images": "^1.4.0",
+    "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.9.0"
