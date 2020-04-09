@@ -1,7 +1,7 @@
 import React from 'react'
 
 type MyProps = { placeHolder: Array<string>, id: string };
-type MyState = { value: string, taille: number };
+type MyState = { taille: number };
 
 const defaultSize = 300;
 
@@ -13,7 +13,6 @@ export default class TextArea extends React.Component<MyProps, MyState>  {
     super(props);
     this.state = {
       taille: defaultSize,
-      value: ""
     };
     this.handleChange = this.handleChange.bind(this);
     //On utilise un tableau car pas trouvé de moyen de faire passé un \n en prop qui soit interprété comme un saut à la ligne
@@ -25,7 +24,8 @@ export default class TextArea extends React.Component<MyProps, MyState>  {
   async handleChange(event) {
     event.persist() //Permet d'utiliser l'event aprés un await
     await this.setState({ taille: 1 }) //Permet d'avoir la bonne taille du texte (ScrollHeight >= height)
-    this.setState({ value: event.target.value, taille: event.target.scrollHeight });
+    this.setState({ taille: event.target.scrollHeight });
+    //event.target.value
   }
 
   render() {

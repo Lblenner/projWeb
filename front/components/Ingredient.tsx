@@ -18,13 +18,13 @@ export default class Ingredient extends React.Component<MyProps, MyState> {
     return (
       <div className="form-row" id="cont">
         <div className="col-1">
-          <input type="text" className="form-control" placeholder="0" />
+          <input required type="text" className="form-control" placeholder="0" />
         </div>
         <div className="col-1">
-          <input type="text" className="form-control" placeholder="cl" />
+          <input required type="text" className="form-control" placeholder="cl" />
         </div>
         <div className="col">
-          <input type="text" className="form-control" placeholder="Tomate" />
+          <input required type="text" className="form-control" placeholder="Tomate" />
         </div>
         <div className="col-1">
           <button type="button" className="form-control" onClick={() => this.props.del()}><FaTimes/></button>
