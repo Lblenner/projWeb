@@ -33,7 +33,8 @@ export default class Ingredients extends React.Component<MyProps, MyState>  {
 
         <style jsx>{`
         #addRecette {
-          margin-top: 0px
+          background-color: #FFCC7A;
+          border-color: #FFCC7A;
         }
         `}</style>
       </div>

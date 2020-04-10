@@ -87,7 +87,12 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
 
         <style jsx>{`
         #form {
-          margin-top: 20px
+          margin-top: 20px;
+        }
+        .btn-primary {
+          background-color: #FFCC7A;
+          border-color: #FFCC7A;
+          margin-bottom: 30px;
         }
         `}</style>
 

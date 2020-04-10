@@ -1,21 +1,20 @@
 import Link from 'next/link';
 import { GoSearch } from 'react-icons/go';
-import { FaRegPlusSquare } from 'react-icons/fa'
+import { AiOutlinePlusSquare } from 'react-icons/ai'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
 const titre = {
-  fontSize: 30
+  fontSize: 20
 };
 
 const Header = () => (
-  <nav className="navbar navbar-expand-md navbar-dark bg-primary">
+  <nav className="navbar navbar-expand-md navbar-dark navbar-custom">
 
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
       < GiHamburgerMenu /> Les recettes de Martine
     </button>
 
-
-    <div className="collapse navbar-collapse" id="collapsibleNavbar">
+    <div className="collapse navbar-collapse">
 
       <Link href="/">
         <a className="navbar-brand" style={titre}><img src={require('../images/logorogne.png')} id="img"/> Les recettes de Martine</a>
@@ -24,12 +23,12 @@ const Header = () => (
       <ul className="navbar-nav" id="center">
         <li className="nav-item active">
           <Link href="/add">
-            <button className="btn btn-success" id="button"><FaRegPlusSquare size={30} /> Ajouter une recette</button>
+            <button className="btn btn-success" id="addAddress"><AiOutlinePlusSquare size={titre.fontSize*1.25} /> Ajouter une recette</button>
           </Link>
         </li>
         <li className="nav-item">
           <Link href="/">
-            <a className="nav-link active" id="recherche"><GoSearch size={20} />  Rechercher</a>
+            <a className="nav-link active" id="recherche"><GoSearch size={titre.fontSize-3} />  Rechercher</a>
           </Link>
         </li>
       </ul>
@@ -55,8 +54,11 @@ const Header = () => (
     </div>
 
     <style jsx>{`
+    #nav {
+      background-color: red;
+    }
     #img {
-      width: 60px;
+      width: ${titre.fontSize*2.5}px;
       height: auto;
     }
     #right {
@@ -76,10 +78,19 @@ const Header = () => (
     #button {
       white-space: nowrap;
     }
+    #addAddress {
+      white-space: nowrap;
+      height: ${titre.fontSize*2}px;
+      align-items: center;
+      justify-content: center;
+      background-color: #FFCC7A;
+      border-color: #FFCC7A;
+    }
+    .navbar-custom {
+      background-color: #ed3232;
+    }
     `}</style>
   </nav>
-
-
 
 );
 
