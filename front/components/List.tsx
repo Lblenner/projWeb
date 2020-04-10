@@ -27,7 +27,6 @@ export default class List extends React.Component<MyProps, MyState> {
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
     var json = await response.json()
 
-    console.log(json)
     this.setState({ liste: json })
 
   }
@@ -35,7 +34,7 @@ export default class List extends React.Component<MyProps, MyState> {
   render() {
     return (
       <div>
-        {this.state.liste.map((elem) => <p>{elem.nom}</p>)}
+        {this.state.liste.map((elem, index) => <p key={index}>{elem.nom}</p>)}
       </div>
     )
   }
