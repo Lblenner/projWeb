@@ -27,11 +27,11 @@ export default class Ingredient extends React.Component<MyProps, MyState> {
     return (
       <div className="form-row" id="cont">
         <div className="col-1">
-          <input required type="text" className="form-control" placeholder="0" />
+          <input pattern="[1-9][0-9]*" required type="text" className="form-control" placeholder="0" />
         </div>
         <div className="col-1">
           <input required type="text" className="form-control" placeholder="cl" />
-        </div>
+        </div>  
         <div className="col">
           <input required type="text" className="form-control" placeholder="Tomate" />
         </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import RecetteItem from './RecetteItem';
 
 type MyProps = {};
 type MyState = { liste: Array<any> };
@@ -25,17 +26,21 @@ export default class List extends React.Component<MyProps, MyState> {
       credentials: 'include' as RequestCredentials
     };
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
+
+    if (response.status > 400){
+      return
+    }
+
     var json = await response.json()
 
-    console.log(json)
     this.setState({ liste: json })
 
   }
 
   render() {
     return (
-      <div>
-        {this.state.liste.map((elem) => <p>{elem.nom}</p>)}
+      <div className="container">
+        {this.state.liste.map((elem, index) => <RecetteItem key={index} recette={elem}/>)}
       </div>
     )
   }

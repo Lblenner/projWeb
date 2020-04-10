@@ -28,25 +28,31 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
       mode: 'cors' as RequestMode,
       cache: 'default' as RequestCache,
       credentials: 'include' as RequestCredentials,
-      body : recette
+      body: JSON.stringify(recette)
     };
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
+
+    if (response.status > 400){
+      return
+    }
+
     var json = await response.json()
 
-    console.log(json)
-    Router.push('/index.tsx')
+    console.log("Voici la réponse: " + JSON.stringify(json))
+    Router.push('/')
   }
 
   handleSubmit(event) {
     event.preventDefault();
     let recette = this.createBody(event.target)
-    console.log()
+    this.addRecette(recette)
   }
 
   createBody(listeData) {
     let n = listeData.length
     let recette = new Recette(listeData[0].value, listeData[1].value, listeData[n - 2].value)
-    for (let i = 2; i < n - 4; i += 4) {
+    recette.elements.push({ ingredient: { nom: listeData[4].value }, quantite: { nombre: listeData[2].value, unite: listeData[3].value } })
+    for (let i = 5; i < n - 5; i += 4) {
       let nombre = listeData[i].value
       let unite = listeData[i + 1].value
       let nom = listeData[i + 2].value
@@ -102,15 +108,15 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
 }
 
 class Recette {
-  titre: string;
-  description: string;
+  nom: string;
+  //description: string;
   elements: Array<object>;
-  recette: string;
+  //recette: string;
 
-  constructor(titre, description, recette) {
-    this.titre = titre
-    this.description = description
-    this.recette = recette
+  constructor(nom, description, recette) {
+    this.nom = nom
+    //this.description = description
+    //this.recette = recette
     this.elements = []
   }
 
