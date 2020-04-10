@@ -1,11 +1,10 @@
 import React from 'react'
 import TextArea from './TextArea';
 import Ingredients from './Ingredients';
+import Router from 'next/router'
 
 type MyProps = {};
 type MyState = {};
-
-
 
 export default class AddForm extends React.Component<MyProps, MyState>  {
 
@@ -13,14 +12,35 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
 
   constructor(props) {
     super(props);
+    this.state = {
+    }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.textarea = ""
+  }
+
+  async addRecette(recette) {
+    const requestHeaders: HeadersInit = new Headers();
+    requestHeaders.set('Content-Type', 'application/json');
+
+    var myInit = {
+      method: 'POST',
+      headers: requestHeaders,
+      mode: 'cors' as RequestMode,
+      cache: 'default' as RequestCache,
+      credentials: 'include' as RequestCredentials,
+      body : recette
+    };
+    var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
+    var json = await response.json()
+
+    console.log(json)
+    Router.push('/index.tsx')
   }
 
   handleSubmit(event) {
     event.preventDefault();
     let recette = this.createBody(event.target)
-    console.log(recette)
+    console.log()
   }
 
   createBody(listeData) {
@@ -43,6 +63,9 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
         <div className="form-group">
           <label htmlFor="titre">Titre</label>
           <input required type="text" className="form-control" id="titre" placeholder="Brownie au curry" />
+          <div className="invalid-feedback">
+            {"err"}
+          </div>
         </div>
 
         <div className="form-group">
@@ -83,7 +106,7 @@ class Recette {
     this.titre = titre
     this.description = description
     this.recette = recette
-    this.elements= []
+    this.elements = []
   }
 
 

@@ -1,8 +1,8 @@
 import React from 'react'
-import {FaTimes} from "react-icons/fa"
+import { FaTimes } from "react-icons/fa"
 
 
-type MyProps = { del: Function,};
+type MyProps = { del: Function, id: number };
 type MyState = {};
 
 export default class Ingredient extends React.Component<MyProps, MyState> {
@@ -15,6 +15,15 @@ export default class Ingredient extends React.Component<MyProps, MyState> {
   }
 
   render() {
+
+    var ret = <div className="col-1">
+      <button type="button" className="form-control" onClick={() => this.props.del()}><FaTimes /></button>
+    </div>
+
+    if (this.props.id == 0) {
+      ret = null
+    }
+
     return (
       <div className="form-row" id="cont">
         <div className="col-1">
@@ -26,10 +35,7 @@ export default class Ingredient extends React.Component<MyProps, MyState> {
         <div className="col">
           <input required type="text" className="form-control" placeholder="Tomate" />
         </div>
-        <div className="col-1">
-          <button type="button" className="form-control" onClick={() => this.props.del()}><FaTimes/></button>
-        </div>
-
+        {ret}
         <style jsx>{`
         #cont {
           margin-bottom: 10px

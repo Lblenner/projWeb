@@ -28,7 +28,7 @@ export default class Ingredients extends React.Component<MyProps, MyState>  {
   render() {
     return (
       <div>
-        {this.state.liste.map((i) => <Ingredient key={i.toString()} del={() => this.delIngredient(i)}/>)}
+        {this.state.liste.map((i) => <Ingredient id={i} key={i.toString()} del={() => this.delIngredient(i)}/>)}
         <button type="button" className="btn btn-primary" id="addRecette" onClick={() => this.addIngredient()}>Ajouter un ingrédient</button>
 
         <style jsx>{`
