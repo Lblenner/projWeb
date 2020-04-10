@@ -2,16 +2,15 @@ import React from 'react'
 import TextArea from './TextArea';
 import Ingredients from './Ingredients';
 import Router from 'next/router'
-import { Snackbar } from '@material-ui/core';
-import  {SimpleSnackbar} from './Snackbar';
+import { MySnackbar } from './Snackbar';
 
 type MyProps = {};
-type MyState = {open: boolean};
+type MyState = { open: boolean };
 
 export default class AddForm extends React.Component<MyProps, MyState>  {
 
   textarea
-  
+
 
   constructor(props) {
     super(props);
@@ -37,8 +36,8 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
 
 
-    if (response.status > 400){
-      this.setState({open : true})
+    if (response.status > 400) {
+      this.setState({ open: true })
       return
     }
 
@@ -69,15 +68,14 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
   }
 
   closeSnack() {
-    this.setState({open : false})
+    this.setState({ open: false })
   }
-
 
   render() {
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
-        <SimpleSnackbar open={this.state.open} handleClose={() => this.closeSnack()}/>    
+        <MySnackbar open={this.state.open} handleClose={() => this.closeSnack()} msg="Une erreur s'est produite, nous n'avons pas pu poster votre recette"/>
 
         <div className="form-group">
           <label htmlFor="titre">Titre</label>
@@ -100,7 +98,7 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
         </div>
 
         <button type="submit" className="btn btn-primary">Créer la recette</button>
-        
+
         <style jsx>{`
         #form {
           margin-top: 20px;

@@ -15,7 +15,7 @@ export default class recetteItem extends React.Component<MyProps, MyState> {
   render() {
     const recette = this.props.recette
     return (
-      <div>
+      <div id="ct">
         <Link href="/recette" as={`/recette/${recette.id}`}>
           <a className="c">
             <div id="item">
@@ -27,11 +27,13 @@ export default class recetteItem extends React.Component<MyProps, MyState> {
         <style jsx>{`
           #item {
             height : 60px;
-            margin-top: 10px;
-            border : 1px solid;
-            padding: 5px;
-            border-radius: 10px 10px 10px 10px;
-            border-color: black;
+            border-bottom : 1px solid;
+          }
+          #ct {
+            height : 60px;
+            border-bottom : 1px solid;
+            display: flex;
+            flex-grow: 1;
           }
           #item:hover {
 
