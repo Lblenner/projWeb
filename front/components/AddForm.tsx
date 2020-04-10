@@ -2,17 +2,21 @@ import React from 'react'
 import TextArea from './TextArea';
 import Ingredients from './Ingredients';
 import Router from 'next/router'
+import { Snackbar } from '@material-ui/core';
+import  {SimpleSnackbar} from './Snackbar';
 
 type MyProps = {};
-type MyState = {};
+type MyState = {open: boolean};
 
 export default class AddForm extends React.Component<MyProps, MyState>  {
 
   textarea
+  
 
   constructor(props) {
     super(props);
     this.state = {
+      open: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.textarea = ""
@@ -32,7 +36,9 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
     };
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
 
+
     if (response.status > 400){
+      this.setState({open : true})
       return
     }
 
@@ -62,16 +68,20 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
     return recette
   }
 
+  closeSnack() {
+    this.setState({open : false})
+  }
+
+
   render() {
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
+        <SimpleSnackbar open={this.state.open} handleClose={() => this.closeSnack()}/>    
+
         <div className="form-group">
           <label htmlFor="titre">Titre</label>
           <input required type="text" className="form-control" id="titre" placeholder="Brownie au curry" />
-          <div className="invalid-feedback">
-            {"err"}
-          </div>
         </div>
 
         <div className="form-group">
@@ -90,7 +100,7 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
         </div>
 
         <button type="submit" className="btn btn-primary">Créer la recette</button>
-
+        
         <style jsx>{`
         #form {
           margin-top: 20px;
