@@ -1,4 +1,5 @@
 import React from 'react'
+import RecetteItem from './RecetteItem';
 
 type MyProps = {};
 type MyState = { liste: Array<any> };
@@ -33,8 +34,8 @@ export default class List extends React.Component<MyProps, MyState> {
 
   render() {
     return (
-      <div>
-        {this.state.liste.map((elem, index) => <p key={index}>{elem.nom}</p>)}
+      <div className="container">
+        {this.state.liste.map((elem, index) => <RecetteItem key={index} recette={elem}/>)}
       </div>
     )
   }
