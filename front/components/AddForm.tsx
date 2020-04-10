@@ -31,9 +31,14 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
       body: JSON.stringify(recette)
     };
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
+
+    if (response.status > 400){
+      return
+    }
+
     var json = await response.json()
 
-    console.log("Voici la réponse: "+JSON.stringify(json))
+    console.log("Voici la réponse: " + JSON.stringify(json))
     Router.push('/')
   }
 

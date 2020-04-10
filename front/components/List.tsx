@@ -26,6 +26,11 @@ export default class List extends React.Component<MyProps, MyState> {
       credentials: 'include' as RequestCredentials
     };
     var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
+
+    if (response.status > 400){
+      return
+    }
+
     var json = await response.json()
 
     this.setState({ liste: json })
