@@ -7,7 +7,6 @@ export default function Index() {
     <div>
       <Head>
         <title>Les recettes de Martine</title>
-        {/*<script crossorigin src=""></script>*/}
       </Head>
       <Layout>
         <List/>

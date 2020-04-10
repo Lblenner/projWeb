@@ -16,11 +16,9 @@ export default class recetteItem extends React.Component<MyProps, MyState> {
     const recette = this.props.recette
     return (
       <div>
-        <Link href="/profil">
+        <Link href="/recette" as={`/recette/${recette.id}`}>
           <a className="c">
             <div id="item">
-
-
               <h3>{recette.nom}</h3>
             </div>
           </a>
