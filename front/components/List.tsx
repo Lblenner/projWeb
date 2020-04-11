@@ -40,12 +40,9 @@ export default class List extends React.Component<MyProps, MyState> {
   render() {
     return (
       <div id="main_container">
-        <div id="right">
-        </div>
         <div id="list_container">
           {this.state.liste.map((elem, index) => <RecetteItem key={index} recette={elem} />)}
-        </div>
-        <div id="left">
+          <div id="end">Pas d'autres recettes</div>
         </div>
         <style jsx>{`
               #main_container {
@@ -55,23 +52,17 @@ export default class List extends React.Component<MyProps, MyState> {
                 flex-direction: row;
               }
               #list_container {
-                display: flex;
-                flex-grow: 3;
+                width: 50%;
                 margin-top: 40px;
                 border-top: 1px solid;
                 border-right: 1px solid;
                 border-left: 1px solid;
                 flex-direction: column
               }
-              #left {
-                display: flex;
-                justify-content: center;
-                flex-grow: 1;
-              }
-              #right {
-                display: flex;
-                justify-content: center;
-                flex-grow: 1;
+              #end {
+                text-align: center;
+                padding: 10px;
+                border-bottom: 1px solid;
               }
           `}</style>
       </div>

@@ -21,7 +21,8 @@
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-icons": "^3.9.0"
+    "react-icons": "^3.9.0",
+    "react-text-truncate": "^0.16.0"
   },
   "devDependencies": {
     "@types/node": "^13.9.8",
