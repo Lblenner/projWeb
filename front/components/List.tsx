@@ -49,7 +49,6 @@ export default class List extends React.Component<MyProps, MyState> {
                 display: flex;
                 justify-content: center;
                 flex-grow: 1;
-                flex-direction: row;
               }
               #list_container {
                 width: 50%;
@@ -57,7 +56,8 @@ export default class List extends React.Component<MyProps, MyState> {
                 border-top: 1px solid;
                 border-right: 1px solid;
                 border-left: 1px solid;
-                flex-direction: column
+                flex-direction: column;
+                margin-bottom: 30px;
               }
               #end {
                 text-align: center;

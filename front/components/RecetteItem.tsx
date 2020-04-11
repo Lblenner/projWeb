@@ -3,8 +3,9 @@ import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 type MyProps = { recette: any };
 type MyState = {};
+import Router from 'next/router';
 
-export default class recetteItem extends React.Component<MyProps, MyState> {
+export default class RecetteItem extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props);
@@ -12,29 +13,33 @@ export default class recetteItem extends React.Component<MyProps, MyState> {
     };
   }
 
+  itemPressed() {
+    Router.push('/recette?id='+this.props.recette.id+'&nom='+this.props.recette.nom)
+  }
+  namePressed(e){
+    e.stopPropagation()
+    Router.push('/profil')
+  }
+
   render() {
     var a = "Un gigot, une bouteille de vin et 2 heures à dispositions ? J'aime les saucisses à la creme. N'hesitez plus, cette recette est faites pour vous !"
 
     const recette = this.props.recette
     return (
-      <div>
-        <Link href="/recette" as={`/recette/${recette.id}`}>
-          <a><div id="container">
-            <div id="left">
-              <h3>Gigot d'agneaux à la saucisse et au miel</h3>
-                De <a id="name">Bernard Friaut</a>
-              <p><TextTruncate
-                line={2}
-                element="span"
-                truncateText="…"
-                text={a}
-              /></p>
-            </div>
-            <div id="right">
-              <img src={require('../images/bouffe.jpeg')} id="img" />
-            </div>
-          </div></a>
-        </Link>
+      <div id="container" onClick={() => this.itemPressed()}>
+        <div id="left">
+          <h3>{recette.nom}</h3>
+          De <span onClick={(e) => this.namePressed(e)} id="name">Bernard Friaut</span>
+          <p><TextTruncate
+            line={2}
+            element="span"
+            truncateText="…"
+            text={a}
+          /></p>
+        </div>
+        <div id="right">
+          <img src={require('../images/bouffe.jpeg')} id="img" />
+        </div>
 
         <style jsx>{`
           #container {
@@ -45,6 +50,10 @@ export default class recetteItem extends React.Component<MyProps, MyState> {
             flex-grow: 1;
             flex-direction: row;
             overflow: hidden;
+          }
+          #container:hover {
+            opacity: 0.7;
+            cursor: pointer;
           }
           a:hover {
             text-decoration: none;
@@ -59,6 +68,7 @@ export default class recetteItem extends React.Component<MyProps, MyState> {
           }
           #img {
             width: 100%;
+            min-height: 100%;
           }  
           #name {
             color: blue;
