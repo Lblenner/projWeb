@@ -41,7 +41,10 @@ export default class List extends React.Component<MyProps, MyState> {
     return (
       <div id="main_container">
         <div id="list_container">
-          {this.state.liste.map((elem, index) => <RecetteItem key={index} recette={elem} />)}
+          {this.state.liste.map((elem, index) => {
+            var imgs = [require('../images/bouffe.jpeg'),require('../images/burger.jpg'),require('../images/pate.jpg')]
+            return <RecetteItem img={imgs[index%3]} key={index} recette={elem} />
+          })}
           <div id="end">Pas d'autres recettes</div>
         </div>
         <style jsx>{`

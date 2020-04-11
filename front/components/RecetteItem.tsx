@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
-type MyProps = { recette: any };
+type MyProps = { recette: any, img: string };
 type MyState = {};
 import Router from 'next/router';
 
@@ -14,16 +14,15 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
   }
 
   itemPressed() {
-    Router.push('/recette?id='+this.props.recette.id+'&nom='+this.props.recette.nom)
+    Router.push('/recette?id=' + this.props.recette.id + '&nom=' + this.props.recette.nom)
   }
-  namePressed(e){
+  namePressed(e) {
     e.stopPropagation()
     Router.push('/profil')
   }
 
   render() {
     var a = "Un gigot, une bouteille de vin et 2 heures à dispositions ? J'aime les saucisses à la creme. N'hesitez plus, cette recette est faites pour vous !"
-
     const recette = this.props.recette
     return (
       <div id="container" onClick={() => this.itemPressed()}>
@@ -38,7 +37,10 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
           /></p>
         </div>
         <div id="right">
-          <img src={require('../images/bouffe.jpeg')} id="img" />
+          <img src={this.props.img} id="img" />
+
+          <img src={require('../images/dents.png')} id="dent" />
+
         </div>
 
         <style jsx>{`
@@ -65,11 +67,19 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
           #right {
             width: 40%;
             overflow: hidden;
+            position : relative;
           }
           #img {
             width: 100%;
             min-height: 100%;
+            position: absolute;
+            z-axis: 1;
           }  
+          #dent {
+            width : 10px;
+            position: absolute;
+            z-axis: 2;
+          }
           #name {
             color: blue;
           }
@@ -78,7 +88,6 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
           }
           p {
             margin-top : 10px
-          }
         `}</style>
       </div >
 
