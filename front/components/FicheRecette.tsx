@@ -1,15 +1,23 @@
 import React from 'react'
 import { CircularProgress } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 type MyProps = { id: any, changeNom: any };
-type MyState = { recette: any };
+type MyState = { recette: any , nbParts: any};
 
 export default class FicheRecette extends React.Component<MyProps, MyState> {
+
+  nbParts;
 
   constructor(props) {
     super(props);
     this.state = {
-      recette: null
+      recette: null,
+      nbParts: 0
     };
+  }
+
+  onChange = (event) => {
+    this.setState({nbParts:event.target.value});
   }
 
   async componentDidMount() {
@@ -33,7 +41,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
 
     var json = await response.json()
     console.log("Le Json : " + JSON.stringify(json))
-    this.setState({ recette: json })
+    this.setState({ recette: json , nbParts:8 });
     this.props.changeNom(json.nom)
   }
 
@@ -43,7 +51,6 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
       return <CircularProgress />
     }
 
-    const nbPartsInitiale = "8";
     const pourcentageIngredients = 25;
     const espaceIngredientsRecette = 10;
 
@@ -51,13 +58,8 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
     var listIng = [];
     for (let i = 0; i < r.elements.length; i++) {
       let elem = r.elements[i]
-      listIng.push(<li key={elem.id}>{elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
+      listIng.push(<li key={elem.id}> {elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
     }
-    /*var ing = [];
-      for (let i = 0; i < r.elements.length; i++) {
-      let elem = r.elements[i]
-      ing.push(<p key={elem.id}>{elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</p>)
-    }*/
 
     return (
       <div id="fiche_container">
@@ -67,14 +69,18 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
           </h6>
         <div id="main">
           <div id="affichageIngrédients">
-            <p id="ensParts"><input type="number" id="nbParts" 
-                min="1" max="100" step="1" value={nbPartsInitiale}/> parts</p>
+            <span id="ensParts">
+              <TextField type="number" id="nbParts"
+                style = {{width: '30%', marginRight: '5px', marginBottom: '5px'}}
+                inputProps={{min: 0, max: 100, style: { textAlign: 'center' }}}
+                value={this.state.nbParts}
+                onChange={this.onChange}/>
+                parts
+            </span>
             <h4>Ingrédients :</h4>
-            <p id="listeIngredients">
-              <ul>
+              <ul id="listeIngredients">
                 {listIng}
               </ul>
-            </p>
           </div>
           <div id="affichageRecette">
             <p>Bonjour ! Voici les étapes de la recette !</p>
@@ -126,12 +132,9 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
             text-decoration : underline;
           }
 
-          #nbParts {
-            width: 25%;
-          }
-
           #ensParts {
-            text-align: center;
+            display: flex;
+            justify-content: center;
           }
 
         `}</style>
