@@ -25,9 +25,9 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
     render() {
         return (
             <div id="main_container">
-                <Paper style={{ width: "60%", height: 100, position: 'relative' }} elevation={3}>
+                <Paper style={{ width: 1000, height: 100, position: 'relative' }} elevation={3}>
                     <TextField
-                        variant="outlined"
+                        variant="outlined" 
                         style={{
                             position: 'absolute',
                             left: "30%", right: "30%",

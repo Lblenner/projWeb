@@ -15,6 +15,7 @@ const Layout = props => (
       #container {
         position: relative;
         min-height: 100vh;
+        min-width: 900px; 
       }
       #mid {
         padding-bottom : ${tailleFooter}px;
@@ -23,4 +24,6 @@ const Layout = props => (
   </div>
 );
 
+//La taille minimum de 900px est le taille minimal du header (sommes des différentes taillede texte)
+//Si ajout d'un onglet au header => adapation de cette taille
 export default Layout;

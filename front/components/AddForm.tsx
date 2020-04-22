@@ -33,7 +33,7 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
       credentials: 'include' as RequestCredentials,
       body: JSON.stringify(recette)
     };
-    var response = await fetch("http://134.122.90.48/api/v1/recettes", myInit)
+    var response = await fetch("https://134.122.90.48/api/v1/recettes", myInit)
 
 
     if (response.status > 400) {

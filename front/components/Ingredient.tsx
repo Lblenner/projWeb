@@ -17,7 +17,15 @@ export default class Ingredient extends React.Component<MyProps, MyState> {
   render() {
 
     var ret = <div className="col-1">
-      <button type="button" className="form-control" onClick={() => this.props.del()}><FaTimes /></button>
+      <button type="button" className="form-control" id="center" onClick={() => this.props.del()}>{<FaTimes size={25}/>}</button>
+
+      <style jsx>{`
+        #center {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        `}</style>
     </div>
 
     if (this.props.id == 0) {
@@ -38,7 +46,7 @@ export default class Ingredient extends React.Component<MyProps, MyState> {
         {ret}
         <style jsx>{`
         #cont {
-          margin-bottom: 10px
+          margin-bottom: 10px;
         }
         `}</style>
       </div>

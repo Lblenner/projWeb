@@ -10,12 +10,6 @@ const titre = {
 const Header = () => (
   <nav className="navbar navbar-expand-md navbar-dark navbar-custom">
 
-    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-      < GiHamburgerMenu /> Les recettes de Martine
-    </button>
-
-    <div className="collapse navbar-collapse">
-
       <Link href="/">
         <a className="navbar-brand" style={titre}><img src={require('../images/logorogne.png')} id="img"/> Les recettes de Martine</a>
       </Link>
@@ -35,7 +29,7 @@ const Header = () => (
 
       <ul className="navbar-nav ml-auto" id="right">
         <li className="nav-item">
-          <Link href="/profil">
+          <Link href="/fav">
             <a className="nav-link active" id="button">Favoris</a>
           </Link>
         </li>
@@ -51,7 +45,6 @@ const Header = () => (
         </li>
       </ul>
 
-    </div>
 
     <style jsx>{`
     #nav {
@@ -62,9 +55,13 @@ const Header = () => (
       height: auto;
     }
     #right {
-      display: flex
+      display: flex;
+      flex-shrink: 0;
+      flex-direction: row;
     }
     #center {
+      flex-shrink: 0;
+      flex-direction: row;
       display: flex;
       flex-grow: 1;
       justify-content: center;
@@ -77,6 +74,7 @@ const Header = () => (
     }
     #button {
       white-space: nowrap;
+      margin-left: 10px;
     }
     #addAddress {
       white-space: nowrap;
