@@ -105,6 +105,7 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                         justify-content: center;
                         flex-grow: 1;
                         margin-top: 20px;
+                        margin-bottom: 30px;
                     }
                     #id {
                         width: 100px;

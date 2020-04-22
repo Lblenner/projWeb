@@ -45,14 +45,14 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     Router.push('/profil')
   }
 
-  async unfavoritePressed(e) {
+  unfavoritePressed(e) {
     e.stopPropagation()
     let favs = cookies.get("favs")
     var r = this.props.recette
     favs = favs.filter(function (el) { return el.id != r.id });
     cookies.set('favs', favs)
-    this.setState({ isFavorite: false, })
     this.props.update(r.id)
+    this.setState({ isFavorite: false, })
   }
 
   favoritePressed(e) {

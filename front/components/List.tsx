@@ -22,7 +22,7 @@ export default class List extends React.Component<MyProps, MyState> {
         <div id="list_container">
           {this.props.liste.map((elem, index) => {
             var imgs = [require('../images/bouffe.jpeg'),require('../images/burger.jpg'),require('../images/pate.jpg')]
-            return <RecetteItem img={imgs[index%3]} key={index} recette={elem} update={this.props.update}/>
+            return <RecetteItem img={imgs[index%3]} key={elem.id} recette={elem} update={this.props.update}/>
           })}
           <div id="end">Pas d'autres recettes</div>
         </div>
@@ -34,7 +34,7 @@ export default class List extends React.Component<MyProps, MyState> {
               }
               #list_container {
                 width: 900px;
-                margin-top: 40px;
+                margin-top: 10px;
                 border-top: 1px solid;
                 border-right: 1px solid;
                 border-left: 1px solid;

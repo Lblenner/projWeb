@@ -3,25 +3,26 @@ import Layout from '../components/Layout';
 import Head from 'next/head'
 import Cookies from 'universal-cookie';
 import List from '../components/List';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const cookies = new Cookies();
 
-type MyProps = { };
+type MyProps = {};
 type MyState = { favs: any };
 
 export default class Fav extends React.Component<MyProps, MyState> {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       favs: []
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     var favs = cookies.get('favs')
-    this.setState({favs: favs})
+    this.setState({ favs: favs })
   }
-  
+
   render() {
     return (
       <div>
@@ -29,10 +30,33 @@ export default class Fav extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <h1>Favorite</h1>
-          <List liste={this.state.favs} update={(id) => {
-            this.setState({favs: this.state.favs.filter((e) => e.id != id)})
-          }} />
+          <div id="main_container">
+            <h1>Favoris</h1>
+            <Alert severity="info">
+              <AlertTitle>Info</AlertTitle>
+              Vous n'êtes pas connecté, les favoris seront donc stockés dans le navigateur. <br/>
+              Ils pourront donc être supprimé si vous nettoyez vos cookies. <br/>
+              Pour être sûr de conserver vos recettes, 
+                <strong className="link" onClick={() => null}> connectez vous</strong> ou 
+                <strong className="link" onClick= {() => null}> inscrivez vous</strong>.
+            </Alert>
+            <List liste={this.state.favs} update={(id) => {
+              this.setState({ favs: this.state.favs.filter((e) => e.id != id) })
+            }} />
+          </div>
+
+          <style jsx>{`
+              #main_container {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+                flex-direction: column;
+              }
+              .link:hover {
+                cursor: pointer;
+                color: blue;
+              }
+              `}</style>
         </Layout>
       </div>
     );

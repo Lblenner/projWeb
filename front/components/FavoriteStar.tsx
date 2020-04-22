@@ -13,7 +13,7 @@ export default class FavoriteStar extends React.Component<MyProps, MyState> {
   Exemple: On vient de supprimer l'item des favoris, on veut voir un dessous de la souris une etoile vide et non une etoit prete a etre validé
   Ce sera le cas jsuqu'a que la souris sorte de l'icon grave a afterRemove
   */
- 
+
   constructor(props) {
     super(props);
     this.state = {
