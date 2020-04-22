@@ -2,9 +2,10 @@ import React from 'react'
 import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { FaTimes } from 'react-icons/fa'
 
 type MyProps = { recette: any, img: string, update: any };
-type MyState = { starHover: any, isFavorite: any };
+type MyState = { starHover: any, isFavorite: any, afterRemove: any, added: any };
 
 import Router from 'next/router';
 import NoteDisplay from './NoteDisplay';
@@ -14,15 +15,19 @@ const cookies = new Cookies();
 
 export default class RecetteItem extends React.Component<MyProps, MyState> {
 
+  hover
   constructor(props) {
     super(props);
     this.state = {
       starHover: false,
       isFavorite: false,
+      afterRemove: false,
+      added: false
     };
+    this.hover = 0
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let favs = cookies.get("favs")
     if (favs == undefined) {
       favs = []
@@ -30,8 +35,8 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
       return
     }
     var r = this.props.recette
-    if (favs.find(elem => elem.id == r.id)){
-      this.setState({isFavorite: true})
+    if (favs.find(elem => elem.id == r.id)) {
+      this.setState({ isFavorite: true })
     }
   }
 
@@ -44,14 +49,16 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     Router.push('/profil')
   }
 
-  unfavoritePressed(e) {
+  async unfavoritePressed(e) {
     e.stopPropagation()
     let favs = cookies.get("favs")
     var r = this.props.recette
-    favs = favs.filter(function(el) { return el.id != r.id }); 
+    favs = favs.filter(function (el) { return el.id != r.id });
     cookies.set('favs', favs)
-    this.setState({ isFavorite: false })
+    this.setState({ isFavorite: false, })
+    this.setState({ afterRemove: true, starHover: false })
     this.props.update(r.id)
+
   }
 
   favoritePressed(e) {
@@ -61,9 +68,28 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     favs = favs.concat([this.props.recette])
     cookies.set('favs', favs)
     this.setState({ isFavorite: true })
+    this.setState({ added: true, starHover: false })
   }
 
+
+
   star() {
+
+    if (this.state.afterRemove) {
+      return <AiOutlineStar
+        onClick={(e) => e.stopPropagation()}
+        onPointerLeave={() => this.setState({ afterRemove: false })}
+        style={{ flexShrink: 0 }}
+        size={40} color="#FFCC7A" />
+    }
+
+    if (this.state.added) {
+      return <AiFillStar
+        onClick={(e) => e.stopPropagation()}
+        onPointerLeave={() => this.setState({ added: false })}
+        style={{ flexShrink: 0 }} size={40} color="#FFCC7A" />
+    }
+
     if (this.state.isFavorite) {
       if (!this.state.starHover) {
         return <AiFillStar
@@ -71,21 +97,41 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
           style={{ flexShrink: 0 }} size={40} color="#FFCC7A" />
       }
 
-      return <AiFillStar
-        onClick={(e) => this.unfavoritePressed(e)}
+      return <div
         onPointerLeave={() => this.setState({ starHover: false })}
-        style={{ flexShrink: 0 }} size={40} color="red" />
+        onClick={(e) => this.unfavoritePressed(e)} >
+        <span style={{ display: 'inline-block', position: 'relative', }}>
+          <AiFillStar
+            textAnchor="middle" alignmentBaseline="middle"
+            style={{ flexShrink: 0 }} size={40} color="red" />
+          <FaTimes
+            textAnchor="middle"
+            alignmentBaseline="middle"
+            style={{ flexShrink: 0, position: 'absolute', left: '0px', }}
+            color="black"
+            size={40}
+          />
+          <FaTimes
+            textAnchor="middle"
+            alignmentBaseline="middle"
+            style={{ flexShrink: 0, position: 'absolute', left: '5px', bottom: '5px' }}
+            color="red"
+            size={30}
+          />
+        </span>
+      </div>
     }
 
     if (!this.state.starHover) {
       return <AiOutlineStar
         onPointerEnter={() => this.setState({ starHover: true })}
-        style={{ flexShrink: 0 }} size={40} color="#FFCC7A" />
+        style={{ flexShrink: 0 }}
+        size={40} color="#FFCC7A" />
     } else {
       return <AiFillStar
         onClick={(e) => this.favoritePressed(e)}
-        onPointerLeave={() => this.setState({ starHover: false })}
-        style={{ flexShrink: 0 }} size={40} color="#FFCC7A" />
+        onPointerLeave={() => { this.setState({ starHover: false }) }}
+        style={{ flexShrink: 0, height: "40px", marginRight: 5 }} size={30} color="#ffdea8" />
     }
   }
 
