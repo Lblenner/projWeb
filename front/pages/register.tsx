@@ -1,8 +1,6 @@
 import Layout from '../components/Layout';
 import Head from 'next/head'
-import TextArea from '../components/TextArea'
-import AddForm from '../components/AddForm';
-
+import RegisterForm from '../components/RegisterForm';
 
 export default function About() {
 
@@ -13,7 +11,7 @@ export default function About() {
       </Head>
       <Layout>
         <div className="container-fluid">
-          <AddForm/>
+          <RegisterForm/>
         </div>
       </Layout>
     </div>

@@ -1,10 +1,9 @@
 import Layout from '../components/Layout';
 import Head from 'next/head'
-import TextArea from '../components/TextArea'
-import AddForm from '../components/AddForm';
+import LoginForm from '../components/LoginForm';
 
 
-export default function About() {
+export default function Login() {
 
   return (
     <div>
@@ -13,7 +12,7 @@ export default function About() {
       </Head>
       <Layout>
         <div className="container-fluid">
-          <AddForm/>
+          <LoginForm/>
         </div>
       </Layout>
     </div>
