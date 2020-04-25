@@ -91,7 +91,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
           #fiche_container {
             margin-top: 10px;
             padding: 10px;
-            width: 60%;
+            width: 100%;
           }
 
           h1 {

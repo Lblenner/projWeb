@@ -10,7 +10,7 @@ const Layout = props => (
     <div id="mid">
       <div style={{display: 'flex', flexDirection: 'row'}}>
         <div style={{display:'flex',flexGrow: 1, flexBasis:0}}></div>
-        <div id="content">
+        <div style={{display:'flex',flexGrow: 2, flexBasis:0, flexDirection:'column'}}>
           {props.children}
         </div>
         <div style={{display:'flex',flexGrow: 1, flexBasis:0, justifyContent:'center'}}>
