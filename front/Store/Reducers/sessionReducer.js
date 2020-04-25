@@ -1,8 +1,10 @@
 // Store/Reducers/sessionReducer.js
-
 import Cookies from 'universal-cookie';
+
 const cookies = new Cookies();
-const initialState = { token: cookies.get("logged") }
+
+//On initilaise le token dans _app coté server
+const initialState = { token: null }
 
 
 function session(state = initialState, action) {

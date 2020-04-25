@@ -15,7 +15,7 @@ class Header extends React.Component<MyProps, MyState> {
 
   modulableMenu() {
 
-    let token = this.props.login.token
+    let token = this.props.token
     var custom = []
 
     if (token) {

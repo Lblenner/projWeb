@@ -14,11 +14,13 @@ class LoginForm extends React.Component<MyProps, MyState>  {
       snackOpen: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
-    }
+  }
+
 
   handleSubmit(event) {
     event.preventDefault();
-    const action = { type: "SET_SESSION", value: "er" }
+    var token = btoa(event.target[0].value + ":" + event.target[1].value)
+    const action = { type: "SET_SESSION", value: token }
     this.props.dispatch(action)
   }
 
@@ -30,7 +32,7 @@ class LoginForm extends React.Component<MyProps, MyState>  {
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
-        <MySnackbar open={this.state.snackOpen} handleClose={() => this.closeSnack()} msg="Une erreur s'est produite"/>
+        <MySnackbar open={this.state.snackOpen} handleClose={() => this.closeSnack()} msg="Une erreur s'est produite" />
 
         <div className="form-group">
           <label htmlFor="id">Identifiant</label>

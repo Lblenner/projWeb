@@ -3,4 +3,6 @@
 import { createStore,combineReducers } from 'redux'
 import session from './Reducers/sessionReducer'
 
-export default createStore(combineReducers({ login: session}))
+const makeStore = (initState) => createStore(session, initState)
+
+export default makeStore

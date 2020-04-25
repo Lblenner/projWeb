@@ -33,13 +33,17 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
       credentials: 'include' as RequestCredentials,
       body: JSON.stringify(recette)
     };
+
     var response = await fetch("https://134.122.90.48/api/v1/recettes", myInit)
+    
+    console.log("Voici le fetch" + JSON.stringify(recette))
+    console.log(response)
 
-
-    if (response.status > 400) {
+    if (response.status >= 400) {
       this.setState({ open: true })
       return
     }
+
 
     var json = await response.json()
 
@@ -117,13 +121,13 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
 
 class Recette {
   nom: string;
-  //description: string;
+  description: string;
   elements: Array<object>;
   //recette: string;
 
   constructor(nom, description, recette) {
     this.nom = nom
-    //this.description = description
+    this.description = description
     //this.recette = recette
     this.elements = []
   }
