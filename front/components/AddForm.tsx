@@ -3,11 +3,13 @@ import TextArea from './TextArea';
 import Ingredients from './Ingredients';
 import Router from 'next/router'
 import { MySnackbar } from './Snackbar';
+import { connect } from 'react-redux'
 
-type MyProps = {};
+
+type MyProps = any;
 type MyState = { open: boolean };
 
-export default class AddForm extends React.Component<MyProps, MyState>  {
+class AddForm extends React.Component<MyProps, MyState>  {
 
   textarea
 
@@ -22,8 +24,13 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
   }
 
   async addRecette(recette) {
+
+    let token = this.props.token
+
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set('Content-Type', 'application/json');
+    requestHeaders.set('authorization', 'Basic '+token);
+
 
     var myInit = {
       method: 'POST',
@@ -35,7 +42,7 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
     };
 
     var response = await fetch("https://134.122.90.48/api/v1/recettes", myInit)
-    
+
     console.log("Voici le fetch" + JSON.stringify(recette))
     console.log(response)
 
@@ -76,6 +83,14 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
   }
 
   render() {
+
+    console.log(this.props)
+
+    if(!this.props.token){ //A faire dans initial props dans la page
+      Router.push('/login')
+    }
+    
+
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
@@ -118,6 +133,12 @@ export default class AddForm extends React.Component<MyProps, MyState>  {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(AddForm)
 
 class Recette {
   nom: string;
