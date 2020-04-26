@@ -55,18 +55,31 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
     const espaceIngredientsRecette = 10;
 
     const r = this.state.recette
+    var photo = r.photo
+    if (photo == null) {
+      photo = require('../images/No_photo.jpg')
+    }
     var listIng = [];
     for (let i = 0; i < r.elements.length; i++) {
       let elem = r.elements[i]
       listIng.push(<li key={elem.id}> {elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
     }
 
+    var preparation = r.preparation.split("\n")
+    var affichageRecette = [];
+    for (let i = 0; i < preparation.length; i++) {
+      affichageRecette.push(<div> {preparation[i]} <br/> </div>);
+    }
+
     return (
       <div id="fiche_container">
         <h1>{r.nom}</h1>
         <h6 id="nomPersonne">
-          <a href="/profil">Nom de la personne</a>
-          </h6>
+          <a href="/profil">{r.auteurUsername}</a>
+        </h6>
+        <div>
+          <img src={photo} id="photo"/>
+        </div>
         <div id="main">
           <div id="affichageIngrédients">
             <span id="ensParts">
@@ -83,7 +96,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
               </ul>
           </div>
           <div id="affichageRecette">
-            <p>Bonjour ! Voici les étapes de la recette !</p>
+              <p>{affichageRecette}</p>
           </div>
         </div>
 
@@ -101,6 +114,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
           h4 {
             text-decoration: underline;
             text-align : center;
+            white-space : nowrap;
           }
 
           #main {
@@ -135,6 +149,11 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
           #ensParts {
             display: flex;
             justify-content: center;
+          }
+
+          #photo {
+            max-width: 100%;
+            margin-bottom: 10px;
           }
 
         `}</style>

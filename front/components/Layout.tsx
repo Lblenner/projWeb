@@ -16,9 +16,9 @@ const Layout = props => (
         <div style={{display:'flex',flexGrow: 1, flexBasis:0, justifyContent:'center'}}>
           <Paper style={{margin: 20, padding: 10, width: 200, height: 185}}>
             Pas de Balance ? <br/>
-            Pas de Probleme ! <br/>
-            Télécharge l'appli de Martine pour faire la cuisine avec des ecocups ! <br/>
-            <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.cuisineapp&fbclid=IwAR1nwfw8lOv6CuBdsEnl2h1_lAYze5-UPx7IiSyjh7WSzrkZgXrrSl03DDA">Telecharger</a>
+            Pas de Problèmes ! <br/>
+            Télécharge l'application de Martine pour faire la cuisine avec des écocups ! <br/>
+            <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.cuisineapp&fbclid=IwAR1nwfw8lOv6CuBdsEnl2h1_lAYze5-UPx7IiSyjh7WSzrkZgXrrSl03DDA">Télécharger</a>
           </Paper>
         </div>
       </div>
