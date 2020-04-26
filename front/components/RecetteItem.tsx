@@ -92,7 +92,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
         </div>
         <div id="right">
           {recette.photo && <img src={recette.photo} id="img" />}
-          {!recette.photo && <img src={this.props.img} id="img" />}
+          {!recette.photo && <img src={require('../images/No_photo.jpg')} id="img" />}
 
           <img src={require('../images/dents.png')} id="dent" />
 

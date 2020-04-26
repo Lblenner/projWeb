@@ -106,12 +106,12 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
         <div className="form-group">
           <label htmlFor="titre">Titre</label>
-          <input required type="text" className="form-control" id="titre" placeholder="Brownie au curry" />
+          <input required type="text" className="form-control" id="titre" placeholder="Brownie au chocolat" />
         </div>
 
         <div className="form-group">
           <label htmlFor="description">Description</label>
-          <input required type="text" className="form-control" id="description" placeholder="Une recette original pour les friands de nouvelles expériences" />
+          <input required type="text" className="form-control" id="description" placeholder="Une recette originale pour les friands de nouvelles expériences" />
         </div>
 
         <InputFile setImage={(img) => this.setImage(img)} />
@@ -123,7 +123,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
         <div className="form-group">
           <label htmlFor="area">Recette</label>
-          <TextArea id="area" placeHolder={["Etape 1:", "Préparer le chou...", "Etape 2:", "Videz un bol de curry..."]} />
+          <TextArea id="area" placeHolder={["Etape 1:", "Faire fondre le chocolat...", "Etape 2:", "Battre les oeufs..."]} />
         </div>
 
         <button type="submit" className="btn btn-primary">Créer la recette</button>

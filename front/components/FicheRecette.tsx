@@ -65,10 +65,12 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
       listIng.push(<li key={elem.id}> {elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
     }
 
-    var preparation = r.preparation.split("\n")
     var affichageRecette = [];
-    for (let i = 0; i < preparation.length; i++) {
-      affichageRecette.push(<div> {preparation[i]} <br/> </div>);
+    if (r.preparation != null) {
+      var preparation = r.preparation.split("\n")
+      for (let i = 0; i < preparation.length; i++) {
+        affichageRecette.push(<div> {preparation[i]} <br/> </div>);
+      }
     }
 
     return (
@@ -152,6 +154,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
           }
 
           #photo {
+            min-width: 100%;
             max-width: 100%;
             margin-bottom: 10px;
           }
