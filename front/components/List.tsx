@@ -21,7 +21,7 @@ export default class List extends React.Component<MyProps, MyState> {
       <div id="main_container">
         <div id="list_container">
           {this.props.liste.map((elem, index) => {
-            var defaultImg = require('../images/bouffe.jpeg')
+            var defaultImg = require('../images/No_photo.jpg')
             return <RecetteItem img={defaultImg} key={elem.id} recette={elem} update={this.props.update}/>
           })}
           <div id="end">Pas d'autres recettes</div>
