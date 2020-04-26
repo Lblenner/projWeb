@@ -3,6 +3,7 @@ import Head from 'next/head'
 import React from 'react'
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux'
+import Router from 'next/router'
 
 type MyProps = any;
 type MyState = { favs: any };
@@ -14,6 +15,7 @@ class Profil extends React.Component<MyProps, MyState> {
     const action = { type: "REMOVE_SESSION" }
     this.props.dispatch(action)
 
+    Router.push('/')
   }
 
   render() {

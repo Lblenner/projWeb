@@ -65,7 +65,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
   }
 
   render() {
-    var a = "Un gigot, la la une bouteille de vin et 2 heures à dispositions ? J'aime les saucisses à la creme. N'hesitez plus, cette recette est faites pour vous !"
+    var a = "Cette recette recette n'a pas de description"
     const recette = this.props.recette
     return (
       <div id="container"
@@ -86,11 +86,12 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
             line={2}
             element="span"
             truncateText="…"
-            text={a}
+            text={recette.description? recette.description : a }
           /></p>
         </div>
         <div id="right">
-          <img src={this.props.img} id="img" />
+          {recette.photo && <img src={recette.photo} id="img" />}
+          {!recette.photo && <img src={this.props.img} id="img" />}
 
           <img src={require('../images/dents.png')} id="dent" />
 

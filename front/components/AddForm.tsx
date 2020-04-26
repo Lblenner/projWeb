@@ -5,6 +5,8 @@ import Router from 'next/router'
 import { MySnackbar } from './Snackbar';
 import { connect } from 'react-redux'
 import InputFile from './InputFile';
+import { uploadImage } from '../API/Api'
+import { addRecette } from '../API/Api'
 
 type MyProps = any;
 type MyState = { open: boolean };
@@ -12,7 +14,7 @@ type MyState = { open: boolean };
 class AddForm extends React.Component<MyProps, MyState>  {
 
   textarea
-  image
+  image: File
 
   constructor(props) {
     super(props);
@@ -23,25 +25,29 @@ class AddForm extends React.Component<MyProps, MyState>  {
     this.textarea = ""
   }
 
-  async addRecette(recette) {
+  async handleSubmit(event) {
+    event.preventDefault();
+    event.persist();
+    let imgresponse = await uploadImage(this.image)
+    
+    if(!imgresponse.ok){
+      this.setState({ open: true })
+      console.log(imgresponse)
+      return 
+    }
 
+    let imgjson = await imgresponse.json()
+
+    if(!imgjson.success){
+      this.setState({ open: true })
+      console.log(imgjson)
+      return 
+    }
+
+    let link = imgjson.data.link
     let token = this.props.token
-
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Content-Type', 'application/json');
-    requestHeaders.set('authorization', 'Basic ' + token);
-
-
-    var myInit = {
-      method: 'POST',
-      headers: requestHeaders,
-      mode: 'cors' as RequestMode,
-      cache: 'default' as RequestCache,
-      credentials: 'include' as RequestCredentials,
-      body: JSON.stringify(recette)
-    };
-
-    var response = await fetch("https://134.122.90.48/api/v1/recettes", myInit)
+    let recette = this.createBody(event.target,link)
+    let response = await addRecette(recette, token)
 
     console.log("Voici le fetch" + JSON.stringify(recette))
 
@@ -57,42 +63,14 @@ class AddForm extends React.Component<MyProps, MyState>  {
     Router.push('/')
   }
 
-  async handleSubmit(event) {
-    event.preventDefault();
-    await this.uploadImage(this.image)
-    //let recette = this.createBody(event.target)
-    //this.addRecette(recette)
-  }
-
   setImage(img) {
     this.image = img
   }
 
-  async uploadImage(img) {
-    
-    const formData = new FormData();
-
-    formData.append("image", img);
-    formData.append("type", "file");
-
-    const requestHeaders: HeadersInit = new Headers({ Authorization: 'Client-ID 024ab219c29e9f3' });
-
-    //e38534b89de183c1405736b8ecf958ed1f904705
-
-    const response = await fetch("https://api.imgur.com/3/upload", {
-      method: 'POST',
-      headers: requestHeaders,
-      body: formData
-    });
-
-    console.log(response)
-    let json = await response.json()
-    console.log(json)
-  }
-
-  createBody(listeData) {
+  createBody(listeData, link) {
     let n = listeData.length
-    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[n - 2].value)
+    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[n - 2].value,link)
+
     recette.elements.push({ ingredient: { nom: listeData[5].value }, quantite: { nombre: listeData[3].value, unite: listeData[4].value } })
     for (let i = 6; i < n - 4; i += 4) {
       let nombre = listeData[i].value
@@ -167,15 +145,17 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(AddForm)
 
 class Recette {
+  photo: string
   nom: string;
   description: string;
   elements: Array<object>;
-  //recette: string;
+  preparation: string;
 
-  constructor(nom, description, recette) {
+  constructor(nom, description, recette, link) {
+    this.photo = link
     this.nom = nom
     this.description = description
-    //this.recette = recette
+    this.preparation = recette
     this.elements = []
   }
 

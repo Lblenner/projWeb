@@ -44,7 +44,7 @@ export default class Index extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <SearchBar />
+          {/*<SearchBar />*/}
           <List liste={this.props.liste} update={() => 1}/>
         </Layout>
       </div>

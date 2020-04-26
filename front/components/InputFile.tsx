@@ -81,30 +81,14 @@ class InputFile extends PureComponent<MyProps, MyState> {
         console.error('Canvas is empty');
         return;
       }
-      var file: File = {...blob,
-      lastModified: (new Date()).getTime(),
-      name: fileName}
+      var file: any = blob
+
+      file.lastModified=  (new Date()).getTime()
+      file.name = fileName
 
       this.props.setImage(file)
 
     }, 'image/jpeg')
-
-    /*return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (!blob) {
-          console.error('Canvas is empty');
-          return;
-        }
-        var b: any = blob;
-        b.lastModifiedDate = new Date();
-        b.name = fileName;
-
-        this.file = b
-        //window.URL.revokeObjectURL(this.fileUrl);
-        //this.fileUrl = window.URL.createObjectURL(blob);
-        //resolve(this.fileUrl);
-      }, 'image/jpeg');
-    });*/
   }
 
   render() {
