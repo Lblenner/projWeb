@@ -28,25 +28,31 @@ class AddForm extends React.Component<MyProps, MyState>  {
   async handleSubmit(event) {
     event.preventDefault();
     event.persist();
-    let imgresponse = await uploadImage(this.image)
-    
-    if(!imgresponse.ok){
-      this.setState({ open: true })
-      console.log(imgresponse)
-      return 
+    let link
+
+    if (this.image != null) {
+      let imgresponse = await uploadImage(this.image)
+
+      if (!imgresponse.ok) {
+        this.setState({ open: true })
+        console.log(imgresponse)
+        return
+      }
+
+      let imgjson = await imgresponse.json()
+
+      if (!imgjson.success) {
+        this.setState({ open: true })
+        console.log(imgjson)
+        return
+      }
+
+      link = imgjson.data.link
+
     }
 
-    let imgjson = await imgresponse.json()
-
-    if(!imgjson.success){
-      this.setState({ open: true })
-      console.log(imgjson)
-      return 
-    }
-
-    let link = imgjson.data.link
     let token = this.props.token
-    let recette = this.createBody(event.target,link)
+    let recette = this.createBody(event.target, link)
     let response = await addRecette(recette, token)
 
     console.log("Voici le fetch" + JSON.stringify(recette))
@@ -69,7 +75,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
   createBody(listeData, link) {
     let n = listeData.length
-    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[n - 2].value,link)
+    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[n - 2].value, link)
 
     recette.elements.push({ ingredient: { nom: listeData[5].value }, quantite: { nombre: listeData[3].value, unite: listeData[4].value } })
     for (let i = 6; i < n - 4; i += 4) {

@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 import ReactHoverObserver from 'react-hover-observer';
 
@@ -58,15 +57,17 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
   favoritePressed(e) {
     e.stopPropagation()
     let favs = cookies.get("favs")
-    console.log(favs)
     favs = favs.concat([this.props.recette])
     cookies.set('favs', favs)
     this.setState({ isFavorite: true })
   }
 
   render() {
-    var a = "Cette recette recette n'a pas de description"
     const recette = this.props.recette
+    var a = recette.description //"Cette recette recette n'a pas de description"
+    if (a.length < 3){
+      a = "Description: "+a
+    }
     return (
       <div id="container"
         onClick={() => this.itemPressed()}>
@@ -82,12 +83,12 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
             <NoteDisplay name="Note" value="8.14" />
             <NoteDisplay name="Ma note" value="--" />
           </div>
-          <p style={{ marginTop: 10 }}><TextTruncate
+          <TextTruncate
             line={2}
             element="span"
-            truncateText="…"
-            text={recette.description? recette.description : a }
-          /></p>
+            truncateText="..."
+            text={a}
+          />
         </div>
         <div id="right">
           {recette.photo && <img src={recette.photo} id="img" />}
