@@ -12,7 +12,7 @@ type MyState = { open: boolean };
 class AddForm extends React.Component<MyProps, MyState>  {
 
   textarea
-  imageUrl
+  image
 
   constructor(props) {
     super(props);
@@ -59,27 +59,27 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
   async handleSubmit(event) {
     event.preventDefault();
-    await this.uploadImage(this.imageUrl)
+    await this.uploadImage(this.image)
     //let recette = this.createBody(event.target)
     //this.addRecette(recette)
   }
 
   setImage(img) {
-    this.imageUrl = img
+    this.image = img
   }
 
-  async uploadImage(url) {
+  async uploadImage(img) {
     
     const formData = new FormData();
 
-    formData.append("image", url);
-    formData.append("type", "url");
+    formData.append("image", img);
+    formData.append("type", "file");
 
     const requestHeaders: HeadersInit = new Headers({ Authorization: 'Client-ID 024ab219c29e9f3' });
 
     //e38534b89de183c1405736b8ecf958ed1f904705
 
-    const response = await fetch("https://api.imgur.com/3/image", {
+    const response = await fetch("https://api.imgur.com/3/upload", {
       method: 'POST',
       headers: requestHeaders,
       body: formData

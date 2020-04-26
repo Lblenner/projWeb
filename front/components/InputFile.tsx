@@ -3,15 +3,15 @@ import React, { PureComponent } from 'react';
 import ReactCrop from 'react-image-crop';
 
 
-type MyProps = { setImage : any };
-type MyState = { };
+type MyProps = { setImage: any };
+type MyState = {};
 
 
 class InputFile extends PureComponent<MyProps, MyState> {
 
   imageRef
-  fileUrl
-  
+  file: File
+
 
   state = {
     src: null,
@@ -36,7 +36,6 @@ class InputFile extends PureComponent<MyProps, MyState> {
     }
   };
 
-  // If you setState the crop in here you should return false.
   onImageLoaded = image => {
     this.imageRef = image;
   };
@@ -49,14 +48,11 @@ class InputFile extends PureComponent<MyProps, MyState> {
     this.setState({ crop });
   };
 
-  async makeClientCrop(crop) {
+  makeClientCrop(crop) {
     if (this.imageRef && crop.width && crop.height) {
-      const resultImageUrl = await this.getCroppedImg(
-        this.imageRef,
-        crop,
-        'newFile.jpeg'
-      );
-      this.props.setImage(resultImageUrl)
+
+      this.getCroppedImg(this.imageRef,crop,'newFile.jpeg');
+      
     }
   }
 
@@ -80,18 +76,35 @@ class InputFile extends PureComponent<MyProps, MyState> {
       crop.height
     );
 
-    return new Promise((resolve, reject) => {
+    canvas.toBlob(blob => {
+      if (!blob) {
+        console.error('Canvas is empty');
+        return;
+      }
+      var file: File = {...blob,
+      lastModified: (new Date()).getTime(),
+      name: fileName}
+
+      this.props.setImage(file)
+
+    }, 'image/jpeg')
+
+    /*return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) {
           console.error('Canvas is empty');
           return;
         }
-        //blob.name = fileName;
-        window.URL.revokeObjectURL(this.fileUrl);
-        this.fileUrl = window.URL.createObjectURL(blob);
-        resolve(this.fileUrl);
+        var b: any = blob;
+        b.lastModifiedDate = new Date();
+        b.name = fileName;
+
+        this.file = b
+        //window.URL.revokeObjectURL(this.fileUrl);
+        //this.fileUrl = window.URL.createObjectURL(blob);
+        //resolve(this.fileUrl);
       }, 'image/jpeg');
-    });
+    });*/
   }
 
   render() {

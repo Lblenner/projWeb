@@ -36,7 +36,7 @@ class LoginForm extends React.Component<MyProps, MyState>  {
       cache: 'default' as RequestCache,
       credentials: 'include' as RequestCredentials,
     };
-    var response = await fetch("https://134.122.90.48/api/v1/user/"+event.target[0].value, myInit)
+    var response = await fetch("https://134.122.90.48/api/v1/users/"+event.target[0].value, myInit)
 
     if (response.status != 200) {
       this.setState({ snackOpen: true,})
