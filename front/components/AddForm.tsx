@@ -55,13 +55,12 @@ class AddForm extends React.Component<MyProps, MyState>  {
     let recette = this.createBody(event.target, link)
     let response = await addRecette(recette, token)
 
-    console.log("Voici le fetch" + JSON.stringify(recette))
 
     if (response.status >= 400) {
       this.setState({ open: true })
+      console.log(response)
       return
     }
-
 
     var json = await response.json()
 

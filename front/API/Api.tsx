@@ -36,5 +36,5 @@ export const addRecette= (recette,token) => {
       body: JSON.stringify(recette)
     };
 
-    return fetch("https://134.122.90.48/api/v1/recettes", myInit)
+    return fetch("https://martine.rest/api/v1/recettes", myInit)
 }

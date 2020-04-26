@@ -38,7 +38,7 @@ class RegisterForm extends React.Component<MyProps, MyState>  {
       credentials: 'include' as RequestCredentials,
       body: user
     };
-    var response = await fetch("https://134.122.90.48/api/v1/users", myInit)
+    var response = await fetch("https://martine.rest/api/v1/users", myInit)
 
     var json = await response.json()
 

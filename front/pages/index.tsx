@@ -7,7 +7,6 @@ import SearchBar from '../components/SearchBar'
 type MyProps = { liste: any };
 type MyState = {};
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const fetch = require('node-fetch');
 
 export default class Index extends React.Component<MyProps, MyState> {
@@ -23,7 +22,7 @@ export default class Index extends React.Component<MyProps, MyState> {
       cache: 'default' as RequestCache,
       credentials: 'include' as RequestCredentials
     };
-    var response = await fetch("https://134.122.90.48/api/v1/recettes", myInit)
+    var response = await fetch("https://martine.rest/api/v1/recettes", myInit)
 
     if (response.status > 400) {
       return

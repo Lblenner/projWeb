@@ -3,7 +3,7 @@ import TextTruncate from 'react-text-truncate';
 import ReactHoverObserver from 'react-hover-observer';
 
 
-type MyProps = { recette: any, img: string, update: any };
+type MyProps = { recette: any, update: any };
 type MyState = { isFavorite: any };
 
 import Router from 'next/router';
