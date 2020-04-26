@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'typeface-roboto';
+import 'react-image-crop/dist/ReactCrop.css';
 import App from 'next/app';
 import { Provider } from 'react-redux';
 import makeStore from '../Store/configureStore'
