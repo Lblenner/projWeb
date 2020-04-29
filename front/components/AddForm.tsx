@@ -59,6 +59,8 @@ class AddForm extends React.Component<MyProps, MyState>  {
     if (response.status >= 400) {
       this.setState({ open: true })
       console.log(response)
+      let json = await response.json()
+      console.log(JSON.stringify(json))
       return
     }
 

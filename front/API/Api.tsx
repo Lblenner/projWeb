@@ -38,3 +38,7 @@ export const addRecette= (recette,token) => {
 
     return fetch("https://martine.rest/api/v1/recettes", myInit)
 }
+
+export const addCommentaire= (commentaire,token) => {
+    // TO DO
+}

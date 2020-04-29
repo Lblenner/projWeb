@@ -1,6 +1,8 @@
 import React from 'react'
 import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import TextArea from './TextArea';
+import { AiOutlinePlusSquare } from 'react-icons/ai'
 type MyProps = { id: any, changeNom: any };
 type MyState = { recette: any , nbParts: any};
 
@@ -32,7 +34,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
       cache: 'default' as RequestCache,
       credentials: 'include' as RequestCredentials
     };
-    var response = await fetch("https://134.122.90.48/api/v1/recettes/" + this.props.id, myInit)
+    var response = await fetch("https://martine.rest/api/v1/recettes/" + this.props.id, myInit)
 
     if (response.status > 400) {
       console.log("Erreur")
@@ -101,6 +103,15 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
               <p>{affichageRecette}</p>
           </div>
         </div>
+        <div id="commentaire_container">
+            <h3>Commentaires</h3>
+            <div className="form-group">
+              <TextArea id="area" placeHolder={["Tapez votre commentaire ici !"]} />
+            </div>
+            <div id="addCommentaire">
+              <button className="btn btn-success" >Ajouter un commentaire</button>
+            </div>
+        </div>
 
         <style jsx>{`
           #fiche_container {
@@ -109,8 +120,26 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
             width: 100%;
           }
 
+          TextArea {
+            height: 50px;
+          }
+
+          #addCommentaire {
+            text-align : right;
+          }
+
+          .btn {
+            background-color: #ed3232;
+            border-color: #ed3232;
+          }
+
           h1 {
             text-align : center; 
+          }
+
+          h3 {
+            text-align : center; 
+            margin-top: 10px;
           }
 
           h4 {
@@ -121,6 +150,8 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
 
           #main {
             width: 100%;
+            display: table;
+            clear: both;
           }
 
           #affichageIngrédients {
@@ -157,6 +188,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
             min-width: 100%;
             max-width: 100%;
             margin-bottom: 10px;
+            padding: 10px;
           }
 
         `}</style>
