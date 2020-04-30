@@ -21,6 +21,7 @@ class Fav extends React.Component<MyProps, MyState> {
       favs: []
     }
   }
+  
   componentDidMount() {
     var favs = cookies.get('favs')
     this.setState({ favs: favs })
