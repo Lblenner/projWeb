@@ -95,11 +95,6 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
   render() {
 
-    if (!this.props.token) { //A faire dans initial props dans la page
-      Router.push('/login')
-    }
-
-
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
