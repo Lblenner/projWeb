@@ -3,6 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
+import { addCommentaire } from '../API/Api'
 
 type MyProps = { recette, token };
 type MyState = { nbParts: any};
@@ -20,6 +21,23 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
   onChange = (event) => {
     this.setState({nbParts:event.target.value});
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    event.persist();
+
+    let token = this.props.token
+    if (token != null) {
+      let commentaire = this.createBody(event.target,this.props.recette.id)
+      let response = await addCommentaire(this.props.recette.id,commentaire,token)
+    }
+
+  }
+
+  createBody(listeData, idRecette) {
+    let commentaire = new Commentaire(listeData[0],"h","h", idRecette)
+    return commentaire
   }
 
   fiche() {
@@ -79,12 +97,14 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         </div>
         <div id="commentaire_container">
             <h3>Commentaires</h3>
-            <div className="form-group">
-              <TextArea size={65} id="area" placeHolder={["Tapez votre commentaire ici !"]} />
-            </div>
-            <div id="addCommentaire">
-              <button className="btn btn-success" >Ajouter un commentaire</button>
-            </div>
+            <form onSubmit={this.handleSubmit} id="form">
+              <div className="form-group">
+                <TextArea size={65} id="area" placeHolder={["Tapez votre commentaire ici !"]} />
+              </div>
+              <div id="addCommentaire">
+                <button type="submit" className="btn btn-success" >Ajouter un commentaire</button>
+              </div>
+            </form>
         </div>
 
         <style jsx>{`
@@ -193,4 +213,18 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(FicheRecette)
+
+class Commentaire {
+  commentaire: string;
+  userFullName: string;
+  userUserName: string;
+  idRecette: number;
+
+  constructor(commentaire, fullName, userName, idRecette) {
+    this.commentaire = commentaire
+    this.userFullName = fullName
+    this.userUserName = userName
+    this.idRecette = idRecette
+  }
+}
 
