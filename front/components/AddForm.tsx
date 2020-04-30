@@ -124,7 +124,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
         <div className="form-group">
           <label htmlFor="area">Recette</label>
-          <TextArea id="area" placeHolder={["Etape 1:", "Faire fondre le chocolat...", "Etape 2:", "Battre les oeufs..."]} />
+          <TextArea size={300} id="area" placeHolder={["Etape 1:", "Faire fondre le chocolat...", "Etape 2:", "Battre les oeufs..."]} />
         </div>
 
         <button type="submit" className="btn btn-primary">Créer la recette</button>

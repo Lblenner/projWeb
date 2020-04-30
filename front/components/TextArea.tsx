@@ -1,9 +1,8 @@
 import React from 'react'
 
-type MyProps = { placeHolder: Array<string>, id: string };
+type MyProps = { placeHolder: Array<string>, id: string, size: number };
 type MyState = { taille: number };
 
-const defaultSize = 300;
 
 export default class TextArea extends React.Component<MyProps, MyState>  {
 
@@ -12,7 +11,7 @@ export default class TextArea extends React.Component<MyProps, MyState>  {
   constructor(props) {
     super(props);
     this.state = {
-      taille: defaultSize,
+      taille: this.props.size,
     };
     this.handleChange = this.handleChange.bind(this);
     //On utilise un tableau car pas trouvé de moyen de faire passé un \n en prop qui soit interprété comme un saut à la ligne
@@ -34,7 +33,7 @@ export default class TextArea extends React.Component<MyProps, MyState>  {
         <textarea id={this.props.id} placeholder={this.placeholder} className="form-control" required onChange={(event) => this.handleChange(event)} />
         <style jsx>{`
             #${this.props.id} {
-	            min-height: ${defaultSize}px;
+	            min-height: ${this.props.size}px;
 	            overflow: hidden;
               resize: none;
               height: ${this.state.taille}px;

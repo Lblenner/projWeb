@@ -2,18 +2,18 @@ import React from 'react'
 import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
-import { AiOutlinePlusSquare } from 'react-icons/ai'
-type MyProps = { id: any, changeNom: any };
-type MyState = { recette: any , nbParts: any};
+import {connect} from 'react-redux'
 
-export default class FicheRecette extends React.Component<MyProps, MyState> {
+type MyProps = { recette, token };
+type MyState = { nbParts: any};
+
+class FicheRecette extends React.Component<MyProps, MyState> {
 
   nbParts;
 
   constructor(props) {
     super(props);
     this.state = {
-      recette: null,
       nbParts: 0
     };
   }
@@ -22,41 +22,15 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
     this.setState({nbParts:event.target.value});
   }
 
-  async componentDidMount() {
-
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Content-Type', 'application/json');
-
-    var myInit = {
-      method: 'GET',
-      headers: requestHeaders,
-      mode: 'cors' as RequestMode,
-      cache: 'default' as RequestCache,
-      credentials: 'include' as RequestCredentials
-    };
-    var response = await fetch("https://martine.rest/api/v1/recettes/" + this.props.id, myInit)
-
-    if (response.status > 400) {
-      console.log("Erreur")
-      return
-    }
-
-    var json = await response.json()
-    console.log("Le Json : " + JSON.stringify(json))
-    this.setState({ recette: json , nbParts:8 });
-    this.props.changeNom(json.nom)
-  }
-
-
   fiche() {
-    if (this.state.recette == null) {
+    if (this.props.recette == null) {
       return <CircularProgress />
     }
 
     const pourcentageIngredients = 25;
     const espaceIngredientsRecette = 10;
 
-    const r = this.state.recette
+    const r = this.props.recette
     var photo = r.photo
     if (photo == null) {
       photo = require('../images/No_photo.jpg')
@@ -106,7 +80,7 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
         <div id="commentaire_container">
             <h3>Commentaires</h3>
             <div className="form-group">
-              <TextArea id="area" placeHolder={["Tapez votre commentaire ici !"]} />
+              <TextArea size={65} id="area" placeHolder={["Tapez votre commentaire ici !"]} />
             </div>
             <div id="addCommentaire">
               <button className="btn btn-success" >Ajouter un commentaire</button>
@@ -213,4 +187,10 @@ export default class FicheRecette extends React.Component<MyProps, MyState> {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(FicheRecette)
 

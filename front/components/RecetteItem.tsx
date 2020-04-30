@@ -36,7 +36,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
   }
 
   itemPressed() {
-    Router.push('/recette?id=' + this.props.recette.id + '&nom=' + this.props.recette.nom)
+    Router.push('/recette?id=' + this.props.recette.id)
   }
 
   namePressed(e) {
@@ -80,15 +80,17 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
           </div>
           De <span onClick={(e) => this.namePressed(e)} id="name">Bernard Friaut</span>
           <div id="rating">
-            <NoteDisplay name="Note" value="8.14" />
+            <NoteDisplay name="Note" value={recette.note} />
             <NoteDisplay name="Ma note" value="--" />
           </div>
+          <div style={{flexGrow: 1, display: "flex"}}>
           <TextTruncate
             line={2}
             element="span"
             truncateText="..."
             text={a}
           />
+          </div>
         </div>
         <div id="right">
           {recette.photo && <img src={recette.photo} id="img" />}

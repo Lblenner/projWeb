@@ -8,7 +8,7 @@ import Router from 'next/router'
 type MyProps = any;
 type MyState = { favs: any };
 
-class Profil extends React.Component<MyProps, MyState> {
+class MesRecettes extends React.Component<MyProps, MyState> {
 
   deco() {
 
@@ -25,8 +25,8 @@ class Profil extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <div style={{display:"flex", flexGrow: 1,backgroundColor:'blue'}}>
-          </div>
+          <p>Profil</p>
+          <Button onClick={() => this.deco()}>Se deconnecter</Button>
         </Layout>
       </div>
     );
@@ -37,4 +37,4 @@ const mapStateToProps = (state) => {
   return state
 }
 
-export default connect(mapStateToProps)(Profil)
+export default connect(mapStateToProps)(MesRecettes)

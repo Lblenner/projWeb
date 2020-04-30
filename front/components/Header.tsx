@@ -20,7 +20,7 @@ class Header extends React.Component<MyProps, MyState> {
 
     if (token) {
       custom.push(<li className="nav-item" key="1">
-        <Link href="/profil">
+        <Link href="/mesRecettes">
           <a className="nav-link active" id="button">Mes recettes</a>
         </Link>
       </li>)

@@ -1,41 +1,41 @@
 
 import React from 'react'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import FicheRecette from '../components/FicheRecette'
+import {getRecette} from '../API/Api'
 
-type MyProps = { nom: string, id: any };
-type MyState = { nom: string };
+type MyProps = { recette };
+type MyState = {  };
 
 class Recette extends React.Component<MyProps, MyState> {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            nom: this.props.nom
-        }
-    }
-
-    static getInitialProps(ctx) {
-        let nom = ctx.query.nom
+    static async getInitialProps(ctx) {
         let id = ctx.query.id
+        let recette = null
 
-        return { nom: nom, id: id }
-    }
+        if (id != null) {
+            let response = await getRecette(id)
 
-    changeNom(nom) {
-        this.setState({ nom: nom })
+            if (response.status > 400) {
+                console.log("Erreur")
+                return
+            }
+
+            recette = await response.json()
+        }
+
+        return { recette: recette }
     }
 
     render() {
         return (
             <div>
                 <Head>
-                    <title>{this.state.nom}</title>
+                    <title>{this.props.recette.nom}</title>
                 </Head>
                 <Layout>
-                    <FicheRecette id={this.props.id} changeNom={(n) => this.changeNom(n)} />
+                    <FicheRecette recette={this.props.recette}/>
                 </Layout>
             </div>
         )
