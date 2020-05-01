@@ -25,7 +25,10 @@ class Profil extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <div style={{display:"flex", flexGrow: 1,backgroundColor:'blue'}}>
+          <div style={{display:"flex", flexGrow: 1,backgroundColor:'blue', flexDirection: 'row'}}>
+            <div style={{width:'350px', backgroundColor:'red'}}>
+              <h1>Jean de la Riviere du gros</h1>
+            </div>
           </div>
         </Layout>
       </div>

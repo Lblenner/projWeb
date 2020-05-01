@@ -78,7 +78,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
               <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />
             </ReactHoverObserver>
           </div>
-          De <span onClick={(e) => this.namePressed(e)} id="name">Bernard Friaut</span>
+    De <span onClick={(e) => this.namePressed(e)} id="name">Bernard Friaut (@{recette.auteurUsername})</span>
           <div id="rating">
             <NoteDisplay name="Note" value={recette.note} />
             <NoteDisplay name="Ma note" value="--" />
@@ -119,12 +119,13 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
             text-decoration: none;
           }
           #left {
-            width: 60%;
+            dispay: flex;
+            flex: 1;
             padding: 5px;
             padding-right: 0px;
           }
           #right {
-            width: 40%;
+            width: 360px;
             overflow: hidden;
             position : relative;
           }

@@ -40,8 +40,8 @@ class Fav extends React.Component<MyProps, MyState> {
               Vous n'êtes pas connecté, les favoris seront donc stockés dans le navigateur. <br/>
               Ils pourront donc être supprimé si vous nettoyez vos cookies. <br/>
               Pour être sûr de conserver vos recettes, 
-              <Link href="/login"><strong className="link"> connectez vous</strong></Link> ou 
-              <Link href="/login"><strong className="link"> inscrivez vous</strong></Link>.
+              <Link href="/login"><a className="link"><strong> connectez vous</strong></a></Link> ou 
+              <Link href="/login"><a className="link"><strong> inscrivez vous</strong></a></Link>.
             </Alert>}
             <List liste={this.state.favs} update={(id) => {
               this.setState({ favs: this.state.favs.filter((e) => e.id != id) })
@@ -49,15 +49,13 @@ class Fav extends React.Component<MyProps, MyState> {
           </div>
 
           <style jsx>{`
-              #main_container {
-                display: flex;
-                align-items: center;
-                flex-grow: 1;
-                flex-direction: column;
+              .link {
+                color: black
               }
               .link:hover {
                 cursor: pointer;
                 color: blue;
+                text-decoration: none;
               }
               `}</style>
         </Layout>

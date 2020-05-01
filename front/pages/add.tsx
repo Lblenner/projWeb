@@ -7,7 +7,7 @@ import Router from 'next/router'
 import { connect } from 'react-redux'
 
 
-type MyProps = {};
+type MyProps = any;
 type MyState = { favs: any };
 
 class Add extends React.Component<MyProps, MyState> {
@@ -22,14 +22,19 @@ class Add extends React.Component<MyProps, MyState> {
         Location: '/login'
       });
       res.end();
-    } else if (!ctx.store.token){
-      Router.push('/login')
+    } else {
+      console.log(ctx)
     }
 
   }
 
 
   render() {
+
+    if (!this.props.token) {
+      Router.push('/login')
+      return <div></div>
+    }
 
     return (
       <div>

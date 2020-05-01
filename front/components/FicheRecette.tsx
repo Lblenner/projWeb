@@ -31,6 +31,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     const espaceIngredientsRecette = 10;
 
     const r = this.props.recette
+
     var photo = r.photo
     if (photo == null) {
       photo = require('../images/No_photo.jpg')
@@ -53,7 +54,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       <div id="fiche_container">
         <h1>{r.nom}</h1>
         <h6 id="nomPersonne">
-          <a href="/profil">{r.auteurUsername}</a>
+          <a href="/profil">{r.auteurFullname} (@{r.auteurUsername})</a>
         </h6>
         <div>
           <img src={photo} id="photo"/>

@@ -32,7 +32,8 @@ export default class List extends React.Component<MyProps, MyState> {
                 flex-grow: 1;
               }
               #list_container {
-                width: 900px;
+                display: flex;
+                flex: 1;
                 margin-top: 10px;
                 border-top: 1px solid;
                 border-right: 1px solid;
