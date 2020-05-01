@@ -1,10 +1,10 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper';
-import { Fab, Card, CardContent, Typography, CardActions, Button, TextField, InputAdornment, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Button, TextField, InputAdornment, Select, FormControl, InputLabel } from '@material-ui/core';
 import { MdAdd, MdSearch } from 'react-icons/md'
 
 type MyProps = {};
-type MyState = {};
+type MyState = { valueCat, valueTri};
 
 export default class SearchBar extends React.Component<MyProps, MyState> {
 
@@ -14,17 +14,16 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
     constructor(props) {
         super(props);
         this.state = {
-            liste: []
+            valueCat: "tous",
+            valueTri: ""
         };
         this.label = "Triée par"
         this.labelCat = "Catégorie"
     }
 
-
-
     render() {
         return (
-            <div id="main_container">
+            <div id="main_containers">
                 <Paper style={{ width: 1000, height: 100, position: 'relative' }} elevation={3}>
                     <TextField
                         variant="outlined" 
@@ -39,7 +38,7 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                                     <MdSearch size={30} />
                                 </InputAdornment>
                             ),
-                        }} />
+                        }}/>
                     <FormControl
                         style={{
                             position: 'absolute',
@@ -49,22 +48,23 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                         }}
                         variant="outlined"
                     >
-                        <InputLabel htmlFor="selectTri" variant="outlined">
+                        <InputLabel htmlFor="selectCat" variant="outlined">
                             {this.labelCat}
                         </InputLabel>
                         <Select
-                            id="selectTri"
+                            id="selectCat"
                             native
-                            value={10}
                             label={this.labelCat}
+                            defaultValue="tous"
                         >
                             <option value="tous">Toutes</option>
-                            <option value="dessert">Plat</option>
+                            <option value="plat">Plat</option>
                             <option value="entree">Entrée</option>
-                            <option value="plat">Dessert</option>
-                            <option value="plat">Apéritif</option>
+                            <option value="dessert">Dessert</option>
+                            <option value="apero">Apéritif</option>
                         </Select>
                     </FormControl>
+                    
                     <FormControl
                         style={{
                             position: 'absolute',
@@ -80,13 +80,13 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                         <Select
                             id="selectTri"
                             native
-                            value={10}
                             label={this.label}
+                            defaultValue="date"
                         >
-                            <option value="tous">Les plus récentes</option>
-                            <option value="dessert">Les mieux notées</option>
-                            <option value="entree">Les plus vues</option>
-                            <option value="plat">Difficulté</option>
+                            <option value="date">Les plus récentes</option>
+                            <option value="note">Les mieux notées</option>
+                            <option value="vue">Les plus vues</option>
+                            <option value="diff">Difficulté</option>
                         </Select>
                     </FormControl>
                     <Button style={{
@@ -96,11 +96,11 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                         bottom: -20
                     }} variant="contained">
                         Rechercher
-                    </Button>
+                </Button>
                 </Paper>
 
                 <style jsx>{`
-                    #main_container {
+                    #main_containers {
                         display: flex;
                         justify-content: center;
                         margin-top: 20px;

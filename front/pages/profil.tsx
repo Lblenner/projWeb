@@ -46,6 +46,7 @@ class Profil extends React.Component<MyProps, MyState> {
                 <h6>Mail: {p.email} </h6>
                 <h6>Date de Naissance: 06/90/9999 </h6>
                 <h6>Inscription: 76/34/1234 </h6>
+                
               </div>
             </div>
 

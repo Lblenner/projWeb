@@ -1,35 +1,91 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'typeface-roboto';
 import 'react-image-crop/dist/ReactCrop.css';
-import App from 'next/app';
+
 import { Provider } from 'react-redux';
 import makeStore from '../Store/configureStore'
 import withRedux from "next-redux-wrapper";
+
 import cookie from "cookie"
-import { Store } from 'redux';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import theme from '../src/theme';
+import Head from 'next/head';
 
 
-interface Props {
-  store: Store;
+
+
+function MyApp(props) {
+
+  const { Component, pageProps, store } = props;
+
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
+  return (
+    <React.Fragment>
+      <Head>
+        <title>My page</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+      </Head>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </Provider>
+    </React.Fragment>
+  );
 }
 
+
+MyApp.getInitialProps = async ({ Component, ctx, }) => {
+  const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+
+  if (ctx.isServer) {
+    //Si le client nous envoie des cookies on verifie si il y a ses logs
+    if (ctx.req.headers.cookie) {
+      let c = cookie.parse(ctx.req.headers.cookie).logged
+
+      const action = { type: "SET_SESSION", value: c }
+      ctx.store.dispatch(action)
+    }
+  }
+  //Anything returned here can be access by the client
+  return { pageProps: pageProps };
+}
+
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+};
+
+
+/*
 class MyApp extends App<Props> {
 
   static async getInitialProps({ Component, ctx, }) {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
 
-    
+
     if (ctx.isServer) {
-      
+
       //Si le client nous envoie des cookies on verifie si il y a ses logs
-      if (ctx.req.headers.cookie){
+      if (ctx.req.headers.cookie) {
         let c = cookie.parse(ctx.req.headers.cookie).logged
 
-        const action = { type: "SET_SESSION", value: c}
+        const action = { type: "SET_SESSION", value: c }
         ctx.store.dispatch(action)
       }
-    
+
 
     }
 
@@ -37,16 +93,30 @@ class MyApp extends App<Props> {
     return { pageProps: pageProps };
   }
 
+  componentDidMount() {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }
 
 
   render() {
     const { Component, pageProps, store } = this.props;
 
     return <Provider store={store}>
-      <Component {...pageProps} />
+      <React.Fragment>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </React.Fragment>
     </Provider>
   }
 
 }
+*/
+
 //withRedux wrapper that passes the store to the App Component
 export default withRedux(makeStore)(MyApp);
