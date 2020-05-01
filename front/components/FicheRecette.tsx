@@ -1,12 +1,13 @@
 import React from 'react'
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Dialog } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
 import { addCommentaire } from '../API/Api'
+import DialogConnection from './DialogConnection';
 
 type MyProps = { recette, token };
-type MyState = { nbParts: any};
+type MyState = { nbParts: any, open: boolean};
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -15,24 +16,33 @@ class FicheRecette extends React.Component<MyProps, MyState> {
   constructor(props) {
     super(props);
     this.state = {
-      nbParts: 0
+      nbParts: 0,
+      open: false
     };
-  }
+;  }
 
   onChange = (event) => {
     this.setState({nbParts:event.target.value});
   }
 
-  async handleSubmit(event) {
+  handleSubmit = async (event) => {
     event.preventDefault();
     event.persist();
 
     let token = this.props.token
+
     if (token != null) {
+      // On affiche le commentaire nouvellement créé sous la recette
       let commentaire = this.createBody(event.target,this.props.recette.id)
       let response = await addCommentaire(this.props.recette.id,commentaire,token)
+    } else {
+      this.setState({open:true});
     }
 
+  }
+
+  handleClose = () => {
+    this.setState({open:false});
   }
 
   createBody(listeData, idRecette) {
@@ -64,7 +74,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     if (r.preparation != null) {
       var preparation = r.preparation.split("\n")
       for (let i = 0; i < preparation.length; i++) {
-        affichageRecette.push(<div> {preparation[i]} <br/> </div>);
+        affichageRecette.push(<div key={"Ligne"+i}> {preparation[i]} <br/> </div>);
       }
     }
 
@@ -93,7 +103,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
               </ul>
           </div>
           <div id="affichageRecette">
-              <p>{affichageRecette}</p>
+              {affichageRecette}
           </div>
         </div>
         <div id="commentaire_container">
@@ -107,6 +117,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
               </div>
             </form>
         </div>
+
+        <DialogConnection open={this.state.open} handleClose={this.handleClose}/>
 
         <style jsx>{`
           #fiche_container {
@@ -228,4 +240,3 @@ class Commentaire {
     this.idRecette = idRecette
   }
 }
-
