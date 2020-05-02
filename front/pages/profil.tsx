@@ -7,14 +7,15 @@ import Router from 'next/router'
 import List from '../components/List';
 import SearchBar from '../components/SearchBar';
 import { MdSearch } from 'react-icons/md'
-import MinimalActivite from '../components/MinimalComment';
+import MinimalActivite from '../components/MinimalAct';
 import { BsChevronCompactDown } from 'react-icons/bs'
 import { getUser } from '../API/Api';
 import cookie from "cookie"
+import Activites from '../components/Activites';
 
 
 type MyProps = any;
-type MyState = { search: any, listeact };
+type MyState = { search: any };
 
 class Profil extends React.Component<MyProps, MyState> {
 
@@ -22,7 +23,6 @@ class Profil extends React.Component<MyProps, MyState> {
     super(props)
     this.state = {
       search: false,
-      listeact: [<MinimalActivite key="1" type="comment" />, <MinimalActivite key="2" type="note" avis={{ note: 0 }} />, <MinimalActivite key="3" type="favRemove" />, <MinimalActivite type="favAdd" key="4"/>, <MinimalActivite type="note" avis={{ note: 10 }} key="5"/>, <MinimalActivite type="addRecette" key="6"/>]
     }
   }
 
@@ -78,12 +78,7 @@ class Profil extends React.Component<MyProps, MyState> {
             <h5 style={{ marginTop: 20 }}>Activités Récentes</h5>
           </div>
         </div>
-        {this.state.listeact}
-        <div id="loadmore" style={{ border: 'solid', height: 45, marginBottom: 50, borderWidth: "1px 0px 1px 0px", borderColor: '#D3D3D3' }}
-          onClick={() => null}>
-          <div style={{ position: 'relative', left: '-46%', float: 'right', }}><BsChevronCompactDown size={40} />
-          </div>
-        </div>
+        <Activites listeComment={p.commentaires} listeFavs={[]} listeNote={[]} listeRecette={p.recettesCompactes}/>
       </div>
       <div id="right">
         <div style={{ minHeight: '200px', maxHeight: '600px', padding: "5px" }}>
@@ -139,11 +134,10 @@ class Profil extends React.Component<MyProps, MyState> {
   render() {
 
     let p = this.props.user
-    console.log(p)
     let content = null
 
     if (p == null) {
-      content = "Vous n'etes pas connecté, pas de profil"
+      content = "Cette utilisateur n'existe pas"
     }else {
       content = this.page(p)
     }

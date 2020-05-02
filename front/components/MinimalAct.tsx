@@ -16,7 +16,7 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
     };
   }
 
-  comment() {
+  comment(commment) {
     return <div >
       Jean De la Rivière a commenté
     <h5 id="nom" style={{ marginBottom: 5 }}>Tarte aux pommes à la creme</h5>
@@ -89,7 +89,7 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
 
     switch (this.props.type) {
       case "comment":
-        content = this.comment()
+        content = this.comment(this.props.avis)
         break;
       case "note":
         content = this.note()
