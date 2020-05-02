@@ -57,6 +57,24 @@ export const addRecette = (recette,token) => {
     return fetch("https://martine.rest/api/v1/recettes", myInit)
 }
 
+export const getCommentaires = (id) => {
+
+  const requestHeaders = {
+      'Content-Type': 'application/json'
+  }
+
+  var myInit = {
+    method: 'GET',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials
+  };
+
+  return fetch("https://martine.rest/api/v1/recettes/" + id + "/commentaires", myInit)
+
+}
+
 export const addCommentaire = (recetteid,commentaire,token) => {
 
     let body =

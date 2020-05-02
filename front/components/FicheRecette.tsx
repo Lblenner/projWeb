@@ -3,11 +3,12 @@ import { CircularProgress, Dialog } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
-import { addCommentaire } from '../API/Api'
+import { addCommentaire, getCommentaires } from '../API/Api'
 import DialogConnection from './DialogConnection';
+import CommentaireItem from './CommentaireItem';
 
 type MyProps = { recette, token };
-type MyState = { nbParts: any, open: boolean};
+type MyState = { nbParts: any, open: boolean, listeCom: any };
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -17,7 +18,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     super(props);
     this.state = {
       nbParts: 0,
-      open: false
+      open: false,
+      listeCom: this.props.recette.commentaires
     };
 ;  }
 
@@ -35,6 +37,16 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       // On affiche le commentaire nouvellement créé sous la recette
       let commentaire = this.createBody(event.target,this.props.recette.id)
       let response = await addCommentaire(this.props.recette.id,commentaire,token)
+
+      // Gérer les cas d'erreur de response
+
+      let newListe = await getCommentaires(this.props.recette.id)
+
+      // Gérer les cas d'erreur de newListe
+
+      let json = await newListe.json();
+      this.setState({listeCom:json});
+
     } else {
       this.setState({open:true});
     }
@@ -46,7 +58,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
   }
 
   createBody(listeData, idRecette) {
-    let commentaire = new Commentaire(listeData[0],"h","h", idRecette)
+    let commentaire = new Commentaire(listeData[0], idRecette)
     return commentaire
   }
 
@@ -89,14 +101,16 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         </div>
         <div id="main">
           <div id="affichageIngrédients">
-            <div id="ensParts">
-              <TextField type="number" id="nbParts"
-                style = {{width: '30%', marginRight: '5px', marginBottom: '5px'}}
-                inputProps={{min: 0, max: 100, style: { textAlign: 'center' }}}
-                value={this.state.nbParts}
-                onChange={this.onChange}/>
-                parts
-            </div>
+            { this.state.nbParts!=0 &&
+              <div id="ensParts">
+                <TextField type="number" id="nbParts" name="comment"
+                  style = {{width: '30%', marginRight: '5px', marginBottom: '5px'}}
+                  inputProps={{min: 1, max: 100, style: { textAlign: 'center' }}}
+                  value={this.state.nbParts}
+                  onChange={this.onChange}/>
+                  parts
+              </div>
+            }
             <h4>Ingrédients :</h4>
               <ul id="listeIngredients">
                 {listIng}
@@ -116,6 +130,11 @@ class FicheRecette extends React.Component<MyProps, MyState> {
                 <button type="submit" className="btn btn-success" >Ajouter un commentaire</button>
               </div>
             </form>
+            <div>
+              {this.state.listeCom.map((elem) => {
+              return <CommentaireItem key={elem.id} commentaire={elem}/>
+              })}
+            </div>
         </div>
 
         <DialogConnection open={this.state.open} handleClose={this.handleClose}/>
@@ -231,14 +250,10 @@ export default connect(mapStateToProps)(FicheRecette)
 
 class Commentaire {
   commentaire: string;
-  userFullName: string;
-  userUserName: string;
   idRecette: number;
 
-  constructor(commentaire, fullName, userName, idRecette) {
+  constructor(commentaire, idRecette) {
     this.commentaire = commentaire
-    this.userFullName = fullName
-    this.userUserName = userName
     this.idRecette = idRecette
   }
 }
