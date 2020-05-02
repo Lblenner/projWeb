@@ -50,7 +50,7 @@ class RegisterForm extends React.Component<MyProps, MyState>  {
 
 
     var token = btoa( username+ ":" + password)
-    const action = { type: "SET_SESSION", value: token }
+    const action = { type: "SET_SESSION", value: token, username: username }
     this.props.dispatch(action)
 
     Router.push('/profil')

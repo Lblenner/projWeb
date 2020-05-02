@@ -54,8 +54,9 @@ MyApp.getInitialProps = async ({ Component, ctx, }) => {
     //Si le client nous envoie des cookies on verifie si il y a ses logs
     if (ctx.req.headers.cookie) {
       let c = cookie.parse(ctx.req.headers.cookie).logged
+      let username = cookie.parse(ctx.req.headers.cookie).username
 
-      const action = { type: "SET_SESSION", value: c }
+      const action = { type: "SET_SESSION", value: c, username: username }
       ctx.store.dispatch(action)
     }
   }

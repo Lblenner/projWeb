@@ -5,6 +5,8 @@ import AddForm from '../components/AddForm';
 import React from 'react'
 import Router from 'next/router'
 import { connect } from 'react-redux'
+import cookie from "cookie"
+
 
 
 type MyProps = any;
@@ -14,18 +16,25 @@ class Add extends React.Component<MyProps, MyState> {
 
   static async getInitialProps(ctx) {
 
-    const { res } = ctx
+    if (ctx.isServer) {
 
-    //On peut utiliser isServer à la place de res
-    if (res && !ctx.store.token) {
-      res.writeHead(301, {
-        Location: '/login'
-      });
-      res.end();
-    } else {
-      console.log(ctx)
+      const token = cookie.parse(ctx.req.headers.cookie).logged
+      console.log(token)
+      console.log("HEy")
+      const { res } = ctx
+
+      if (token == null) {
+        res.writeHead(301, {
+          Location: '/login'
+        });
+        res.end();
+      }
+
+      return {}
     }
 
+
+    return {}
   }
 
 

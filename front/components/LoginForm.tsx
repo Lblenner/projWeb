@@ -20,7 +20,8 @@ class LoginForm extends React.Component<MyProps, MyState>  {
 
   async handleSubmit(event) {
     event.preventDefault();
-    var token = btoa(event.target[0].value + ":" + event.target[1].value)
+    let username = event.target[0].value 
+    var token = btoa(username + ":" + event.target[1].value)
 
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set('Content-Type', 'application/json');
@@ -42,7 +43,7 @@ class LoginForm extends React.Component<MyProps, MyState>  {
       return
     }
 
-    const action = { type: "SET_SESSION", value: token }
+    const action = { type: "SET_SESSION", value: token, username: username }
     this.props.dispatch(action)
 
     this.props.whereToGo()
