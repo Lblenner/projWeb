@@ -1,14 +1,25 @@
 import Layout from '../components/Layout';
 import Head from 'next/head'
 import React from 'react'
-import { Button } from '@material-ui/core';
+import { Button, IconButton, } from '@material-ui/core';
 import { connect } from 'react-redux'
 import Router from 'next/router'
+import List from '../components/List';
+import SearchBar from '../components/SearchBar';
+import { MdSearch } from 'react-icons/md'
+
 
 type MyProps = any;
-type MyState = { favs: any };
+type MyState = { search: any };
 
 class Profil extends React.Component<MyProps, MyState> {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      search: false
+    }
+  }
 
   deco() {
 
@@ -46,16 +57,26 @@ class Profil extends React.Component<MyProps, MyState> {
                 <h6>Mail: {p.email} </h6>
                 <h6>Date de Naissance: 06/90/9999 </h6>
                 <h6>Inscription: 76/34/1234 </h6>
-                
+                <h5 style={{ marginTop: 20 }}>Commentaires Récents</h5>
               </div>
             </div>
 
             <div id="right">
-              <div style={{minHeight: '200px', maxHeight: '600px'}}>
+              <div style={{ minHeight: '200px', maxHeight: '600px', padding: "5px" }}>
                 {p.biographie}
               </div>
-              <div style={{ border: 'solid', borderWidth: '1px 0px 0px 0px' }}>
-                <h1>Recettes ajoutées</h1>
+              <div style={{ border: 'solid', borderWidth: '1px 0px 0px 0px', margin: "10px", borderColor: '#D3D3D3' }}>
+                <div style={{ paddingTop: "10px" }}>
+                  <h1 style={{ marginBottom: 0 }}>Recettes ajoutées<label htmlFor="icon-button-file">
+                    <IconButton onClick={() => this.setState({search:!this.state.search})} color="primary" aria-label="upload picture" component="span">
+                      <MdSearch size={33} color={ this.state.search? '#0099FF':'grey' }/>
+                    </IconButton>
+                  </label></h1>
+
+                  {this.state.search && <SearchBar />}
+                </div>
+
+                <List liste={[{ nom: "recette", id: 1, auteurUsername: "gerard", description: "lalala" }]} update={() => null} />
               </div>
             </div>
 
@@ -64,6 +85,7 @@ class Profil extends React.Component<MyProps, MyState> {
                 width:356px;
                 padding: 2px; 
                 border: 1px solid;
+                border-color: #D3D3D3;
                 border-width: 0px 1px 0px 1px;
                 height:100vh;
               }
@@ -73,7 +95,7 @@ class Profil extends React.Component<MyProps, MyState> {
                 flex-direction: column;
                 border: solid;
                 border-width: 0px 1px 0px 0px;
-                padding: 5px;
+                border-color: #D3D3D3;
               }
               #button_container { 
                 margin-top: 10px;

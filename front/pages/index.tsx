@@ -43,7 +43,9 @@ export default class Index extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
+          <div style={{marginTop: 20, marginBottom: 10}}>
           <SearchBar />
+          </div>
           <List liste={this.props.liste} update={() => 1}/>
         </Layout>
       </div>

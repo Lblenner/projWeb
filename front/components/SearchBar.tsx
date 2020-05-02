@@ -1,7 +1,7 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper';
 import { Button, TextField, InputAdornment, Select, FormControl, InputLabel } from '@material-ui/core';
-import { MdAdd, MdSearch } from 'react-icons/md'
+import { MdSearch } from 'react-icons/md'
 
 type MyProps = {};
 type MyState = { valueCat, valueTri};
@@ -24,7 +24,7 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
     render() {
         return (
             <div id="main_containers">
-                <Paper style={{ width: 1000, height: 100, position: 'relative' }} elevation={3}>
+                <Paper style={{ display: 'flex', flex:1, height: 100, position: 'relative' }} elevation={3}>
                     <TextField
                         variant="outlined" 
                         style={{
@@ -102,8 +102,8 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                 <style jsx>{`
                     #main_containers {
                         display: flex;
+                        flex: 1;
                         justify-content: center;
-                        margin-top: 20px;
                         margin-bottom: 30px;
                     }
                     #id {

@@ -79,3 +79,23 @@ export const addCommentaire = (recetteid,commentaire,token) => {
 
     return fetch("https://martine.rest/api/v1/recettes/"+recetteid+"/commentaires", myInit)
 }
+
+
+
+export const getUser = (username,token) => {
+
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set('Content-Type', 'application/json');
+  requestHeaders.set('authorization', 'Basic ' + token);
+
+
+  var myInit = {
+    method: 'GET',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials,
+  };
+
+  return fetch("https://martine.rest/api/v1/users/"+username, myInit)
+}
