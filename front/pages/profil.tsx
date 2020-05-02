@@ -42,22 +42,30 @@ class Profil extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <div style={{ display: "flex", flexGrow: 1, flexDirection: 'row' , marginTop: "5px", marginBottom: "5px" }}>
+          <div style={{ display: "flex", flexGrow: 1, flexDirection: 'row', marginTop: "5px", marginBottom: "5px" }}>
             <div id="left">
-              <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid',}}>
+              <div style={{ padding: 4 }}>
+                <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid', }}>
 
-              </div>
-              <div style={{ padding: '10px' }}>
-                <h1>{p.fullname}</h1>
-                <h4>@{p.username}</h4>
-                <h6>Mail: {p.email} </h6>
-                <h6>Date de Naissance: 06/90/9999 </h6>
-                <h6>Inscription: 76/34/1234 </h6>
-                <div id="button_container">
-                  <Button color="primary" variant="contained" >Favoris</Button>
-                  <Button color="primary" variant="contained" >Liste des recettes</Button>
                 </div>
-                <h5 style={{ marginTop: 20 }}>Commentaires Récents</h5>
+                <div style={{ padding: '10px', paddingBottom: 0 }}>
+                  <h1 style={{ marginBottom: 0 }}>{p.fullname}</h1>
+                  <h4 style={{ marginBottom: 16, marginLeft: 5 }}>@{p.username}</h4>
+                  <h6>Mail: {p.email} </h6>
+                  <h6>Date de Naissance: 06/90/9999 </h6>
+                  <h6>Inscription: 76/34/1234 </h6>
+                  <div id="button_container">
+                    <Button color="primary" variant="contained" >Favoris</Button>
+                    <Button color="primary" variant="contained" >Liste des recettes</Button>
+                  </div>
+                  <h5 style={{ marginTop: 20 }}>Commentaires Récents</h5>
+                </div>
+              </div>
+              <div style={{ border: "solid", borderWidth: "1px 0px 1px 0px", padding: 4, borderColor: '#D3D3D3' }}>
+                <h5>Tarte aux pommes</h5>
+                <p style={{ marginLeft: 15, marginBottom: 0 }}>
+                  Pas terrible, j'ai pas aimé les pommes et surtout pas le plastique
+                  </p>
               </div>
             </div>
 
@@ -68,8 +76,8 @@ class Profil extends React.Component<MyProps, MyState> {
               <div style={{ border: 'solid', borderWidth: '1px 0px 0px 0px', margin: "10px", borderColor: '#D3D3D3' }}>
                 <div style={{ paddingTop: "10px" }}>
                   <h1 style={{ marginBottom: 0 }}>Recettes ajoutées<label htmlFor="icon-button-file">
-                    <IconButton onClick={() => this.setState({search:!this.state.search})} color="primary" aria-label="upload picture" component="span">
-                      <MdSearch size={33} color={ this.state.search? '#0099FF':'grey' }/>
+                    <IconButton onClick={() => this.setState({ search: !this.state.search })} color="primary" aria-label="upload picture" component="span">
+                      <MdSearch size={33} color={this.state.search ? '#0099FF' : 'grey'} />
                     </IconButton>
                   </label></h1>
 
@@ -83,7 +91,6 @@ class Profil extends React.Component<MyProps, MyState> {
             <style jsx>{`
               #left {
                 width:360px;
-                padding: 4px; 
                 border: 1px solid;
                 border-color: #D3D3D3;
                 border-width: 0px 1px 0px 1px;

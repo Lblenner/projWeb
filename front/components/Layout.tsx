@@ -14,7 +14,7 @@ const Layout = props => (
           {props.children}
         </div>
         <div style={{display:'flex',flexGrow: 1, flexBasis:0, justifyContent:'center'}}>
-          <Paper style={{margin: 20, padding: 10, width: 200, height: 185}}>
+          <Paper style={{margin: 20, padding: 10, width: 200, height: 135}}>
             Pas de Balance ? <br/>
             Pas de Problèmes ! <br/>
             Télécharge l'application de Martine pour faire la cuisine avec des écocups ! <br/>
