@@ -64,7 +64,10 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
 
   render() {
     const recette = this.props.recette
-    var a = recette.description //"Cette recette recette n'a pas de description"
+    var a = recette.description
+    if (a == null) {
+      a = "Cette recette n'a pas de description"
+    }
     if (a.length < 3){
       a = "Description: "+a
     }
@@ -78,7 +81,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
               <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />
             </ReactHoverObserver>
           </div>
-    De <span onClick={(e) => this.namePressed(e)} id="name">Bernard Friaut (@{recette.auteurUsername})</span>
+    De <span onClick={(e) => this.namePressed(e)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
           <div id="rating">
             <NoteDisplay name="Note" value={recette.note} />
             <NoteDisplay name="Ma note" value="--" />

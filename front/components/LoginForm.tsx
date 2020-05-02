@@ -1,9 +1,8 @@
 import React from 'react'
 import { MySnackbar } from './Snackbar';
 import { connect } from 'react-redux'
-import Router from 'next/router'
 
-type MyProps = any;
+type MyProps = { whereToGo: Function, dispatch };
 type MyState = { snackOpen: boolean, msg: any };
 
 
@@ -46,7 +45,8 @@ class LoginForm extends React.Component<MyProps, MyState>  {
     const action = { type: "SET_SESSION", value: token }
     this.props.dispatch(action)
 
-    Router.push('/profil')
+    this.props.whereToGo()
+
   }
 
   closeSnack() {

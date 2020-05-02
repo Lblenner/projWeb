@@ -1,7 +1,11 @@
 import Layout from '../components/Layout';
 import Head from 'next/head'
 import LoginForm from '../components/LoginForm';
+import Router from 'next/router'
 
+function whereToGo () {
+   Router.push('/profil')
+}
 
 export default function Login() {
 
@@ -12,7 +16,7 @@ export default function Login() {
       </Head>
       <Layout>
         <div className="container-fluid">
-          <LoginForm/>
+          <LoginForm whereToGo={whereToGo}/>
         </div>
       </Layout>
     </div>

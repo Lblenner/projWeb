@@ -35,7 +35,7 @@ export default class DialogConnection extends React.Component<MyProps, MyState> 
           >
             <DialogTitle id="simple-dialog-title">Connectez-vous pour ajouter un commentaire !</DialogTitle>
             <div id="login">
-              <LoginForm/>
+              <LoginForm whereToGo={this.props.handleClose}/>
             </div>
             <div id="inscription">
               <DialogTitle id="simple-dialog-title">Pas de compte ? Inscrivez-vous !</DialogTitle>

@@ -89,14 +89,14 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         </div>
         <div id="main">
           <div id="affichageIngrédients">
-            <span id="ensParts">
+            <div id="ensParts">
               <TextField type="number" id="nbParts"
                 style = {{width: '30%', marginRight: '5px', marginBottom: '5px'}}
                 inputProps={{min: 0, max: 100, style: { textAlign: 'center' }}}
                 value={this.state.nbParts}
                 onChange={this.onChange}/>
                 parts
-            </span>
+            </div>
             <h4>Ingrédients :</h4>
               <ul id="listeIngredients">
                 {listIng}
@@ -187,8 +187,10 @@ class FicheRecette extends React.Component<MyProps, MyState> {
           }
 
           #ensParts {
+            flex-direction:row;
             display: flex;
             justify-content: center;
+            align-items: center;
           }
 
           #photo {
