@@ -7,17 +7,20 @@ import Router from 'next/router'
 import List from '../components/List';
 import SearchBar from '../components/SearchBar';
 import { MdSearch } from 'react-icons/md'
+import MinimalActivite from '../components/MinimalComment';
+import { BsChevronCompactDown } from 'react-icons/bs'
 
 
 type MyProps = any;
-type MyState = { search: any };
+type MyState = { search: any, listeact };
 
 class Profil extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props)
     this.state = {
-      search: false
+      search: false,
+      listeact: [<MinimalActivite type="comment" />, <MinimalActivite type="note" avis={{ note: 0 }} />, <MinimalActivite type="favRemove" />, <MinimalActivite type="favAdd" />, <MinimalActivite type="note" avis={{ note: 10 }} />, <MinimalActivite type="addRecette" />]
     }
   }
 
@@ -58,17 +61,16 @@ class Profil extends React.Component<MyProps, MyState> {
                     <Button color="primary" variant="contained" >Favoris</Button>
                     <Button color="primary" variant="contained" >Liste des recettes</Button>
                   </div>
-                  <h5 style={{ marginTop: 20 }}>Commentaires Récents</h5>
+                  <h5 style={{ marginTop: 20 }}>Activités Récentes</h5>
                 </div>
               </div>
-              <div style={{ border: "solid", borderWidth: "1px 0px 1px 0px", padding: 4, borderColor: '#D3D3D3' }}>
-                <h5>Tarte aux pommes</h5>
-                <p style={{ marginLeft: 15, marginBottom: 0 }}>
-                  Pas terrible, j'ai pas aimé les pommes et surtout pas le plastique
-                  </p>
+              {this.state.listeact}
+              <div id="loadmore" style={{ border: 'solid', height: 45, marginBottom: 50, borderWidth: "1px 0px 1px 0px",borderColor: '#D3D3D3'}}
+                onClick={() => null}>
+                <div style={{ position: 'relative', left: '-46%', float: 'right', }}><BsChevronCompactDown size={40} />
+                </div>
               </div>
             </div>
-
             <div id="right">
               <div style={{ minHeight: '200px', maxHeight: '600px', padding: "5px" }}>
                 {p.biographie}
@@ -94,7 +96,7 @@ class Profil extends React.Component<MyProps, MyState> {
                 border: 1px solid;
                 border-color: #D3D3D3;
                 border-width: 0px 1px 0px 1px;
-                height:100vh;
+                min-height:100vh;
               }
               #right {
                 display: flex;
@@ -110,6 +112,11 @@ class Profil extends React.Component<MyProps, MyState> {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
+              }
+              #loadmore:hover {
+                opacity: 0.7;
+                cursor: pointer;
+                background-color: #ffeaea;
               }
             `}</style>
           </div>
