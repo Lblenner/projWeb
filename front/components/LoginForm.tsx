@@ -13,7 +13,7 @@ class LoginForm extends React.Component<MyProps, MyState>  {
     super(props);
     this.state = {
       snackOpen: false,
-      msg: "Une erreur s'est prduite"
+      msg: "Une erreur s'est produite"
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
