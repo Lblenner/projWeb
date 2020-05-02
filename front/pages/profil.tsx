@@ -42,21 +42,21 @@ class Profil extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <div style={{ display: "flex", flexGrow: 1, flexDirection: 'row' }}>
+          <div style={{ display: "flex", flexGrow: 1, flexDirection: 'row' , marginTop: "5px", marginBottom: "5px" }}>
             <div id="left">
-              <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid' }}>
+              <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid',}}>
 
               </div>
               <div style={{ padding: '10px' }}>
                 <h1>{p.fullname}</h1>
                 <h4>@{p.username}</h4>
+                <h6>Mail: {p.email} </h6>
+                <h6>Date de Naissance: 06/90/9999 </h6>
+                <h6>Inscription: 76/34/1234 </h6>
                 <div id="button_container">
                   <Button color="primary" variant="contained" >Favoris</Button>
                   <Button color="primary" variant="contained" >Liste des recettes</Button>
                 </div>
-                <h6>Mail: {p.email} </h6>
-                <h6>Date de Naissance: 06/90/9999 </h6>
-                <h6>Inscription: 76/34/1234 </h6>
                 <h5 style={{ marginTop: 20 }}>Commentaires Récents</h5>
               </div>
             </div>
@@ -82,8 +82,8 @@ class Profil extends React.Component<MyProps, MyState> {
 
             <style jsx>{`
               #left {
-                width:356px;
-                padding: 2px; 
+                width:360px;
+                padding: 4px; 
                 border: 1px solid;
                 border-color: #D3D3D3;
                 border-width: 0px 1px 0px 1px;
@@ -98,7 +98,7 @@ class Profil extends React.Component<MyProps, MyState> {
                 border-color: #D3D3D3;
               }
               #button_container { 
-                margin-top: 10px;
+                margin-top: 20px;
                 margin-bottom: 15px;              
                 display: flex;
                 flex-direction: row;
