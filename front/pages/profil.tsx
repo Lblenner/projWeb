@@ -100,7 +100,7 @@ class Profil extends React.Component<MyProps, MyState> {
             {this.state.search && <SearchBar />}
           </div>
 
-          <List liste={[{ nom: "recette", id: 1, auteurUsername: "gerard", description: "lalala" }]} update={() => null} />
+          <List liste={p.recettesCompactes} update={() => null} />
         </div>
       </div>
 
@@ -139,6 +139,7 @@ class Profil extends React.Component<MyProps, MyState> {
   render() {
 
     let p = this.props.user
+    console.log(p)
     let content = null
 
     if (p == null) {

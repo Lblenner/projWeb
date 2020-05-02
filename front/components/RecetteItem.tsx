@@ -39,9 +39,9 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     Router.push('/recette?id=' + this.props.recette.id)
   }
 
-  namePressed(e) {
+  namePressed(e,username) {
     e.stopPropagation()
-    Router.push('/profil')
+    Router.push('/profil?username='+username)
   }
 
   unfavoritePressed(e) {
@@ -81,7 +81,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
               <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />
             </ReactHoverObserver>
           </div>
-    De <span onClick={(e) => this.namePressed(e)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
+    De <span onClick={(e) => this.namePressed(e,recette.auteurUsername)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
           <div id="rating">
             <NoteDisplay name="Note" value={recette.note} />
             <NoteDisplay name="Ma note" value="--" />
