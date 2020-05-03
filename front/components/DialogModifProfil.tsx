@@ -54,7 +54,7 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
     console.log(JSON.stringify(json))
 
     if(response.status != 200){
-      this.setState({msg: json.message, open: true, load: false})
+      this.setState({msg: json.propertyViolations[0].message, open: true, load: false})
       return
     }
 

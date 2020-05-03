@@ -1,4 +1,4 @@
-import { addNote } from '../API/Api'
+//import { addNote } from '../API/Api'
 
 export default function AddNote(props) {
 
