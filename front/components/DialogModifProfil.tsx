@@ -3,36 +3,72 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog';
 import LoginForm from './LoginForm';
-import { DialogTitle, DialogActions, DialogContent, TextField } from '@material-ui/core';
+import { DialogTitle, DialogActions, DialogContent, TextField, CircularProgress } from '@material-ui/core';
 import Router from 'next/router'
 import { Button, } from '@material-ui/core';
 import TextArea from './TextArea';
+import { patchUser } from '../API/Api'
+import { connect } from 'react-redux'
+import { MySnackbar } from './Snackbar';
 
 
-type MyProps = { open: any, handleClose: any, nom, mail, date, bio, photo };
-type MyState = { nom, mail, date, bio, photo };
+type MyProps = { open: any, handleClose: any, nom, mail, date, bio, photo, username, token, success };
+type MyState = { nom, mail, date, bio, photo, load, msg, open };
 
-export default class DialogModifProfil extends React.Component<MyProps, MyState> {
+class DialogModifProfil extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props);
     this.state = {
+      load: false,
       nom: this.props.nom ? this.props.nom : "",
       mail: this.props.mail ? this.props.mail : "",
       date: this.props.date ? this.props.date : "",
       bio: this.props.bio ? this.props.bio : "",
-      photo: this.props.photo   
+      photo: this.props.photo,
+      msg: "Une erreur s'est produite",
+      open: false
     };
   }
 
-  handleOnClick = () => {
-    Router.push('/register')
+  handleAnnule = () => {
+    this.props.handleClose()
+    this.setState({
+      nom: this.props.nom ? this.props.nom : "",
+      mail: this.props.mail ? this.props.mail : "",
+      date: this.props.date ? this.props.date : "",
+      bio: this.props.bio ? this.props.bio : "",
+      photo: this.props.photo
+    })
+  }
+
+  handleSubmit = async (event) => {
+    event.preventDefault()
+    this.setState({ load: true })
+    let username = this.props.username
+    let token = this.props.token
+    let response = await patchUser(username, token, null, this.state.bio, this.state.photo, this.state.nom, this.state.date, this.state.mail)
+
+    console.log(response)
+    let json = await response.json()
+    console.log(JSON.stringify(json))
+
+    if(response.status != 200){
+      this.setState({msg: json.message, open: true, load: false})
+      return
+    }
+
+    this.props.success()
+    this.props.handleClose()
+    this.setState({ load: false })
   }
 
   render() {
 
     return (
       <div id="dialoguePopUp">
+
+        <MySnackbar open={this.state.open} handleClose={() => this.setState({ open: false })} msg={this.state.msg} />
 
         <Dialog
           open={this.props.open}
@@ -44,61 +80,42 @@ export default class DialogModifProfil extends React.Component<MyProps, MyState>
         >
           <DialogTitle id="simple-dialog-title">Modifier Profil</DialogTitle>
 
+          {this.state.load ? <DialogContent><CircularProgress /></DialogContent> :
+            <form onSubmit={this.handleSubmit}>
+              <DialogContent>
+                <div className="form-group">
+                  <label htmlFor="nom">Nom</label>
+                  <input required type="text" className="form-control" id="nom" placeholder="Nom"
+                    onChange={(e) => this.setState({ nom: e.target.value })} value={this.state.nom} />
+                </div>
 
-          <form>
-            <DialogContent>
+                <div className="form-group">
+                  <label htmlFor="mail">Mail</label>
+                  <input required type="text" className="form-control" id="mail" placeholder="Mail"
+                    onChange={(e) => this.setState({ mail: e.target.value })} value={this.state.mail} />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="nom">Nom</label>
-                <input required type="text" className="form-control" id="nom" placeholder="Nom"
-                  onChange={(e) => this.setState({ nom: e.target.value })} value={this.state.nom} />
-              </div>
+                <div className="form-group">
+                  <label htmlFor="bio">Biographie</label>
+                  <TextArea size={70} id="bio" placeHolder={["Ma biographie"]}
+                    onChange={(value) => this.setState({ bio: value })} value={this.state.bio} required={false} />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="mail">Mail</label>
-                <input required type="text" className="form-control" id="mail" placeholder="Mail"
-                  onChange={(e) => this.setState({ mail: e.target.value })} value={this.state.mail} />
-              </div>
+                <div className="form-group">
+                  <label htmlFor="date">Date de Naissance</label>
+                  <input className="form-control" type="date"
+                    onChange={(e) => this.setState({ date: e.target.value })} value={this.state.date} id="date" />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="bio">Biographie</label>
-                <TextArea size={70} id="bio" placeHolder={["Ma biographie"]}
-                  onChange={(value) => this.setState({ bio: value })} value={this.state.bio}/>
-              </div>
+              </DialogContent>
 
-              <div className="form-group">
-                <label htmlFor="date">Date de Naissance</label>
-                <input className="form-control" type="date"
-                  onChange={(e) => this.setState({ date: e.target.value })} value={this.state.date} id="date" />
-              </div>
-
-
-            </DialogContent>
-
-            <DialogActions>
-              <Button color="primary" variant="contained" style={{ margin: 10 }}>Annuler</Button>
-              <Button color="primary" variant="contained" style={{ margin: 10 }}>Enregistrer</Button>
-
-            </DialogActions>
-          </form>
-
-          <div>
-
-
-          </div>
-
-
-
+              <DialogActions>
+                <Button color="primary" variant="contained" style={{ margin: 10 }} onClick={this.handleAnnule}>Annuler</Button>
+                <Button color="primary" variant="contained" style={{ margin: 10 }} type="submit">Enregistrer</Button>
+              </DialogActions>
+            </form>}
 
         </Dialog>
-
-        <style jsx>{`
-
-        .row { 
-          align-items: center;
-        }
-        
-      `}</style>
 
       </div>
 
@@ -107,3 +124,9 @@ export default class DialogModifProfil extends React.Component<MyProps, MyState>
   }
 
 }
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(DialogModifProfil)

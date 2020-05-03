@@ -57,11 +57,11 @@ class AddForm extends React.Component<MyProps, MyState>  {
     let response = await addRecette(recette, token)
 
 
-    if (response.status >= 400) {
+    if (response.status != 201) {
       console.log(response)
       let json = await response.json()
       console.log(JSON.stringify(json))
-      this.setState({msg: json.message, open: true})
+      this.setState({ msg: json.message, open: true })
       return
     }
 
@@ -91,16 +91,13 @@ class AddForm extends React.Component<MyProps, MyState>  {
     return recette
   }
 
-  closeSnack() {
-    this.setState({ open: false })
-  }
 
   render() {
 
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
-        <MySnackbar open={this.state.open} handleClose={() => this.closeSnack()} msg={this.state.msg} />
+        <MySnackbar open={this.state.open} handleClose={() => this.setState({ open: false })} msg={this.state.msg} />
 
         <div className="form-group">
           <label htmlFor="titre">Titre</label>

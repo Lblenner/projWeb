@@ -2,6 +2,7 @@ import React from 'react'
 import Router from 'next/router'
 import { MySnackbar } from './Snackbar';
 import { connect } from 'react-redux'
+import {createUser } from '../API/Api'
 
 
 type MyProps = any;
@@ -21,25 +22,7 @@ class RegisterForm extends React.Component<MyProps, MyState>  {
 
   async createUser(fullname, username, password) {
 
-    let user =
-      "username=" + username +
-      "&password=" + password +
-      "&fullname=" + fullname
-
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
-    requestHeaders.set('accept', 'application/json');
-
-    var myInit = {
-      method: 'POST',
-      headers: requestHeaders,
-      mode: 'cors' as RequestMode,
-      cache: 'default' as RequestCache,
-      credentials: 'include' as RequestCredentials,
-      body: user
-    };
-    var response = await fetch("https://martine.rest/api/v1/users", myInit)
-
+    var response = await createUser(fullname, username,password)
     var json = await response.json()
 
     if (response.status != 201) {

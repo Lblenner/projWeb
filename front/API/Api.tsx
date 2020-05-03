@@ -61,8 +61,8 @@ export const addRecette = (recette, token) => {
 export const getCommentaires = (id) => {
 
   const requestHeaders = {
-      'Content-Type': 'application/json',
-      'accept': 'application/json'
+    'Content-Type': 'application/json',
+    'accept': 'application/json'
   }
 
   var myInit = {
@@ -77,7 +77,7 @@ export const getCommentaires = (id) => {
 
 }
 
-export const addCommentaire = (recetteid,commentaire,token) => {
+export const addCommentaire = (recetteid, commentaire, token) => {
 
   let body =
     "texte=" + commentaire
@@ -105,7 +105,8 @@ export const addCommentaire = (recetteid,commentaire,token) => {
 export const getUser = (username) => {
 
   const requestHeaders = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'accept': 'application/json'
   }
 
   var myInit = {
@@ -117,4 +118,61 @@ export const getUser = (username) => {
   };
 
   return fetch("https://martine.rest/api/v1/users/" + username, myInit)
+}
+
+export const patchUser = (username, token, password = null, bio = null, photo = null, nom = null, date = null, mail = null) => {
+
+  let user = ""
+  user = user.concat(password?"&password="+password:"")
+  user = user.concat(bio?"&biographie="+bio:"")
+  user = user.concat(date?"&dateNaissance="+date:"")
+  user = user.concat(photo?"&photo="+photo:"")
+  user = user.concat(nom?"&fullname="+nom:"")
+  user = user.concat(mail?"&email="+mail:"")
+
+
+  if (user.length>0){
+    user = user.substring(1);
+  }
+    
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+  requestHeaders.set('accept', 'application/json');
+  requestHeaders.set('authorization', 'Basic ' + token);
+
+  var myInit = {
+    method: 'PATCH',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials,
+    body: user
+  };
+
+  return fetch("https://martine.rest/api/v1/users/" + username, myInit)
+
+}
+
+export function createUser(fullname, username, password) {
+
+  let user =
+    "username=" + username +
+    "&password=" + password +
+    "&fullname=" + fullname
+
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+  requestHeaders.set('accept', 'application/json');
+
+  var myInit = {
+    method: 'POST',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials,
+    body: user
+  };
+
+  return fetch("https://martine.rest/api/v1/users", myInit)
+
 }
