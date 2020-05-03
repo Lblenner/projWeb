@@ -1,4 +1,5 @@
 import React from 'react'
+import gestionSautLigne from '../src/gestionFormatText';
 
 type MyProps = { commentaire: any };
 
@@ -13,15 +14,8 @@ export default class CommentaireItem extends React.Component<MyProps> {
     const pourcentageProfil = 20;
     const espaceProfilCom = 10;
 
-    /* {
-    "id": 1,
-    "recetteId": 1,
-    "date": "2020-05-02T14:29:45.124986",
-    "texte": "[object Object]",
-    "auteurFullname": "Emilie Fiplin",
-    "auteurUsername": "mimi"
-  }
-  */
+    var date = this.props.commentaire.date
+    var commentaire = gestionSautLigne(this.props.commentaire.texte)
 
     return (
        <div id='container'>
@@ -30,8 +24,13 @@ export default class CommentaireItem extends React.Component<MyProps> {
             <div id="username">(@{this.props.commentaire.auteurUsername})</div>
          </div>
          <div id='commentaire'>
-
+            {commentaire}
+            <br/>
+            <div id="dateEtheure">
+              {date.slice(11,16) + " " + date.slice(8,10) + "/" + date.slice(5,7) + "/" + date.slice(0,4)}
+            <div/>
          </div>
+        </div>
         <style jsx>{`
 
           #fullname {
@@ -64,6 +63,11 @@ export default class CommentaireItem extends React.Component<MyProps> {
             border-radius: 10px;
             padding: 10px;
             margin-left: ${pourcentageProfil+1}%;
+          }
+
+          #dateEtheure {
+            text-align: right;
+            font-size: 10px;
           }
 
         `}</style>

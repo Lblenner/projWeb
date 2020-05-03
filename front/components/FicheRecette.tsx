@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import { addCommentaire, getCommentaires } from '../API/Api'
 import DialogConnection from './DialogConnection';
 import CommentaireItem from './CommentaireItem';
+import gestionSautLigne from '../src/gestionFormatText';
 
 type MyProps = { recette, token };
 type MyState = { nbParts: any, open: boolean, listeCom: any };
@@ -19,7 +20,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     this.state = {
       nbParts: 0,
       open: false,
-      listeCom: this.props.recette.commentaires
+      listeCom: this.props.recette.commentaires.reverse()
     };
 ;  }
 
@@ -38,14 +39,18 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       let commentaire = event.target[0].value
       let response = await addCommentaire(this.props.recette.id,commentaire,token)
 
-      // Gérer les cas d'erreur de response
+      // Gestion des cas d'erreur de response
+      if (response.status == 200) {
+        let newListe = await getCommentaires(this.props.recette.id)
 
-      let newListe = await getCommentaires(this.props.recette.id)
+        // Gérer les cas d'erreur de newListe
+        console.log(newListe)
 
-      // Gérer les cas d'erreur de newListe
-
-      let json = await newListe.json();
-      this.setState({listeCom:json});
+        let json = await newListe.json();
+        this.setState({listeCom:json});
+      } else {
+        // Echec ajout comm
+      }
 
     } else {
       this.setState({open:true});
@@ -77,13 +82,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       listIng.push(<li key={elem.id}> {elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
     }
 
-    var affichageRecette = [];
-    if (r.preparation != null) {
-      var preparation = r.preparation.split("\n")
-      for (let i = 0; i < preparation.length; i++) {
-        affichageRecette.push(<div key={"Ligne"+i}> {preparation[i]} <br/> </div>);
-      }
-    }
+    var affichageRecette = gestionSautLigne(r.preparation)
 
     return (
       <div id="fiche_container">
