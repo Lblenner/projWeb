@@ -20,7 +20,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     this.state = {
       nbParts: 0,
       open: false,
-      listeCom: this.props.recette.commentaires.reverse()
+      listeCom: this.props.recette.commentaires.slice().reverse()
     };
 ;  }
 
@@ -47,7 +47,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         console.log(newListe)
 
         let json = await newListe.json();
-        this.setState({listeCom:json});
+        this.setState({listeCom:json.reverse()});
       } else {
         // Echec ajout comm
       }
