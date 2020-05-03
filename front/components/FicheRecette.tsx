@@ -35,7 +35,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
     if (token != null) {
       // On affiche le commentaire nouvellement créé sous la recette
-      let commentaire = this.createBody(event.target,this.props.recette.id)
+      let commentaire = event.target[0].value
       let response = await addCommentaire(this.props.recette.id,commentaire,token)
 
       // Gérer les cas d'erreur de response
@@ -55,11 +55,6 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
   handleClose = () => {
     this.setState({open:false});
-  }
-
-  createBody(listeData, idRecette) {
-    let commentaire = new Commentaire(listeData[0], idRecette)
-    return commentaire
   }
 
   fiche() {
@@ -248,12 +243,3 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(FicheRecette)
 
-class Commentaire {
-  commentaire: string;
-  idRecette: number;
-
-  constructor(commentaire, idRecette) {
-    this.commentaire = commentaire
-    this.idRecette = idRecette
-  }
-}

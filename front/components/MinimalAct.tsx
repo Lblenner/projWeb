@@ -1,13 +1,13 @@
 import React from 'react'
 
-type MyProps = { type: "comment" | "note" | "favAdd" | "favRemove" | "addRecette", avis }
+type MyProps = { type: "comment" | "note" | "favAdd" | "favRemove" | "addRecette", value }
 
 type MyState = {};
 
 export default class MinimalActivite extends React.Component<MyProps, MyState> {
 
   public static defaultProps = {
-    avis: "default"
+    content: "default"
   };
 
   constructor(props) {
@@ -16,12 +16,12 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
     };
   }
 
-  comment(commment) {
+  comment(value) {
     return <div >
-      Jean De la Rivière a commenté
-    <h5 id="nom" style={{ marginBottom: 5 }}>Tarte aux pommes à la creme</h5>
+      {value.auteurFullname} (@{value.auteurUsername})  a commenté
+    <h5 id="nom" style={{ marginBottom: 5 }}>Une recette</h5>
       <p style={{ marginLeft: 15, marginBottom: 5 }}>
-        Pas terrible, j'ai pas aimé les pommes et surtout pas le plastique
+        {value.texte}
     </p>
       <style jsx>{`
         #nom:hover {
@@ -57,9 +57,9 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
     </div>)
   }
 
-  note() {
+  note(value) {
     return (<div>
-      Jean De la Rivière a donné une note de {this.props.avis.note}  à
+      Jean De la Rivière a donné une note de {value.note}  à
       <h5 id="nom" style={{ marginBottom: 5 }}>Tarte aux pommes à la creme</h5>
       <style jsx>{`
         #nom:hover {
@@ -71,10 +71,10 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
 
   }
 
-  addRecette() {
+  addRecette(value) {
     return (<div>
-      Jean De la Rivière a ajouté la recette
-      <h5 id="nom" style={{ marginBottom: 5 }}>Tarte aux pommes à la creme</h5>
+      {value.auteurFullname} (@{value.auteurUsername}) a ajouté la recette
+    <h5 id="nom" style={{ marginBottom: 5 }}>{value.nom}</h5>
       <style jsx>{`
         #nom:hover {
           color: blue;
@@ -89,10 +89,10 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
 
     switch (this.props.type) {
       case "comment":
-        content = this.comment(this.props.avis)
+        content = this.comment(this.props.value)
         break;
       case "note":
-        content = this.note()
+        content = this.note(this.props.value)
         break;
       case "favAdd":
         content = this.fav(true)
@@ -101,7 +101,7 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
         content = this.fav(false)
         break;
       case "addRecette":
-        content = this.addRecette()
+        content = this.addRecette(this.props.value)
         break;
       default:
         content = "Erreur"
