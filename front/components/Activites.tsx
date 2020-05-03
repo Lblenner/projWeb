@@ -11,10 +11,15 @@ export default class Activites extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props);
+    this.biglisteDate = []
+    this.taille = 5
     this.state = {
       liste: []
     };
   }
+
+  biglisteDate
+  taille
 
   componentDidMount() {
     let formatRecette = []
@@ -25,13 +30,12 @@ export default class Activites extends React.Component<MyProps, MyState> {
     bigliste = bigliste.concat(this.props.listeFavs.map((elem) => {return {...elem, type:"favAdd"}})) // à différencier
     bigliste = bigliste.concat(this.props.listeNote.map((elem) => {return {...elem, type:"note"}})) 
     bigliste = bigliste.concat(formatRecette)
-    let biglisteDate = []
     for (let elem of bigliste){
-      biglisteDate.push({...elem, date: new Date(elem.date)})
+      this.biglisteDate.push({...elem, date: new Date(elem.date)})
     }
-    biglisteDate.sort((a, b) => (a.date <= b.date) ? 1 : -1)
+    this.biglisteDate.sort((a, b) => (a.date <= b.date) ? 1 : -1)
 
-    this.setState({liste: biglisteDate})
+    this.setState({liste: this.biglisteDate.slice(0,this.taille)})
   }
 
 

@@ -11,7 +11,6 @@ type MyState = { favs: any };
 class MesRecettes extends React.Component<MyProps, MyState> {
 
   deco() {
-
     const action = { type: "REMOVE_SESSION" }
     this.props.dispatch(action)
 

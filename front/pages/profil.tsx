@@ -15,7 +15,7 @@ import Activites from '../components/Activites';
 
 
 type MyProps = any;
-type MyState = { search: any };
+type MyState = { search: any, own: boolean };
 
 class Profil extends React.Component<MyProps, MyState> {
 
@@ -23,6 +23,7 @@ class Profil extends React.Component<MyProps, MyState> {
     super(props)
     this.state = {
       search: false,
+      own: false
     }
   }
 
@@ -50,8 +51,13 @@ class Profil extends React.Component<MyProps, MyState> {
     return { user: user }
   }
 
-  deco() {
+  componentDidMount() {
+    if (this.props.user && this.props.username == this.props.user.username) {
+      this.setState({ own: true })
+    }
+  }
 
+  deco() {
     const action = { type: "REMOVE_SESSION" }
     this.props.dispatch(action)
 
@@ -62,6 +68,10 @@ class Profil extends React.Component<MyProps, MyState> {
     return (<div style={{ display: "flex", flexGrow: 1, flexDirection: 'row', marginTop: "5px", marginBottom: "5px" }}>
       <div id="left">
         <div style={{ padding: 4 }}>
+          {this.state.own && <div id="button_container">
+            <Button color="primary" variant="contained" onClick={() => this.deco()}>Se déconnecter</Button>
+            <Button color="primary" variant="contained" >Modifier profil</Button>
+          </div>}
           <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid', }}>
 
           </div>
@@ -71,14 +81,14 @@ class Profil extends React.Component<MyProps, MyState> {
             {p.mail && <h6>Mail: {p.email} </h6>}
             {p.dateNaissance && <h6>Date de Naissance: {(new Date(p.dateNaissance)).toLocaleDateString("fr-FR")} </h6>}
             {p.dateInscription && <h6>Inscription: {(new Date(p.dateInscription)).toLocaleDateString("fr-FR")} </h6>}
-            <div id="button_container">
+            <div id="button_container" style={{ marginTop: '20px' }}>
               <Button color="primary" variant="contained" >Favoris</Button>
               <Button color="primary" variant="contained" >Liste des recettes</Button>
             </div>
             <h5 style={{ marginTop: 20 }}>Activités Récentes</h5>
           </div>
         </div>
-        <Activites listeComment={p.commentaires} listeFavs={[]} listeNote={[]} listeRecette={p.recettesCompactes}/>
+        <Activites listeComment={p.commentaires} listeFavs={[]} listeNote={[]} listeRecette={p.recettesCompactes} />
       </div>
       <div id="right">
         <div style={{ minHeight: '200px', maxHeight: '600px', padding: "5px" }}>
@@ -116,7 +126,6 @@ class Profil extends React.Component<MyProps, MyState> {
         border-color: #D3D3D3;
       }
       #button_container { 
-        margin-top: 20px;
         margin-bottom: 15px;              
         display: flex;
         flex-direction: row;
@@ -138,7 +147,7 @@ class Profil extends React.Component<MyProps, MyState> {
 
     if (p == null) {
       content = "Cette utilisateur n'existe pas"
-    }else {
+    } else {
       content = this.page(p)
     }
 
