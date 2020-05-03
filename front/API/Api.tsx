@@ -43,6 +43,7 @@ export const addRecette = (recette, token) => {
   const requestHeaders: HeadersInit = new Headers();
   requestHeaders.set('Content-Type', 'application/json');
   requestHeaders.set('authorization', 'Basic ' + token);
+  requestHeaders.set('accept', 'application/json');
 
 
   var myInit = {
@@ -60,7 +61,8 @@ export const addRecette = (recette, token) => {
 export const getCommentaires = (id) => {
 
   const requestHeaders = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'accept': 'application/json'
   }
 
   var myInit = {

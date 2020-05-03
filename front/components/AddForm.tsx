@@ -9,7 +9,7 @@ import { uploadImage } from '../API/Api'
 import { addRecette } from '../API/Api'
 
 type MyProps = any;
-type MyState = { open: boolean };
+type MyState = { open: boolean, msg };
 
 class AddForm extends React.Component<MyProps, MyState>  {
 
@@ -19,7 +19,8 @@ class AddForm extends React.Component<MyProps, MyState>  {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      msg: "Une erreur s'est produite"
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.textarea = ""
@@ -57,12 +58,13 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
 
     if (response.status >= 400) {
-      this.setState({ open: true })
       console.log(response)
       let json = await response.json()
       console.log(JSON.stringify(json))
+      this.setState({msg: json.message, open: true})
       return
     }
+
 
     var json = await response.json()
 
@@ -98,7 +100,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
     return (
       <form onSubmit={this.handleSubmit} id="form">
 
-        <MySnackbar open={this.state.open} handleClose={() => this.closeSnack()} msg="Une erreur s'est produite, nous n'avons pas pu poster votre recette" />
+        <MySnackbar open={this.state.open} handleClose={() => this.closeSnack()} msg={this.state.msg} />
 
         <div className="form-group">
           <label htmlFor="titre">Titre</label>

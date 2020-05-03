@@ -131,12 +131,7 @@ class Profil extends React.Component<MyProps, MyState> {
         flex-direction: row;
         justify-content: space-around;
       }
-      #loadmore:hover {
-        opacity: 0.7;
-        cursor: pointer;
-        background-color: #ffeaea;
-      }
-    `}</style>
+      `}</style>
     </div>)
   }
 
