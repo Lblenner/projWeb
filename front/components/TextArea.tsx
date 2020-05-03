@@ -1,10 +1,15 @@
 import React from 'react'
 
-type MyProps = { placeHolder: Array<string>, id: string, size: number };
-type MyState = { taille: number };
+type MyProps = { placeHolder: Array<string>, id: string, size: number, onChange, value };
+type MyState = { taille: number};
 
 
 export default class TextArea extends React.Component<MyProps, MyState>  {
+
+  public static defaultProps = {
+    onChange: null,
+    value: ""
+  };
 
   placeholder: string
 
@@ -21,16 +26,16 @@ export default class TextArea extends React.Component<MyProps, MyState>  {
   }
 
   async handleChange(event) {
-    event.persist() //Permet d'utiliser l'event aprés un await
-    await this.setState({ taille: 1 }) //Permet d'avoir la bonne taille du texte (ScrollHeight >= height)
+    event.persist() //Permet dutiliser l'event aprés un await
+    this.props.onChange(event.target.value)
+    await this.setState({taille: 1,})
     this.setState({ taille: event.target.scrollHeight });
-    //event.target.value
   }
 
   render() {
     return (
       <div>
-        <textarea id={this.props.id} placeholder={this.placeholder} className="form-control" required onChange={(event) => this.handleChange(event)} />
+        <textarea id={this.props.id} placeholder={this.placeholder} value={this.props.value} className="form-control" required onChange={(event) => this.handleChange(event)} />
         <style jsx>{`
             #${this.props.id} {
 	            min-height: ${this.props.size}px;

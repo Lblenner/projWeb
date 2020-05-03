@@ -7,15 +7,14 @@ import Router from 'next/router'
 import List from '../components/List';
 import SearchBar from '../components/SearchBar';
 import { MdSearch } from 'react-icons/md'
-import MinimalActivite from '../components/MinimalAct';
-import { BsChevronCompactDown } from 'react-icons/bs'
 import { getUser } from '../API/Api';
 import cookie from "cookie"
 import Activites from '../components/Activites';
+import DialogModifProfil from '../components/DialogModifProfil';
 
 
 type MyProps = any;
-type MyState = { search: any, own: boolean };
+type MyState = { search: any, own: boolean, openModif: boolean };
 
 class Profil extends React.Component<MyProps, MyState> {
 
@@ -23,7 +22,8 @@ class Profil extends React.Component<MyProps, MyState> {
     super(props)
     this.state = {
       search: false,
-      own: false
+      own: false,
+      openModif: true
     }
   }
 
@@ -70,7 +70,7 @@ class Profil extends React.Component<MyProps, MyState> {
         <div style={{ padding: 4 }}>
           {this.state.own && <div id="button_container">
             <Button color="primary" variant="contained" onClick={() => this.deco()}>Se déconnecter</Button>
-            <Button color="primary" variant="contained" >Modifier profil</Button>
+            <Button color="primary" variant="contained" onClick={() => this.setState({openModif : true})}>Modifier profil</Button>
           </div>}
           <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid', }}>
 
@@ -145,13 +145,15 @@ class Profil extends React.Component<MyProps, MyState> {
     } else {
       content = this.page(p)
     }
-
+      
     return (
       <div>
         <Head>
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
+        <DialogModifProfil open={this.state.openModif} handleClose={() => this.setState({openModif: false})}
+            date={p.dateNaissance} mail={p.email} nom={p.fullname} bio={p.biographie} photo={p.photo}/>
           {content}
         </Layout>
       </div>
