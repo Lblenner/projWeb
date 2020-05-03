@@ -28,6 +28,7 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
       <p style={{ marginLeft: 15, marginBottom: 5 }}>
         {value.texte}
     </p>
+    <div style={{fontSize:10, textAlign: 'right'}}>{value.date.toLocaleTimeString()} {value.date.toLocaleDateString("fr-FR")}</div>
       <style jsx>{`
         #nom:hover {
           color: blue;
@@ -80,6 +81,7 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
     return (<div onClick={() => this.goToRecette(value.id)}>
       {value.auteurFullname} (@{value.auteurUsername}) a ajouté la recette
     <h5 style={{ marginBottom: 5 }}><span id="nom">{value.nom}</span></h5>
+    <div style={{fontSize:10, textAlign: 'right'}}>{value.date.toLocaleTimeString()} {value.date.toLocaleDateString("fr-FR")}</div>
       <style jsx>{`
         #nom:hover {
           color: blue;
