@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircularProgress, Dialog } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
@@ -7,9 +7,11 @@ import { addCommentaire, getCommentaires } from '../API/Api'
 import DialogConnection from './DialogConnection';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
+import NoteDisplay from './NoteDisplay';
+import AddNote from './AddNote';
 
 type MyProps = { recette, token };
-type MyState = { nbParts: any, open: boolean, listeCom: any };
+type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any };
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -20,7 +22,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     this.state = {
       nbParts: 0,
       open: false,
-      listeCom: this.props.recette.commentaires.slice().reverse()
+      listeCom: this.props.recette.commentaires.slice().reverse(),
+      commentaire: ""
     };
 ;  }
 
@@ -41,12 +44,11 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
       // Gestion des cas d'erreur de response
       if (response.status == 200) {
-        var textarea = document.getElementById("area");
 
+        this.setState({commentaire:""});
         let newListe = await getCommentaires(this.props.recette.id)
 
         // Gérer les cas d'erreur de newListe
-        console.log(newListe)
 
         let json = await newListe.json();
         this.setState({listeCom:json.reverse()});
@@ -93,6 +95,12 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         <div>
           <img src={photo} id="photo"/>
         </div> }
+
+        <div id="notes">
+          <NoteDisplay name="Note :" value={r.note}/>
+          <AddNote/>
+        </div> 
+
         <div id="main">
           <div id="affichageIngrédients">
             { this.state.nbParts!=0 &&
@@ -118,7 +126,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
             <h3>Commentaires</h3>
             <form onSubmit={this.handleSubmit} id="form">
               <div className="form-group">
-                <TextArea size={65} id="area" placeHolder={["Tapez votre commentaire ici !"]} />
+                <TextArea size={65} id="area" placeHolder={["Tapez votre commentaire ici !"]} 
+                value={this.state.commentaire} onChange={(texte) => this.setState({commentaire:texte})}/>
               </div>
               <div id="addCommentaire">
                 <button type="submit" className="btn btn-success" >Ajouter un commentaire</button>
@@ -211,6 +220,12 @@ class FicheRecette extends React.Component<MyProps, MyState> {
             max-width: 100%;
             margin-bottom: 10px;
             padding: 10px;
+          }
+
+          #notes {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
           }
 
         `}</style>
