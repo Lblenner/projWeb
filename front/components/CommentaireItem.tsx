@@ -1,7 +1,8 @@
 import React from 'react'
 import gestionSautLigne from '../src/gestionFormatText';
+import Avatar from '@material-ui/core/Avatar';
 
-type MyProps = { commentaire: any };
+type MyProps = { commentaire: any , token };
 
 export default class CommentaireItem extends React.Component<MyProps> {
 
@@ -17,11 +18,20 @@ export default class CommentaireItem extends React.Component<MyProps> {
     var date = this.props.commentaire.date
     var commentaire = gestionSautLigne(this.props.commentaire.texte)
 
+    var ensembleNom = this.props.commentaire.auteurFullname.split(" ");
+    var initiales = ensembleNom[0].slice(0,1).toUpperCase() ;
+    if (ensembleNom.length >= 2) {
+      initiales =  initiales + ensembleNom[1].slice(0,1).toUpperCase();
+    }
+
     return (
        <div id='container'>
          <div id='profil'>
-            <div id="fullname">{this.props.commentaire.auteurFullname}</div>
-            <div id="username">(@{this.props.commentaire.auteurUsername})</div>
+            <Avatar id="avatar" style={{alignSelf: 'center'}}>{initiales}</Avatar>
+            <a href={"/profil?username="+this.props.commentaire.auteurUsername}>
+              <div id="fullname">{this.props.commentaire.auteurFullname}</div>
+              <div id="username">(@{this.props.commentaire.auteurUsername})</div>
+            </a>
          </div>
          <div id='commentaire'>
             {commentaire}
@@ -51,11 +61,18 @@ export default class CommentaireItem extends React.Component<MyProps> {
           #profil {
             border: 1px solid;
             border-radius: 10px;
+            display: flex;
+            flex-direction:column;
             float: left;
             width: ${pourcentageProfil}%;
             margin-right: ${espaceProfilCom-1}px;
             padding: 10px;
             text-align : center;
+          }
+
+          #avatar {
+            text-align : center;
+            justify-content: center;
           }
 
           #commentaire {

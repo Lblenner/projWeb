@@ -41,6 +41,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
       // Gestion des cas d'erreur de response
       if (response.status == 200) {
+        var textarea = document.getElementById("area");
+
         let newListe = await getCommentaires(this.props.recette.id)
 
         // Gérer les cas d'erreur de newListe
@@ -73,9 +75,6 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     const r = this.props.recette
 
     var photo = r.photo
-    if (photo == null) {
-      photo = require('../images/No_photo.jpg')
-    }
     var listIng = [];
     for (let i = 0; i < r.elements.length; i++) {
       let elem = r.elements[i]
@@ -90,9 +89,10 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         <h6 id="nomPersonne">
           <a href="/profil">{r.auteurFullname} (@{r.auteurUsername})</a>
         </h6>
+        { photo != null &&
         <div>
           <img src={photo} id="photo"/>
-        </div>
+        </div> }
         <div id="main">
           <div id="affichageIngrédients">
             { this.state.nbParts!=0 &&
@@ -126,7 +126,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
             </form>
             <div>
               {this.state.listeCom.map((elem) => {
-              return <CommentaireItem key={elem.id} commentaire={elem}/>
+              return <CommentaireItem key={elem.id} commentaire={elem} token={this.props.token}/>
               })}
             </div>
         </div>
