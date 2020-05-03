@@ -36,16 +36,20 @@ export default class Activites extends React.Component<MyProps, MyState> {
     this.biglisteDate.sort((a, b) => (a.date <= b.date) ? 1 : -1)
 
     this.setState({ liste: this.biglisteDate.slice(0, this.taille) })
-    this.biglisteDate.remove()
   }
 
+  loadMore() {
+    this.setState({ liste: this.biglisteDate.slice(0, this.taille + 5) })
+    this.taille = this.taille + 5
+
+  }
 
   render() {
 
     return (<div>
       {this.state.liste.map((elem, i) => <MinimalActivite key={i} type={elem.type} value={elem} />)}
       <div id="loadmore" style={{ border: 'solid', height: 45, marginBottom: 50, borderWidth: "1px 0px 1px 0px", borderColor: '#D3D3D3' }}
-        onClick={() => null}>
+        onClick={() => this.loadMore()}>
         <div style={{ position: 'relative', left: '-46%', float: 'right', }}><BsChevronCompactDown size={40} />
         </div>
       </div>

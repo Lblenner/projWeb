@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 
 type MyProps = { type: "comment" | "note" | "favAdd" | "favRemove" | "addRecette", value }
 
@@ -16,10 +17,14 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
     };
   }
 
+  goToRecette(id) {
+    Router.push("/recette?id="+id)
+  }
+  
   comment(value) {
-    return <div >
+    return <div onClick={() => this.goToRecette(value.recetteId)}>
       {value.auteurFullname} (@{value.auteurUsername})  a commenté
-    <h5 style={{ marginBottom: 5 }}><span id="nom">{JSON.stringify(value)}</span></h5>
+  <h5 style={{ marginBottom: 5 }}><span id="nom">{value.recetteNom}</span></h5>
       <p style={{ marginLeft: 15, marginBottom: 5 }}>
         {value.texte}
     </p>
@@ -72,7 +77,7 @@ export default class MinimalActivite extends React.Component<MyProps, MyState> {
   }
 
   addRecette(value) {
-    return (<div>
+    return (<div onClick={() => this.goToRecette(value.id)}>
       {value.auteurFullname} (@{value.auteurUsername}) a ajouté la recette
     <h5 style={{ marginBottom: 5 }}><span id="nom">{value.nom}</span></h5>
       <style jsx>{`

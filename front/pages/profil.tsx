@@ -146,7 +146,6 @@ class Profil extends React.Component<MyProps, MyState> {
       content = this.page(p)
     }
 
-
     return (
       <div>
         <Head>
