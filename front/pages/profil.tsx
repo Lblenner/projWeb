@@ -14,7 +14,7 @@ import DialogModifProfil from '../components/DialogModifProfil';
 
 
 type MyProps = any;
-type MyState = { search: any, own: boolean, openModif: boolean };
+type MyState = { search: any, own: boolean, openModif: boolean, user };
 
 class Profil extends React.Component<MyProps, MyState> {
 
@@ -23,7 +23,8 @@ class Profil extends React.Component<MyProps, MyState> {
     this.state = {
       search: false,
       own: false,
-      openModif: true
+      openModif: false,
+      user: this.props.user
     }
   }
 
@@ -70,7 +71,7 @@ class Profil extends React.Component<MyProps, MyState> {
         <div style={{ padding: 4 }}>
           {this.state.own && <div id="button_container">
             <Button color="primary" variant="contained" onClick={() => this.deco()}>Se déconnecter</Button>
-            <Button color="primary" variant="contained" onClick={() => this.setState({openModif : true})}>Modifier profil</Button>
+            <Button color="primary" variant="contained" onClick={() => this.setState({ openModif: true })}>Modifier profil</Button>
           </div>}
           <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid', }}>
 
@@ -78,7 +79,7 @@ class Profil extends React.Component<MyProps, MyState> {
           <div style={{ padding: '10px', paddingBottom: 0 }}>
             <h1 style={{ marginBottom: 0 }}>{p.fullname}</h1>
             <h4 style={{ marginBottom: 16, marginLeft: 5 }}>@{p.username}</h4>
-            {p.mail && <h6>Mail: {p.email} </h6>}
+            {p.email && <h6>Mail: {p.email} </h6>}
             {p.dateNaissance && <h6>Date de Naissance: {(new Date(p.dateNaissance)).toLocaleDateString("fr-FR")} </h6>}
             {p.dateInscription && <h6>Inscription: {(new Date(p.dateInscription)).toLocaleDateString("fr-FR")} </h6>}
             <div id="button_container" style={{ marginTop: '20px' }}>
@@ -135,9 +136,22 @@ class Profil extends React.Component<MyProps, MyState> {
     </div>)
   }
 
+  async reloadUser() {
+    let response = await getUser(this.state.user.username)
+
+    if (response.status != 200) {
+      console.log("Erreur")
+      return {}
+    }
+
+    let user = await response.json()
+    this.setState({user: user})
+
+  }
+
   render() {
 
-    let p = this.props.user
+    let p = this.state.user
     let content = null
 
     if (p == null) {
@@ -145,15 +159,16 @@ class Profil extends React.Component<MyProps, MyState> {
     } else {
       content = this.page(p)
     }
-      
+
     return (
       <div>
         <Head>
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-        <DialogModifProfil open={this.state.openModif} handleClose={() => this.setState({openModif: false})}
-            date={p.dateNaissance} mail={p.email} nom={p.fullname} bio={p.biographie} photo={p.photo}/>
+          <DialogModifProfil open={this.state.openModif} handleClose={() => this.setState({ openModif: false })}
+            date={p.dateNaissance} mail={p.email} nom={p.fullname} bio={p.biographie} photo={p.photo} 
+            success={() => this.reloadUser()}/>
           {content}
         </Layout>
       </div>

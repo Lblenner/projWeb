@@ -21,7 +21,14 @@ export default class Activites extends React.Component<MyProps, MyState> {
   biglisteDate
   taille
 
-  componentDidMount() {
+  componentDidUpdate(prevProps){
+    if (prevProps != this.props) {
+      this.loadListe()
+    }
+  }
+
+  loadListe() {
+    this.biglisteDate = []
     let formatRecette = []
     for (let elem of this.props.listeRecette) {
       formatRecette.push({ ...elem, date: elem.dateCreation, type: "addRecette" })
@@ -35,7 +42,13 @@ export default class Activites extends React.Component<MyProps, MyState> {
     }
     this.biglisteDate.sort((a, b) => (a.date <= b.date) ? 1 : -1)
 
+    this.taille = 5
+    console.log(this.biglisteDate)
     this.setState({ liste: this.biglisteDate.slice(0, this.taille) })
+  }
+
+  componentDidMount() {
+    this.loadListe()
   }
 
   loadMore() {
