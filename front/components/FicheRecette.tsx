@@ -24,7 +24,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       open: false,
       listeCom: this.props.recette.commentaires.slice().reverse(),
       commentaire: "",
-      note: this.props.recette.note.toFixed(2)
+      note: this.props.recette.note?this.props.recette.note.toFixed(2):null
     };
 ;  }
 

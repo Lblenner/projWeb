@@ -44,7 +44,7 @@ class Profil extends React.Component<MyProps, MyState> {
 
     if (response.status > 400) {
       console.log("Erreur")
-      return {}
+      return { user: null }
     }
 
     user = await response.json()
@@ -67,6 +67,9 @@ class Profil extends React.Component<MyProps, MyState> {
 
   page = (p) => {
     return (<div style={{ display: "flex", flexGrow: 1, flexDirection: 'row', marginTop: "5px", marginBottom: "5px" }}>
+      <DialogModifProfil open={this.state.openModif} handleClose={() => this.setState({ openModif: false })}
+        date={p.dateNaissance} mail={p.email} nom={p.fullname} bio={p.biographie} photo={p.photo}
+        success={() => this.reloadUser()} />
       <div id="left">
         <div style={{ padding: 4 }}>
           {this.state.own && <div id="button_container">
@@ -141,11 +144,11 @@ class Profil extends React.Component<MyProps, MyState> {
 
     if (response.status != 200) {
       console.log("Erreur")
-      return {}
+      return
     }
 
     let user = await response.json()
-    this.setState({user: user})
+    this.setState({ user: user })
 
   }
 
@@ -154,6 +157,7 @@ class Profil extends React.Component<MyProps, MyState> {
     let p = this.state.user
     let content = null
 
+    console.log(p)
     if (p == null) {
       content = "Cette utilisateur n'existe pas"
     } else {
@@ -166,9 +170,6 @@ class Profil extends React.Component<MyProps, MyState> {
           <title>Les recettes de Martine</title>
         </Head>
         <Layout>
-          <DialogModifProfil open={this.state.openModif} handleClose={() => this.setState({ openModif: false })}
-            date={p.dateNaissance} mail={p.email} nom={p.fullname} bio={p.biographie} photo={p.photo} 
-            success={() => this.reloadUser()}/>
           {content}
         </Layout>
       </div>
