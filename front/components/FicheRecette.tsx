@@ -3,7 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
-import { addCommentaire, getCommentaires } from '../API/Api'
+import { addCommentaire, getCommentaires, getRecette } from '../API/Api'
 import DialogConnection from './DialogConnection';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
@@ -11,7 +11,7 @@ import NoteDisplay from './NoteDisplay';
 import AddNote from './AddNote';
 
 type MyProps = { recette, token };
-type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any };
+type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any };
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -23,7 +23,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       nbParts: 0,
       open: false,
       listeCom: this.props.recette.commentaires.slice().reverse(),
-      commentaire: ""
+      commentaire: "",
+      note: this.props.recette.note.toFixed(2)
     };
 ;  }
 
@@ -66,6 +67,20 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     this.setState({open:false});
   }
 
+  handleModifNote = async () => {
+    
+    let response = await getRecette(this.props.recette.id)
+
+    if (response.status > 400) {
+        console.log("Erreur")
+        return
+    }
+
+    var recette = await response.json()
+
+    this.setState({note:recette.note.toFixed(2)});
+  }
+
   fiche() {
     if (this.props.recette == null) {
       return <CircularProgress />
@@ -97,8 +112,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         </div> }
 
         <div id="notes">
-          <NoteDisplay name="Note :" value={r.note}/>
-          <AddNote/>
+          <NoteDisplay name="Note :" value={this.state.note}/>
+          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote}/>
         </div> 
 
         <div id="main">

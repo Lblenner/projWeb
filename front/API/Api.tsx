@@ -176,3 +176,63 @@ export function createUser(fullname, username, password) {
   return fetch("https://martine.rest/api/v1/users", myInit)
 
 }
+
+export const addNote = (recetteid, value, token) => {
+
+      let body =
+      "valeur=" + value
+
+    const requestHeaders: HeadersInit = new Headers();
+    requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+    requestHeaders.set('accept', 'application/json');
+    requestHeaders.set('authorization', 'Basic ' + token);
+
+
+    var myInit = {
+      method: 'POST',
+      headers: requestHeaders,
+      mode: 'cors' as RequestMode,
+      cache: 'default' as RequestCache,
+      credentials: 'include' as RequestCredentials,
+      body: body
+    };
+
+    return fetch("https://martine.rest/api/v1/recettes/" + recetteid + "/notes", myInit)
+  }
+
+  export const getNotes = (id) => {
+
+    const requestHeaders = {
+      'Content-Type': 'application/json'
+    }
+  
+    var myInit = {
+      method: 'GET',
+      headers: requestHeaders,
+      mode: 'cors' as RequestMode,
+      cache: 'default' as RequestCache,
+      credentials: 'include' as RequestCredentials
+    };
+  
+    return fetch("https://martine.rest/api/v1/recettes/" + id + "/notes", myInit)
+  
+  }
+
+  export const removeNote = (recetteid, noteid, token) => {
+
+    const requestHeaders: HeadersInit = new Headers();
+    requestHeaders.set('Content-Type', 'application/json');
+    requestHeaders.set('accept', 'application/json');
+    requestHeaders.set('authorization', 'Basic ' + token);
+  
+    var myInit = {
+      method: 'DELETE',
+      headers: requestHeaders,
+      mode: 'cors' as RequestMode,
+      cache: 'default' as RequestCache,
+      credentials: 'include' as RequestCredentials
+    };
+  
+    return fetch("https://martine.rest/api/v1/recettes/" + recetteid + "/notes/" + noteid, myInit)
+  
+  }

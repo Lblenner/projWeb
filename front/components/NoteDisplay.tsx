@@ -7,7 +7,7 @@ export default function NoteDisplay(props) {
           {props.name}
         </div>
         <div className="value">
-          {props.value}
+          {props.value != null && props.value}
           {props.value == null && "--"}
         </div>
       </div>
