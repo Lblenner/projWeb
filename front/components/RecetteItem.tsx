@@ -84,7 +84,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     De <span onClick={(e) => this.namePressed(e,recette.auteurUsername)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
           <div id="rating">
             <NoteDisplay name="Note" value={recette.note} />
-            <NoteDisplay name="Ma note" value="--" />
+            <NoteDisplay name="Ma note" value={null} />
           </div>
           <div style={{flexGrow: 1, display: "flex"}}>
           <TextTruncate
