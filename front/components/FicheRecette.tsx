@@ -3,7 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
-import { addCommentaire, getCommentaires, getRecette } from '../API/Api'
+import { addCommentaire, getCommentaires, getRecette, getNotes } from '../API/Api'
 import DialogConnection from './DialogConnection';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
@@ -11,7 +11,8 @@ import NoteDisplay from './NoteDisplay';
 import AddNote from './AddNote';
 
 type MyProps = { recette, token };
-type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any };
+type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any, 
+  gaveANote : any, myNote: any, myNoteId: any};
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -22,6 +23,9 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     this.state = {
       nbParts: 0,
       open: false,
+      gaveANote: false,
+      myNote: 0,
+      myNoteId: 0,
       listeCom: this.props.recette.commentaires.slice().reverse(),
       commentaire: "",
       note: this.props.recette.note?this.props.recette.note.toFixed(2):null
@@ -78,7 +82,34 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
     var recette = await response.json()
 
-    this.setState({note:recette.note.toFixed(2)});
+    var note = recette.note;
+    if (note != null) {
+      note = note.toFixed(2);
+    }
+
+    this.setState({note:note});
+  }
+
+  handleAddNote = (gaveNote, note, noteid) => {
+    this.setState({gaveANote:gaveNote, myNote:note, myNoteId:noteid})
+  }
+
+  hasNote = async () => {
+
+    var listeNote = await getNotes(this.props.recette.id);
+
+    if (listeNote.status == 200) {
+
+      var Myusername = "mimi";
+      let json = await listeNote.json();
+      
+      for (var i = 0; i < json.length; i++) {
+        if (json[i].auteurUsername == Myusername) {
+          this.handleAddNote(true,json[i].valeur,json[i].id)
+        }
+      }
+    }
+    
   }
 
   fiche() {
@@ -100,6 +131,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
     var affichageRecette = gestionSautLigne(r.preparation)
 
+    this.hasNote();
+
     return (
       <div id="fiche_container">
         <h1>{r.nom}</h1>
@@ -113,7 +146,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
         <div id="notes">
           <NoteDisplay name="Note :" value={this.state.note}/>
-          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote}/>
+          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote} gaveANote={this.state.gaveANote}
+          myNote={this.state.myNote} myNoteId={this.state.myNoteId} handleAddNote={this.handleAddNote}/>
         </div> 
 
         <div id="main">

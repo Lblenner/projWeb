@@ -159,7 +159,7 @@ class Profil extends React.Component<MyProps, MyState> {
 
     console.log(p)
     if (p == null) {
-      content = "Cette utilisateur n'existe pas"
+      content = "Cet utilisateur n'existe pas"
     } else {
       content = this.page(p)
     }

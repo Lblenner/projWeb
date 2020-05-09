@@ -1,6 +1,9 @@
-import { addNote, getRecette, removeNote } from '../API/Api'
+import { addNote, getNotes, removeNote } from '../API/Api'
+import { connect } from 'react-redux'
+import TextField from '@material-ui/core/TextField';
+import NoteDisplay from './NoteDisplay';
 
-export default function AddNote(props) {
+function AddNote(props) {
 
     // If my_note == null => Bouton Add une note
     // Else => Bouton Mofidier note Et Supprimer note
@@ -10,6 +13,7 @@ export default function AddNote(props) {
       var response = await addNote(props.recetteid,note,props.token)
 
       props.handle()
+      props.handleAddNote(true, note, props.myNoteId);
     
       if (response.status != 200) {
         console.log("Erreur" + response)
@@ -17,10 +21,10 @@ export default function AddNote(props) {
     }
 
     const supprimerNote = async () => {
-      var response = await removeNote(props.recetteid,20,props.token)
-      // Qu'une note numéro 20 => changer le nb
+      var response = await removeNote(props.recetteid,props.myNoteId,props.token)
 
       props.handle()
+      props.handleAddNote(false,null,null);
     
       if (response.status != 204) {
         console.log(response)
@@ -30,17 +34,33 @@ export default function AddNote(props) {
       }
     }
 
+    var affichage= [];
+
+    if (props.gaveANote) {
+      affichage.push(<NoteDisplay key="1" name="Ma Note" value={props.myNote}/>);
+      affichage.push(<button key="2" onClick={supprimerNote}>Supprimer ma note</button>);
+    } else {
+      affichage.push(<button key="3" onClick={ajoutNote}>Ajouter une note aléatoire</button>);
+    }
+
     return (
-      <div>
-
-        <button onClick={ajoutNote} >Ajouter une note aléatoire</button>
-
-        <button onClick={supprimerNote}>Supprimer la première note</button>
-
+      <div id="main">
+        {affichage}
         <style jsx>{`
-
+          #main {
+            flex-direction:row;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         `}</style>
   
       </div>
     );
   }
+
+  const mapStateToProps = (state) => {
+    return state
+  }
+  
+  export default connect(mapStateToProps)(AddNote)
