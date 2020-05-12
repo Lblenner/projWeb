@@ -3,7 +3,7 @@ import TextTruncate from 'react-text-truncate';
 import ReactHoverObserver from 'react-hover-observer';
 
 
-type MyProps = { recette: any, update: any };
+type MyProps = { recette: any, update: any, notePerso: any };
 type MyState = { isFavorite: any };
 
 import Router from 'next/router';
@@ -84,7 +84,7 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     De <span onClick={(e) => this.namePressed(e,recette.auteurUsername)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
           <div id="rating">
             <NoteDisplay name="Note" value={recette.note} />
-            <NoteDisplay name="Ma note" value={null} />
+            <NoteDisplay name="Ma note" value={this.props.notePerso} />
           </div>
           <div style={{flexGrow: 1, display: "flex"}}>
           <TextTruncate

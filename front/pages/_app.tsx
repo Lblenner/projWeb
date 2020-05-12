@@ -15,8 +15,6 @@ import theme from '../src/theme';
 import Head from 'next/head';
 
 
-
-
 function MyApp(props) {
 
   const { Component, pageProps, store } = props;
@@ -69,55 +67,4 @@ MyApp.propTypes = {
   pageProps: PropTypes.object.isRequired,
 };
 
-
-/*
-class MyApp extends App<Props> {
-
-  static async getInitialProps({ Component, ctx, }) {
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-
-
-    if (ctx.isServer) {
-
-      //Si le client nous envoie des cookies on verifie si il y a ses logs
-      if (ctx.req.headers.cookie) {
-        let c = cookie.parse(ctx.req.headers.cookie).logged
-
-        const action = { type: "SET_SESSION", value: c }
-        ctx.store.dispatch(action)
-      }
-
-
-    }
-
-    //Anything returned here can be access by the client
-    return { pageProps: pageProps };
-  }
-
-  componentDidMount() {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }
-
-
-  render() {
-    const { Component, pageProps, store } = this.props;
-
-    return <Provider store={store}>
-      <React.Fragment>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </React.Fragment>
-    </Provider>
-  }
-
-}
-*/
-
-//withRedux wrapper that passes the store to the App Component
 export default withRedux(makeStore)(MyApp);

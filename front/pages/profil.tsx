@@ -109,7 +109,7 @@ class Profil extends React.Component<MyProps, MyState> {
             {this.state.search && <SearchBar />}
           </div>
 
-          <List liste={p.recettesCompactes} update={() => null} />
+          <List liste={p.recettesCompactes} update={() => null} notesPerso={null} />
         </div>
       </div>
 

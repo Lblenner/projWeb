@@ -6,25 +6,43 @@ import List from '../components/List';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Link from 'next/link';
 import { connect } from 'react-redux'
+import { getUser } from '../API/Api';
 
 
 const cookies = new Cookies();
 
 type MyProps = any;
-type MyState = { favs: any };
+type MyState = { favs: any, notesUser: any };
 
 class Fav extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props)
     this.state = {
-      favs: []
+      favs: [],
+      notesUser: []
     }
   }
   
-  componentDidMount() {
+  async componentDidMount() {
     var favs = cookies.get('favs')
     this.setState({ favs: favs })
+
+    let username = this.props.username
+    if (!username) {
+      return
+    }
+
+    let response = await getUser(username)
+
+    if (response.status > 400) {
+      console.log("Vous n'etes pas connecté")
+      return
+    }
+
+    let user = await response.json()
+
+    this.setState({ notesUser: user.notes })
   }
 
   render() {
@@ -45,7 +63,7 @@ class Fav extends React.Component<MyProps, MyState> {
             </Alert>}
             <List liste={this.state.favs} update={(id) => {
               this.setState({ favs: this.state.favs.filter((e) => e.id != id) })
-            }} />
+            }} notesPerso={this.state.notesUser}/>
           </div>
 
           <style jsx>{`
