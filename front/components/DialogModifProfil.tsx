@@ -10,12 +10,16 @@ import TextArea from './TextArea';
 import { patchUser } from '../API/Api'
 import { connect } from 'react-redux'
 import { MySnackbar } from './Snackbar';
+import InputFile from './InputFile';
+import { uploadImage } from '../API/Api'
 
 
 type MyProps = { open: any, handleClose: any, nom, mail, date, bio, photo, username, token, success };
 type MyState = { nom, mail, date, bio, photo, load, msg, open };
 
 class DialogModifProfil extends React.Component<MyProps, MyState> {
+
+  image
 
   constructor(props) {
     super(props);
@@ -44,10 +48,35 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
 
   handleSubmit = async (event) => {
     event.preventDefault()
+    event.persist();
+
+    let link
+
+    if (this.image != null) {
+      let imgresponse = await uploadImage(this.image)
+
+      if (!imgresponse.ok) {
+        this.setState({ open: true })
+        console.log(imgresponse)
+        return
+      }
+
+      let imgjson = await imgresponse.json()
+
+      if (!imgjson.success) {
+        this.setState({ open: true })
+        console.log(imgjson)
+        return
+      }
+
+      link = imgjson.data.link
+
+    }
+
     this.setState({ load: true })
     let username = this.props.username
     let token = this.props.token
-    let response = await patchUser(username, token, null, this.state.bio, this.state.photo, this.state.nom, this.state.date, this.state.mail)
+    let response = await patchUser(username, token, null, this.state.bio, link, this.state.nom, this.state.date, this.state.mail)
 
     console.log(response)
     let json = await response.json()
@@ -61,6 +90,10 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
     this.props.success()
     this.props.handleClose()
     this.setState({ load: false })
+  }
+
+  setImage(img) {
+    this.image = img
   }
 
   render() {
@@ -106,6 +139,8 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
                   <input className="form-control" type="date"
                     onChange={(e) => this.setState({ date: e.target.value })} value={this.state.date} id="date" />
                 </div>
+
+                <InputFile setImage={(img) => this.setImage(img)} aspectRatio={7 / 9} />
 
               </DialogContent>
 

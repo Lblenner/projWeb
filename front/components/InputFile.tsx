@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import ReactCrop from 'react-image-crop';
 
 
-type MyProps = { setImage: any };
+type MyProps = { setImage: any, aspectRatio };
 type MyState = {};
 
 
@@ -18,7 +18,7 @@ class InputFile extends PureComponent<MyProps, MyState> {
     crop: {
       unit: '%',
       width: 100,
-      aspect: 9 / 4,
+      aspect: this.props.aspectRatio,
     },
   };
 

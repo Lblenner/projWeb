@@ -109,7 +109,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
           <input required type="text" className="form-control" id="description" placeholder="Une recette originale pour les friands de nouvelles expériences" />
         </div>
 
-        <InputFile setImage={(img) => this.setImage(img)} />
+        <InputFile setImage={(img) => this.setImage(img)} aspectRatio={9 / 4} />
 
         <div className="form-group">
           <label htmlFor="">Ingrédients</label>
