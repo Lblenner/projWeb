@@ -3,15 +3,15 @@ import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
-import { addCommentaire, getCommentaires, getRecette } from '../API/Api'
+import { addCommentaire, getCommentaires, getRecette, getUser } from '../API/Api'
 import DialogConnection from './DialogConnection';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
 import NoteDisplay from './NoteDisplay';
 import AddNote from './AddNote';
 
-type MyProps = { recette, token };
-type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any };
+type MyProps = any
+type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any, noteUser :any };
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -20,6 +20,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
   constructor(props) {
     super(props);
     this.state = {
+      noteUser: null,
       nbParts: 0,
       open: false,
       listeCom: this.props.recette.commentaires.slice().reverse(),
@@ -30,6 +31,30 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
   onChange = (event) => {
     this.setState({nbParts:event.target.value});
+  }
+
+  async componentDidMount() {
+
+    let username = this.props.username
+    if (!username) {
+      return
+    }
+
+    let response = await getUser(username)
+
+    if (response.status > 400) {
+      console.log("Vous n'etes pas connecté")
+      return
+    }
+    let user = await response.json()
+
+    if (!user){
+      return 
+    }
+
+    let noteId = user.notes.findIndex(note => note.recetteId == this.props.recette.id)
+
+    this.setState({ noteUser: user.notes[noteId] ? user.notes[noteId].valeur : null })
   }
 
   handleSubmit = async (event) => {
@@ -113,6 +138,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
         <div id="notes">
           <NoteDisplay name="Note :" value={this.state.note}/>
+          <NoteDisplay name="Ma note :" value={this.state.noteUser}/>
           <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote}/>
         </div> 
 
