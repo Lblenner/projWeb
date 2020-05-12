@@ -116,7 +116,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
   }
 
   handleAddNote = (gaveNote, note, noteid) => {
-    this.setState({gaveANote:gaveNote, myNote:note, myNoteId:noteid})
+    this.setState({gaveANote:gaveNote, myNote:note, myNoteId:noteid, noteUser: note})
   }
 
   hasNote = async () => {
@@ -171,8 +171,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
         <div id="notes">
           <NoteDisplay name="Note :" value={this.state.note}/>
-          <NoteDisplay name="Ma note :" value={this.state.noteUser}/>
-          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote} gaveANote={this.state.gaveANote}
+          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote} gaveANote={this.state.noteUser}
           myNote={this.state.myNote} myNoteId={this.state.myNoteId} handleAddNote={this.handleAddNote}/>
         </div> 
 
