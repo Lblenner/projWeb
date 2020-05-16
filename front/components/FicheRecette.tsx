@@ -4,15 +4,16 @@ import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import {connect} from 'react-redux'
 import { addCommentaire, getCommentaires, getRecette, getUser, getNotes } from '../API/Api'
-import DialogConnection from './DialogConnection';
+import DialogConnectionCom from './DialogConnectionCom';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
 import NoteDisplay from './NoteDisplay';
 import AddNote from './AddNote';
+import DialogConnectionNote from './DialogConnectionNote';
 
 type MyProps = any
 type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any, 
-  gaveANote : any, noteUserId: any, noteUser};
+  gaveANote : any, noteUserId: any, noteUser, openNote};
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -24,6 +25,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       noteUser: null,
       nbParts: 0,
       open: false,
+      openNote: false,
       gaveANote: false,
       //myNote: 0,
       noteUserId: null,
@@ -96,6 +98,14 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
   handleClose = () => {
     this.setState({open:false});
+  }
+
+  handleCloseNote = () => {
+    this.setState({openNote:false});
+  }
+
+  handleOpen = () => {
+    this.setState({openNote:true});
   }
 
   handleModifNote = async () => {
@@ -173,8 +183,12 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
         <div id="notes">
           <NoteDisplay name="Note :" value={this.state.note}/>
-          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote} gaveANote={this.state.noteUser}
-          myNote={this.state.noteUser} myNoteId={this.state.noteUserId} handleAddNote={this.handleAddNote} username={this.props.username}/>
+          <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote} 
+          gaveANote={this.state.noteUser} myNote={this.state.noteUser}
+          myNoteId={this.state.noteUserId} handleAddNote={this.handleAddNote}
+          username={this.props.username} handleClose={this.handleClose}
+          handleOpen={this.handleOpen}/>
+          <DialogConnectionNote open={this.state.openNote} handleClose={this.handleCloseNote}/>
         </div> 
 
         <div id="main">
@@ -216,7 +230,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
             </div>
         </div>
 
-        <DialogConnection open={this.state.open} handleClose={this.handleClose}/>
+        <DialogConnectionCom open={this.state.open} handleClose={this.handleClose}/>
 
         <style jsx>{`
           #fiche_container {

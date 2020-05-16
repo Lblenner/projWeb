@@ -1,43 +1,57 @@
 import { addNote, getUser, removeNote } from '../API/Api'
 import { connect } from 'react-redux'
-import TextField from '@material-ui/core/TextField';
 import NoteDisplay from './NoteDisplay';
+import TextArea from './TextArea';
+import React from 'react';
 
-function AddNote(props) {
+// A faire :
+// Note entre 0 et 10
+// Avec max deux chiffres derrière la virgule
+// Peut-être mettre plutôt comme pour les parts avec des petites flèches ce qui donnera déjà un max
+
+type MyProps = { recetteid, token, handle, gaveANote : any, myNote,
+  myNoteId, handleAddNote, username, handleClose, handleOpen }
+type MyState = { note }
+
+class AddNote extends React.Component<MyProps, MyState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      note : ""
+    };
+;  }
 
     // If my_note == null => Bouton Add une note
     // Else => Bouton Mofidier note Et Supprimer note
 
-    const ajoutNote = async () => {
+    ajoutNote = async () => {
 
-      let username = props.username
-      if (!username) {
-        return
-      }
+      let username = this.props.username
 
       let user = await getUser(username)
 
       if (user.status > 400) {
-        console.log("Vous n'etes pas connecté") // Faire un pop up
-        return
+        this.props.handleOpen();
       } else { // Sinon on peut tenter d'ajouter le note
-        var note = Math.round(Math.random() * 10);
-        var response = await addNote(props.recetteid,note,props.token)
+        if (this.state.note != "") {
+          var response = await addNote(this.props.recetteid,this.state.note,this.props.token)
 
-        props.handle()
-        props.handleAddNote(true, note, props.myNoteId);
-      
-        if (response.status != 200) {
-          console.log("Erreur" + response)
+          this.props.handle()
+          this.props.handleAddNote(true, this.state.note, this.props.myNoteId);
+        
+          if (response.status != 200) {
+            console.log("Erreur" + response)
+          }
         }
       }
     }
 
-    const supprimerNote = async () => {
-      var response = await removeNote(props.recetteid,props.myNoteId,props.token)
+    supprimerNote = async () => {
+      var response = await removeNote(this.props.recetteid,this.props.myNoteId,this.props.token)
 
-      props.handle()
-      props.handleAddNote(false,null,null);
+      this.props.handle()
+      this.props.handleAddNote(false,null,null);
     
       if (response.status != 204) {
         console.log(response)
@@ -47,18 +61,47 @@ function AddNote(props) {
       }
     }
 
-    var affichage= [];
+    affichage() {
 
-    if (props.gaveANote) {
-      affichage.push(<NoteDisplay key="1" name="Ma Note" value={props.myNote}/>);
-      affichage.push(<button key="2" onClick={supprimerNote}>Supprimer ma note</button>);
-    } else {
-      affichage.push(<button key="3" onClick={ajoutNote}>Ajouter une note aléatoire</button>);
+      if (this.props.gaveANote) {
+        return (
+          <div id="possibility1">
+            <NoteDisplay key="1" name="Ma Note" value={this.props.myNote}/>
+            <button key="2" onClick={this.supprimerNote}>Supprimer ma note</button>
+            <style jsx>{`
+              #possibility1 {
+                flex-direction:row;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            `}</style>
+          </div>
+        )
+      } else {
+        return (
+          <div id="possibility2">
+            <TextArea key="4" size={65} id="area" placeHolder={["8.50"]} 
+            value={this.state.note} onChange={(valeur) => this.setState({note: valeur})}/>
+            <button key="3" onClick={this.ajoutNote}>Ajouter la note</button>
+            <style jsx>{`
+              #possibility2 {
+                flex-direction:row;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            `}</style>
+          </div>
+        )
+      }
+
     }
 
-    return (
+    render() {
+      return (
       <div id="main">
-        {affichage}
+        {this.affichage()}
         <style jsx>{`
           #main {
             flex-direction:row;
@@ -69,7 +112,8 @@ function AddNote(props) {
         `}</style>
   
       </div>
-    );
+      )
+    }
   }
 
   const mapStateToProps = (state) => {

@@ -2,9 +2,7 @@
 
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog';
-import LoginForm from './LoginForm';
-import { DialogTitle, DialogActions, DialogContent, TextField, CircularProgress } from '@material-ui/core';
-import Router from 'next/router'
+import { DialogTitle, DialogActions, DialogContent, CircularProgress } from '@material-ui/core';
 import { Button, } from '@material-ui/core';
 import TextArea from './TextArea';
 import { patchUser } from '../API/Api'
