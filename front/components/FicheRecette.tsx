@@ -12,7 +12,7 @@ import AddNote from './AddNote';
 
 type MyProps = any
 type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, note : any, 
-  gaveANote : any, myNote: any, myNoteId: any, noteUser};
+  gaveANote : any, noteUserId: any, noteUser};
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -25,8 +25,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       nbParts: 0,
       open: false,
       gaveANote: false,
-      myNote: 0,
-      myNoteId: 0,
+      //myNote: 0,
+      noteUserId: null,
       listeCom: this.props.recette.commentaires.slice().reverse(),
       commentaire: "",
       note: this.props.recette.note?this.props.recette.note.toFixed(2):null
@@ -59,6 +59,8 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     let noteId = user.notes.findIndex(note => note.recetteId == this.props.recette.id)
 
     this.setState({ noteUser: user.notes[noteId] ? user.notes[noteId].valeur : null })
+    this.setState({ gaveANote: user.notes[noteId] ? true : false })
+    this.setState({ noteUserId: user.notes[noteId] ? user.notes[noteId].id : null })
   }
 
   handleSubmit = async (event) => {
@@ -116,10 +118,10 @@ class FicheRecette extends React.Component<MyProps, MyState> {
   }
 
   handleAddNote = (gaveNote, note, noteid) => {
-    this.setState({gaveANote:gaveNote, myNote:note, myNoteId:noteid, noteUser: note})
+    this.setState({gaveANote:gaveNote, noteUserId:noteid, noteUser: note})
   }
 
-  hasNote = async () => {
+  /*hasNote = async () => {
 
     var listeNote = await getNotes(this.props.recette.id);
 
@@ -135,7 +137,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       }
     }
     
-  }
+  }*/
 
   fiche() {
     if (this.props.recette == null) {
@@ -156,7 +158,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
     var affichageRecette = gestionSautLigne(r.preparation)
 
-    this.hasNote();
+    this.componentDidMount();
 
     return (
       <div id="fiche_container">
@@ -172,7 +174,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         <div id="notes">
           <NoteDisplay name="Note :" value={this.state.note}/>
           <AddNote recetteid={r.id} token={this.props.token} handle={this.handleModifNote} gaveANote={this.state.noteUser}
-          myNote={this.state.myNote} myNoteId={this.state.myNoteId} handleAddNote={this.handleAddNote}/>
+          myNote={this.state.noteUser} myNoteId={this.state.noteUserId} handleAddNote={this.handleAddNote} username={this.props.username}/>
         </div> 
 
         <div id="main">

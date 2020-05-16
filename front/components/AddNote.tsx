@@ -1,4 +1,4 @@
-import { addNote, getNotes, removeNote } from '../API/Api'
+import { addNote, getUser, removeNote } from '../API/Api'
 import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField';
 import NoteDisplay from './NoteDisplay';
@@ -9,14 +9,27 @@ function AddNote(props) {
     // Else => Bouton Mofidier note Et Supprimer note
 
     const ajoutNote = async () => {
-      var note = Math.round(Math.random() * 10);
-      var response = await addNote(props.recetteid,note,props.token)
 
-      props.handle()
-      props.handleAddNote(true, note, props.myNoteId);
-    
-      if (response.status != 200) {
-        console.log("Erreur" + response)
+      let username = props.username
+      if (!username) {
+        return
+      }
+
+      let user = await getUser(username)
+
+      if (user.status > 400) {
+        console.log("Vous n'etes pas connecté") // Faire un pop up
+        return
+      } else { // Sinon on peut tenter d'ajouter le note
+        var note = Math.round(Math.random() * 10);
+        var response = await addNote(props.recetteid,note,props.token)
+
+        props.handle()
+        props.handleAddNote(true, note, props.myNoteId);
+      
+        if (response.status != 200) {
+          console.log("Erreur" + response)
+        }
       }
     }
 
