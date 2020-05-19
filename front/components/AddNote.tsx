@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import NoteDisplay from './NoteDisplay';
 import TextArea from './TextArea';
 import React from 'react';
+import { TextField } from '@material-ui/core';
 
 // A faire :
 // Note entre 0 et 10
@@ -18,7 +19,7 @@ class AddNote extends React.Component<MyProps, MyState> {
   constructor(props) {
     super(props);
     this.state = {
-      note : ""
+      note : 5.00
     };
 ;  }
 
@@ -61,6 +62,20 @@ class AddNote extends React.Component<MyProps, MyState> {
       }
     }
 
+    onChange = (event) => {
+      var noteString = event.target.value;
+      if (noteString > 10) {
+        this.setState({note: 10});
+      } else if (noteString < 0) {
+        this.setState({note: 0});
+      } else {
+        this.setState({note: noteString.substring(0,Math.min(noteString.length,4)).valueOf});
+      }
+    }
+
+    /* <TextArea key="4" size={65} id="area" placeHolder={["8.50"]} 
+            value={this.state.note} onChange={(valeur) => this.setState({note: valeur})}/> */
+
     affichage() {
 
       if (this.props.gaveANote) {
@@ -81,8 +96,11 @@ class AddNote extends React.Component<MyProps, MyState> {
       } else {
         return (
           <div id="possibility2">
-            <TextArea key="4" size={65} id="area" placeHolder={["8.50"]} 
-            value={this.state.note} onChange={(valeur) => this.setState({note: valeur})}/>
+            <TextField type="number" id="note"
+                  style = {{width: '30%', marginRight: '5px', marginBottom: '5px'}}
+                  inputProps={{min: 0, max: 10, style: { textAlign: 'center' }}}
+                  value={this.state.note}
+                  onChange={this.onChange}/>
             <button key="3" onClick={this.ajoutNote}>Ajouter la note</button>
             <style jsx>{`
               #possibility2 {
