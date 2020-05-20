@@ -17,13 +17,13 @@ type MyState = { nbParts: any, open: boolean, listeCom: any , commentaire: any, 
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
-  nbParts;
+  nbParts = this.props.recette.nombreParts;
 
   constructor(props) {
     super(props);
     this.state = {
       noteUser: null,
-      nbParts: 0,
+      nbParts: this.props.recette.nombreParts,
       open: false,
       openNote: false,
       gaveANote: false,
@@ -36,7 +36,11 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 ;  }
 
   onChange = (event) => {
-    this.setState({nbParts:event.target.value});
+    if (event.target.value <= 0) {
+      this.setState({nbParts:1});
+    } else {
+      this.setState({nbParts:event.target.value});
+    }
   }
 
   async componentDidMount() {
@@ -161,9 +165,16 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
     var photo = r.photo
     var listIng = [];
-    for (let i = 0; i < r.elements.length; i++) {
-      let elem = r.elements[i]
-      listIng.push(<li key={elem.id}> {elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
+    if (this.nbParts != 0) {
+      for (let i = 0; i < r.elements.length; i++) {
+        let elem = r.elements[i]
+        listIng.push(<li key={elem.id}> {(elem.quantite.nombre * this.state.nbParts / this.nbParts).toFixed(2)+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
+      }
+    } else {
+      for (let i = 0; i < r.elements.length; i++) {
+        let elem = r.elements[i]
+        listIng.push(<li key={elem.id}> {elem.quantite.nombre+" " +elem.quantite.unite+ " "+elem.ingredient.nom}</li>)
+      }
     }
 
     var affichageRecette = gestionSautLigne(r.preparation)

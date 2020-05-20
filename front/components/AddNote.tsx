@@ -19,7 +19,7 @@ class AddNote extends React.Component<MyProps, MyState> {
   constructor(props) {
     super(props);
     this.state = {
-      note : "5.00"
+      note : "5"
     };
 ;  }
 
@@ -65,9 +65,9 @@ class AddNote extends React.Component<MyProps, MyState> {
     onChange = (event) => {
       var noteString = event.target.value;
       if (noteString > 10) {
-        this.setState({note: "10.00"});
+        this.setState({note: "10"});
       } else if (noteString < 0) {
-        this.setState({note: "0.00"});
+        this.setState({note: "0"});
       } else {
         this.setState({note: noteString.substring(0,Math.min(noteString.length,4))});
       }

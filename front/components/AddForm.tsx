@@ -78,10 +78,10 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
   createBody(listeData, link) {
     let n = listeData.length
-    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[n - 2].value, link)
+    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[3].value, listeData[n - 2].value, link)
 
-    recette.elements.push({ ingredient: { nom: listeData[5].value }, quantite: { nombre: listeData[3].value, unite: listeData[4].value } })
-    for (let i = 6; i < n - 4; i += 4) {
+    recette.elements.push({ ingredient: { nom: listeData[6].value }, quantite: { nombre: listeData[4].value, unite: listeData[5].value } })
+    for (let i = 7; i < n - 4; i += 4) {
       let nombre = listeData[i].value
       let unite = listeData[i + 1].value
       let nom = listeData[i + 2].value
@@ -110,6 +110,11 @@ class AddForm extends React.Component<MyProps, MyState>  {
         </div>
 
         <InputFile setImage={(img) => this.setImage(img)} aspectRatio={9 / 4} />
+
+        <div className="form-group">
+          <label htmlFor="parts">Nombre de parts de la recette (facultatif)</label>
+          <input type="number"min={1} max={100} className="form-control" id="nbParts" placeholder="10" />
+        </div>
 
         <div className="form-group">
           <label htmlFor="">Ingrédients</label>
@@ -151,13 +156,15 @@ class Recette {
   description: string;
   elements: Array<object>;
   preparation: string;
+  nombreParts: Uint8Array;
 
-  constructor(nom, description, recette, link) {
+  constructor(nom, description, nombreParts, recette, link) {
     this.photo = link
     this.nom = nom
     this.description = description
     this.preparation = recette
     this.elements = []
+    this.nombreParts = nombreParts == null ? 0 : nombreParts
   }
 
 
