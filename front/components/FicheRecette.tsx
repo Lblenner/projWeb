@@ -3,7 +3,7 @@ import { CircularProgress} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import { connect } from 'react-redux'
-import { addCommentaire, getCommentaires, getRecette, getUser, getNotes } from '../API/Api'
+import { addCommentaire, getCommentaires } from '../API/Api'
 import DialogConnectionCom from './DialogConnectionCom';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
