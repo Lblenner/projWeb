@@ -1,10 +1,16 @@
 import React from 'react'
 import RecetteItem from './RecetteItem';
 
-type MyProps = { liste: any, update: any, notesPerso };
+type MyProps = { liste: any, update: any, notesPerso, customItem };
 type MyState = {};
 
 export default class List extends React.Component<MyProps, MyState> {
+
+
+  public static defaultProps = {
+    customItem: null,
+    update: () => null
+  };
 
   constructor(props) {
     super(props);
@@ -13,7 +19,7 @@ export default class List extends React.Component<MyProps, MyState> {
   }
 
   render() {
-    if (this.props.liste == undefined || this.props.liste.length == 0){
+    if (this.props.liste == undefined || this.props.liste.length == 0) {
       return <h1>Pas de recette</h1>
     }
 
@@ -21,9 +27,13 @@ export default class List extends React.Component<MyProps, MyState> {
       <div id="main_container">
         <div id="list_container">
           {this.props.liste.map((elem, index) => {
-            let noteId = this.props.notesPerso? this.props.notesPerso.findIndex(note => note.recetteId == elem.id) : null
-            return <RecetteItem key={elem.id} recette={elem} update={this.props.update} 
-              notePerso={this.props.notesPerso? this.props.notesPerso[noteId] ? this.props.notesPerso[noteId].valeur : null : null}/>
+            let noteId = this.props.notesPerso ? this.props.notesPerso.findIndex(note => note.recetteId == elem.id) : null
+            return (<div  key={elem.id} style={{display: "flex", flexDirection: "row"}} >
+              { this.props.customItem && this.props.customItem(elem)} 
+              <RecetteItem recette={elem} update={this.props.update}
+                notePerso={this.props.notesPerso ? this.props.notesPerso[noteId] ? this.props.notesPerso[noteId].valeur : null : null} />
+            </div>)
+
           })}
           <div id="end">Pas d'autres recettes</div>
         </div>
