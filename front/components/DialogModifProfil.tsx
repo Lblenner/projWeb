@@ -81,7 +81,12 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
     console.log(JSON.stringify(json))
 
     if(response.status != 200){
-      this.setState({msg: json.propertyViolations[0].message, open: true, load: false})
+      if (json.propertyViolations){
+        this.setState({msg: json.propertyViolations[0].message, open: true, load: false})
+      }
+      if (json.parameterViolations){
+        this.setState({msg: json.parameterViolations[0].message, open: true, load: false})
+      }
       return
     }
 
@@ -116,13 +121,13 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
               <DialogContent>
                 <div className="form-group">
                   <label htmlFor="nom">Nom</label>
-                  <input required type="text" className="form-control" id="nom" placeholder="Nom"
+                  <input type="text" className="form-control" id="nom" placeholder="Nom"
                     onChange={(e) => this.setState({ nom: e.target.value })} value={this.state.nom} />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="mail">Mail</label>
-                  <input required type="text" className="form-control" id="mail" placeholder="Mail"
+                  <input type="text" className="form-control" id="mail" placeholder="Mail"
                     onChange={(e) => this.setState({ mail: e.target.value })} value={this.state.mail} />
                 </div>
 
