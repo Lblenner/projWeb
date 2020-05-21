@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircularProgress} from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import { connect } from 'react-redux'
@@ -11,7 +11,7 @@ import NoteFicheRecette from './NoteFicheRecette';
 import Link from 'next/link'
 
 type MyProps = any
-type MyState = { nbParts: any, open: boolean, listeCom: any, commentaire: any };
+type MyState = { nbParts: any, open: boolean, listeCom: any, commentaire: any, buttonComLoading };
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -23,6 +23,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       nbParts: this.props.recette.nombreParts,
       open: false,
       listeCom: this.props.recette.commentaires.slice().reverse(),
+      buttonComLoading: false,
       commentaire: "",
     };
     ;
@@ -41,6 +42,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     event.preventDefault();
     event.persist();
 
+    this.setState({buttonComLoading: true})
     let token = this.props.token
 
     if (token != null) {
@@ -62,8 +64,11 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         // Echec ajout comm
       }
 
+      this.setState({buttonComLoading: false})
+
+
     } else {
-      this.setState({ open: true });
+      this.setState({ open: true, buttonComLoading: false });
     }
 
   }
@@ -141,7 +146,10 @@ class FicheRecette extends React.Component<MyProps, MyState> {
                 value={this.state.commentaire} onChange={(texte) => this.setState({ commentaire: texte })} />
             </div>
             <div id="addCommentaire">
-              <button type="submit" className="btn btn-success" >Ajouter un commentaire</button>
+              {this.state.buttonComLoading ?
+                <CircularProgress /> :
+                <button type="submit" className="btn btn-success" >Ajouter un commentaire</button>
+              }
             </div>
           </form>
           <div>

@@ -7,9 +7,10 @@ import { connect } from 'react-redux'
 import InputFile from './InputFile';
 import { uploadImage } from '../API/Api'
 import { addRecette } from '../API/Api'
+import { CircularProgress } from '@material-ui/core';
 
 type MyProps = any;
-type MyState = { open: boolean, msg };
+type MyState = { open: boolean, msg, loading };
 
 class AddForm extends React.Component<MyProps, MyState>  {
 
@@ -20,7 +21,8 @@ class AddForm extends React.Component<MyProps, MyState>  {
     super(props);
     this.state = {
       open: false,
-      msg: "Une erreur s'est produite"
+      msg: "Une erreur s'est produite",
+      loading: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.textarea = ""
@@ -29,13 +31,15 @@ class AddForm extends React.Component<MyProps, MyState>  {
   async handleSubmit(event) {
     event.preventDefault();
     event.persist();
+
+    this.setState({loading: true})
     let link
 
     if (this.image != null) {
       let imgresponse = await uploadImage(this.image)
 
       if (!imgresponse.ok) {
-        this.setState({ open: true })
+        this.setState({ open: true, loading: false })
         console.log(imgresponse)
         return
       }
@@ -43,7 +47,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
       let imgjson = await imgresponse.json()
 
       if (!imgjson.success) {
-        this.setState({ open: true })
+        this.setState({ open: true, loading: false })
         console.log(imgjson)
         return
       }
@@ -61,7 +65,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
       console.log(response)
       let json = await response.json()
       console.log(JSON.stringify(json))
-      this.setState({ msg: json.message, open: true })
+      this.setState({ msg: json.message, open: true, loading: false })
       return
     }
 
@@ -113,7 +117,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
         <div className="form-group">
           <label htmlFor="parts">Nombre de parts de la recette (facultatif)</label>
-          <input type="number"min={1} max={100} className="form-control" id="nbParts" placeholder="10" />
+          <input type="number" min={1} max={100} className="form-control" id="nbParts" placeholder="10" />
         </div>
 
         <div className="form-group">
@@ -126,7 +130,10 @@ class AddForm extends React.Component<MyProps, MyState>  {
           <TextArea size={300} id="area" placeHolder={["Etape 1:", "Faire fondre le chocolat...", "Etape 2:", "Battre les oeufs..."]} />
         </div>
 
-        <button type="submit" className="btn btn-primary">Créer la recette</button>
+        {this.state.loading ?
+          <CircularProgress /> :
+          <button type="submit" className="btn btn-primary">Créer la recette</button>
+        }
 
         <style jsx>{`
         #form {
