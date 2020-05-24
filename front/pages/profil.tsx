@@ -177,7 +177,6 @@ class Profil extends React.Component<MyProps, MyState> {
     let p = this.state.user
     let content = null
 
-    console.log(p)
     if (p == null) {
       content = "Cet utilisateur n'existe pas"
     } else {

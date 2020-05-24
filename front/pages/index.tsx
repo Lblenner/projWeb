@@ -4,7 +4,7 @@ import Head from 'next/head'
 import List from '../components/List'
 import SearchBar from '../components/SearchBar'
 import { connect } from 'react-redux'
-import { getUser } from '../API/Api'
+import { getUser, getRecettes } from '../API/Api'
 
 type MyProps = any
 type MyState = { notesUser };
@@ -15,16 +15,7 @@ class Index extends React.Component<MyProps, MyState> {
 
   static async getInitialProps(ctx) {
 
-    const requestHeaders: HeadersInit = { 'Content-Type': 'application/json' }
-
-    var myInit = {
-      method: 'GET',
-      headers: requestHeaders,
-      mode: 'cors' as RequestMode,
-      cache: 'default' as RequestCache,
-      credentials: 'include' as RequestCredentials
-    };
-    var response = await fetch("https://martine.rest/api/v1/recettes", myInit)
+    var response = await getRecettes()
 
     if (response.status > 400) {
       return

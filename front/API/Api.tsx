@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-unfetch'
 
+const url = "https://martine.rest"
+
 export const uploadImage = async (img) => {
   console.log(JSON.stringify(img))
   const formData = new FormData();
@@ -33,7 +35,7 @@ export const getRecette = (id) => {
     credentials: 'include' as RequestCredentials
   };
 
-  return fetch("https://martine.rest/api/v1/recettes/" + id, myInit)
+  return fetch(url + "/api/v1/recettes/" + id, myInit)
 
 }
 
@@ -55,7 +57,7 @@ export const addRecette = (recette, token) => {
     body: JSON.stringify(recette)
   };
 
-  return fetch("https://martine.rest/api/v1/recettes", myInit)
+  return fetch(url + "/api/v1/recettes", myInit)
 }
 
 export const getCommentaires = (id) => {
@@ -73,7 +75,7 @@ export const getCommentaires = (id) => {
     credentials: 'include' as RequestCredentials
   };
 
-  return fetch("https://martine.rest/api/v1/recettes/" + id + "/commentaires", myInit)
+  return fetch(url + "/api/v1/recettes/" + id + "/commentaires", myInit)
 
 }
 
@@ -97,7 +99,7 @@ export const addCommentaire = (recetteid, commentaire, token) => {
     body: body
   };
 
-  return fetch("https://martine.rest/api/v1/recettes/" + recetteid + "/commentaires", myInit)
+  return fetch(url + "/api/v1/recettes/" + recetteid + "/commentaires", myInit)
 }
 
 
@@ -117,7 +119,7 @@ export const getUser = (username) => {
     credentials: 'include' as RequestCredentials,
   };
 
-  return fetch("https://martine.rest/api/v1/users/" + username, myInit)
+  return fetch(url + "/api/v1/users/" + username, myInit)
 }
 
 export const patchUser = (username, token, password = null, bio = null, photo = null, nom = null, date = null, mail = null) => {
@@ -149,7 +151,7 @@ export const patchUser = (username, token, password = null, bio = null, photo = 
     body: user
   };
 
-  return fetch("https://martine.rest/api/v1/users/" + username, myInit)
+  return fetch(url + "/api/v1/users/" + username, myInit)
 
 }
 
@@ -173,7 +175,7 @@ export function createUser(fullname, username, password) {
     body: user
   };
 
-  return fetch("https://martine.rest/api/v1/users", myInit)
+  return fetch(url + "/api/v1/users", myInit)
 
 }
 
@@ -197,7 +199,7 @@ export const addNote = (recetteid, value, token) => {
     body: body
   };
 
-  return fetch("https://martine.rest/api/v1/recettes/" + recetteid + "/notes", myInit)
+  return fetch(url + "/api/v1/recettes/" + recetteid + "/notes", myInit)
 }
 
 export const getNotes = (id) => {
@@ -214,7 +216,7 @@ export const getNotes = (id) => {
     credentials: 'include' as RequestCredentials
   };
 
-  return fetch("https://martine.rest/api/v1/recettes/" + id + "/notes", myInit)
+  return fetch(url + "/api/v1/recettes/" + id + "/notes", myInit)
 
 }
 
@@ -233,6 +235,21 @@ export const removeNote = (recetteid, noteid, token) => {
     credentials: 'include' as RequestCredentials
   };
 
-  return fetch("https://martine.rest/api/v1/recettes/" + recetteid + "/notes/" + noteid, myInit)
+  return fetch(url + "/api/v1/recettes/" + recetteid + "/notes/" + noteid, myInit)
 
+}
+
+export const getRecettes = () => {
+
+  const requestHeaders: HeadersInit = { 'Content-Type': 'application/json' }
+
+  var myInit = {
+    method: 'GET',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials
+  };
+
+  return fetch(url+"/api/v1/recettes", myInit)  
 }
