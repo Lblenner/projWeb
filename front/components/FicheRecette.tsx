@@ -92,12 +92,12 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     if (this.nbParts != 0) {
       for (let i = 0; i < r.elements.length; i++) {
         let elem = r.elements[i]
-        listIng.push(<li key={elem.id}> {(elem.quantite.nombre * this.state.nbParts / this.nbParts).toFixed(2) + " " + elem.quantite.unite + " " + elem.ingredient.nom}</li>)
+        listIng.push(<li key={i}> {(elem.quantite.nombre * this.state.nbParts / this.nbParts).toFixed(2) + " " + elem.quantite.unite + " " + elem.ingredient.nom}</li>)
       }
     } else {
       for (let i = 0; i < r.elements.length; i++) {
         let elem = r.elements[i]
-        listIng.push(<li key={elem.id}> {elem.quantite.nombre + " " + elem.quantite.unite + " " + elem.ingredient.nom}</li>)
+        listIng.push(<li key={i + r.elements.length}> {elem.quantite.nombre + " " + elem.quantite.unite + " " + elem.ingredient.nom}</li>)
       }
     }
 
@@ -154,7 +154,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
           </form>
           <div>
             {this.state.listeCom.map((elem) => {
-              return <CommentaireItem key={elem.id} commentaire={elem} token={this.props.token} />
+              return <CommentaireItem key={elem.id + 2 * r.elements.length} commentaire={elem} token={this.props.token} />
             })}
           </div>
         </div>

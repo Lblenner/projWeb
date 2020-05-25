@@ -1,16 +1,35 @@
 import React from 'react'
 import gestionSautLigne from '../src/gestionFormatText';
 import Avatar from '@material-ui/core/Avatar';
+import { getUser } from '../API/Api';
 
 type MyProps = { commentaire: any , token };
+type MyState = { photo : any };
 
-export default class CommentaireItem extends React.Component<MyProps> {
+export default class CommentaireItem extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props);
+    this.state = {
+      photo : null,
+    };
+  }
+
+  obtenirPhotoUser = async () => {
+    let response = await getUser(this.props.commentaire.auteurUsername);
+
+    if (response.status != 200) {
+      console.log("Erreur")
+      return
+    }
+
+    let user = await response.json();
+    this.setState({photo : user.photo});
   }
 
   render() {
+    this.obtenirPhotoUser();
+    var photoUser = this.state.photo;
 
     const pourcentageProfil = 20;
     const espaceProfilCom = 10;
@@ -27,7 +46,8 @@ export default class CommentaireItem extends React.Component<MyProps> {
     return (
        <div id='container'>
          <div id='profil'>
-            <Avatar id="avatar" style={{alignSelf: 'center'}}>{initiales}</Avatar>
+            {photoUser == null && <Avatar key="nopicture" id="avatar" style={{alignSelf: 'center', height: '100px', width: '100px'}}>{initiales}</Avatar>}
+            {photoUser != null && <Avatar key="picture" id="avatar" src={photoUser} style={{alignSelf: 'center', height: '100px', width: '100px'}}>{initiales}</Avatar>}
             <a href={"/profil?username="+this.props.commentaire.auteurUsername}>
               <div id="fullname">{this.props.commentaire.auteurFullname}</div>
               <div id="username">(@{this.props.commentaire.auteurUsername})</div>
@@ -68,11 +88,6 @@ export default class CommentaireItem extends React.Component<MyProps> {
             margin-right: ${espaceProfilCom-1}px;
             padding: 10px;
             text-align : center;
-          }
-
-          #avatar {
-            text-align : center;
-            justify-content: center;
           }
 
           #commentaire {
