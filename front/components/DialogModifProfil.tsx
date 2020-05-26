@@ -33,6 +33,7 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
     };
   }
 
+  //On reset le dialog si annuler est cliqué
   handleAnnule = () => {
     this.props.handleClose()
     this.setState({
@@ -49,7 +50,9 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
     event.persist();
 
     let link
+    this.setState({ load: true })
 
+    //Upload de l'image
     if (this.image != null) {
       let imgresponse = await uploadImage(this.image)
 
@@ -66,12 +69,10 @@ class DialogModifProfil extends React.Component<MyProps, MyState> {
         console.log(imgjson)
         return
       }
-
       link = imgjson.data.link
-
     }
 
-    this.setState({ load: true })
+    //Requete a l'api
     let username = this.props.username
     let token = this.props.token
     let response = await patchUser(username, token, null, this.state.bio, link, this.state.nom, this.state.date, this.state.mail)

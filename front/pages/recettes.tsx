@@ -12,7 +12,7 @@ import RecetteItem from '../components/RecetteItem';
 
 
 type MyProps = any;
-type MyState = { type, icon, liste };
+type MyState = { type, icon, liste, fav };
 
 class MesRecettes extends React.Component<MyProps, MyState> {
 
@@ -25,7 +25,8 @@ class MesRecettes extends React.Component<MyProps, MyState> {
     this.state = {
       type: "neutre",
       icon: <FaMinus style={{ marginLeft: 5 }} size={20} />,
-      liste: null
+      liste: this.props.user.recettesCompactes,
+      fav : []
     }
   }
 
@@ -58,9 +59,12 @@ class MesRecettes extends React.Component<MyProps, MyState> {
 
     user = await response.json()
 
-    return { user: user }
+    //On renvoie ici l'user dont affiche les recettes
+    return { user: user, fav: user.favoris }
   }
 
+
+  //Item qui sera affiché dans la colonne de note
   item(elem) {
 
     let note = this.props.user.notes.find((note) => note.recetteId == elem.id)
@@ -84,6 +88,7 @@ class MesRecettes extends React.Component<MyProps, MyState> {
     </div>)
   }
 
+  //Modifie l'etat du trieur de notes
   changeType() {
     switch (this.state.type) {
       case "neutre":
@@ -110,11 +115,12 @@ class MesRecettes extends React.Component<MyProps, MyState> {
     }
   }
 
+
   componentDidMount() {
-    this.setState({ liste: this.props.user.recettesCompactes })
+
+    //On créer les trois listes possiblement affiché en fonction du trieur de note
     this.liste = this.props.user.recettesCompactes
 
-    //Tri
     this.listeDown = this.props.user.recettesCompactes.slice().sort((a, b) => {
       let note1 = this.props.user.notes.find((note) => note.recetteId == a.id)
       let note2 = this.props.user.notes.find((note) => note.recetteId == b.id)
@@ -131,13 +137,11 @@ class MesRecettes extends React.Component<MyProps, MyState> {
     })
 
   }
+
+
   render() {
-    let liste
-    if (this.state.liste) {
-      liste = this.state.liste
-    } else {
-      liste = this.props.user.recettesCompactes
-    }
+
+    let liste = this.state.liste
 
     return (
       <div>
@@ -147,7 +151,7 @@ class MesRecettes extends React.Component<MyProps, MyState> {
         <Layout>
           <h1>Recettes de {this.props.user.fullname} (@{this.props.user.username})</h1>
           <div onClick={() => this.changeType()} id="note" >Notes  {this.state.icon}</div>
-          <List liste={liste} notesPerso={[]} customItem={(elem => this.item(elem))} />
+          <List listeFav={this.state.fav} liste={liste} notesPerso={[]} customItem={(elem => this.item(elem))} />
         </Layout>
 
         <style jsx>{`

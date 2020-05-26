@@ -11,7 +11,7 @@ export default function About() {
       </Head>
       <Layout>
         <div className="container-fluid">
-          <RegisterForm/>
+          <RegisterForm />
         </div>
       </Layout>
     </div>

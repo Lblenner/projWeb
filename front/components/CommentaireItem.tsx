@@ -14,7 +14,7 @@ export default class CommentaireItem extends React.Component<MyProps, MyState> {
       photo : null,
     };
   }
-
+  
   obtenirPhotoUser = async () => {
     let response = await getUser(this.props.commentaire.auteurUsername);
 

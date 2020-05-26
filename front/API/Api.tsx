@@ -251,11 +251,11 @@ export const getRecettes = () => {
     credentials: 'include' as RequestCredentials
   };
 
-  return fetch(url+"/api/v1/recettes", myInit)  
+  return fetch(url + "/api/v1/recettes", myInit)
 }
 
 
-export const supprRecette = (id,token) => {
+export const supprRecette = (id, token) => {
 
   const requestHeaders: HeadersInit = new Headers();
   requestHeaders.set('Content-Type', 'application/json');
@@ -271,5 +271,46 @@ export const supprRecette = (id,token) => {
   };
 
   return fetch(url + "/api/v1/recettes/" + id, myInit)
+
+}
+
+export const addFav = (token, username, id) => {
+
+  const requestHeaders: HeadersInit = new Headers();
+  //requestHeaders.set('Content-Type', 'application/json');
+  requestHeaders.set('accept', 'application/json');
+  requestHeaders.set('authorization', 'Basic ' + token);
+
+  var myInit = {
+    method: 'POST',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials
+  };
+
+  console.log()
+
+  return fetch(url + "/api/v1/users/" + username + "/favoris/" + id, myInit)
+
+}
+
+export const removeFav = (token, username, fid) => {
+
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set('accept', 'application/json');
+  requestHeaders.set('authorization', 'Basic ' + token);
+
+  var myInit = {
+    method: 'DELETE',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials
+  };
+
+  console.log()
+
+  return fetch(url + "/api/v1/users/" + username + "/favoris/" + fid, myInit)
 
 }

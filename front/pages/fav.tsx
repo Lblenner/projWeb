@@ -26,7 +26,7 @@ class Fav extends React.Component<MyProps, MyState> {
     super(props)
     this.state = {
       cookieFavs: [],
-      notesUser: [],
+      notesUser: this.props.notes,
       accountFavs: this.props.listeFav,
       masque: false
     }
@@ -35,6 +35,7 @@ class Fav extends React.Component<MyProps, MyState> {
   static async getInitialProps(ctx) {
     let username = ctx.query.username
     let listeFav = null
+    let notes = []
 
     if (username == null && ctx.isServer) {
       username = cookie.parse(ctx.req.headers.cookie).username
@@ -45,40 +46,27 @@ class Fav extends React.Component<MyProps, MyState> {
     }
 
     if (username) {
-      let response = getFavoris(username)
+      let response = await getUser(username)
 
-      if (response.status > 400) {
+      if (response.status != 200) {
         console.log("Erreur")
+        console.log(response)
         return { listeFav: null, name: ctx.query.username }
       }
 
-      listeFav = await response.json()
+      let user = await response.json()
+
+      listeFav = user.favoris
+      notes = user.notes
     }
 
-
-    return { listeFav: "r", name: ctx.query.username }
+    return { listeFav: listeFav, name: ctx.query.username, notes: notes }
   }
 
   async componentDidMount() {
+    //Recuperatio ndes favoris cookies
     var cookieFavs = cookies.get('favs')
-    console.log(cookieFavs)
     this.setState({ cookieFavs: cookieFavs })
-
-    let username = this.props.username
-    if (!username) {
-      return
-    }
-
-    let response = await getUser(username)
-
-    if (response.status > 400) {
-      console.log("Vous n'etes pas connecté")
-      return
-    }
-
-    let user = await response.json()
-
-    this.setState({ notesUser: user.notes })
   }
 
   sync() {
@@ -89,24 +77,25 @@ class Fav extends React.Component<MyProps, MyState> {
     let content
 
     if (this.props.name) {
-      //Si un nom est précisé
+      //Page avec username => Affichage des favoris du username
 
       content = <div>
         <h1>Favoris de {this.props.name}</h1>
-        <List liste={this.state.accountFavs} update={(id) => {
+        <List liste={this.state.accountFavs.map((elem) => elem.recetteCompact)} update={(id) => {
           this.setState({ accountFavs: this.state.accountFavs.filter((e) => e.id != id) })
-        }} notesPerso={this.state.notesUser} />
+        }} notesPerso={this.state.notesUser} listeFav={this.state.accountFavs}/> 
       </div>
 
     } else if (this.props.username) {
-      //Si pas de nom et connecté
+      //Page sans username + connecté => Affichage des favoris cookies et du compte
+      let l = this.state.accountFavs.map((elem) => elem.recetteCompact)
 
       content = <div>
         <h1 style={{ marginTop: "10px" }}>Mes favoris </h1>
 
-        <List liste={this.state.accountFavs} update={(id) =>
-          this.setState({ accountFavs: this.state.accountFavs.filter((e) => e.id != id) })}
-          notesPerso={this.state.notesUser} />
+        <List liste={l} update={(id) =>
+          this.setState({ accountFavs: l.filter((e) => e.id != id) })}
+          notesPerso={this.state.notesUser} listeFav={this.state.accountFavs}/> 
 
 
         <h1 style={{ marginTop: "10px" }}>
@@ -123,7 +112,7 @@ class Fav extends React.Component<MyProps, MyState> {
               Attention ! Cela supprimera vos favoris de votre navigateur mais les conservera sur votre compte <br/>
               <strong id="link" onClick={() => this.sync()}>Synchroniser</strong>
             </Alert>
-            < List liste={this.state.cookieFavs} update={(id) =>
+            < List listeFav={[]} liste={this.state.cookieFavs} update={(id) =>
               this.setState({ cookieFavs: this.state.cookieFavs.filter((e) => e.id != id) })}
               notesPerso={this.state.notesUser} />
           </div>}
@@ -147,7 +136,7 @@ class Fav extends React.Component<MyProps, MyState> {
       </div>
 
     } else {
-      //Pas de nom pas connecté
+      //Page sans username + Compte déconnecté => affiche des favoris cookies
 
       content = <div>
         <h1>Mes favoris</h1>
@@ -160,15 +149,13 @@ class Fav extends React.Component<MyProps, MyState> {
             <Link href="/register"><a className="link"><strong> inscrivez vous</strong></a></Link>.
           </Alert>
         }
-        < List liste={this.state.cookieFavs} update={(id) => {
+        <List listeFav={[]} liste={this.state.cookieFavs} update={(id) => {
           this.setState({ cookieFavs: this.state.cookieFavs.filter((e) => e.id != id) })
         }}
           notesPerso={this.state.notesUser} />
       </div>
 
     }
-
-
 
     return (
       <div>

@@ -3,10 +3,10 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import FicheRecette from '../components/FicheRecette'
-import {getRecette} from '../API/Api'
+import { getRecette } from '../API/Api'
 
 type MyProps = { recette };
-type MyState = {  };
+type MyState = {};
 
 class Recette extends React.Component<MyProps, MyState> {
 
@@ -17,7 +17,7 @@ class Recette extends React.Component<MyProps, MyState> {
         if (id != null) {
             let response = await getRecette(id)
 
-            if (response.status > 400) {
+            if (response.status != 200) {
                 console.log("Erreur")
                 return
             }
@@ -35,7 +35,7 @@ class Recette extends React.Component<MyProps, MyState> {
                     <title>{this.props.recette.nom}</title>
                 </Head>
                 <Layout>
-                    <FicheRecette recette={this.props.recette}/>
+                    <FicheRecette recette={this.props.recette} />
                 </Layout>
             </div>
         )

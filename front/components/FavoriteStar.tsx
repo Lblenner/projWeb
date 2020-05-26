@@ -10,7 +10,7 @@ export default class FavoriteStar extends React.Component<MyProps, MyState> {
   /*
   L'etat added et afterRemove serve à faire en sorte qu'aprés un click, le resultat du click soit affiché et non l'effet qu'aura le clic
   jusqu'a ce que le souris sorte de l'icon. 
-  Exemple: On vient de supprimer l'item des favoris, on veut voir un dessous de la souris une etoile vide et non une etoit prete a etre validé
+  Exemple: On vient de supprimer l'item des favoris, on veut voir en dessous de la souris une etoile vide et non une etoit prete a etre validé
   Ce sera le cas jsuqu'a que la souris sorte de l'icon grave a afterRemove
   */
 

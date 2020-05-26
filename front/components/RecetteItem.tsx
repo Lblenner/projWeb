@@ -3,26 +3,37 @@ import TextTruncate from 'react-text-truncate';
 import ReactHoverObserver from 'react-hover-observer';
 import { connect } from 'react-redux'
 
-type MyProps = { recette: any, update: any, notePerso: any };
-type MyState = { isFavorite: any };
+type MyProps = { recette: any, update: any, notePerso: any, listFav, username, token };
+type MyState = { isFavorite: any, loading };
 
 import Router from 'next/router';
 import NoteDisplay from './NoteDisplay';
 import Cookies from 'universal-cookie';
 import FavoriteStar from './FavoriteStar';
+import { CircularProgress } from '@material-ui/core';
+import { addFav, removeFav } from '../API/Api';
 
 const cookies = new Cookies();
 
 class RecetteItem extends React.Component<MyProps, MyState> {
 
+  public static defaultProps = {
+  };
+
+  user = false
+  fid = null
+
   constructor(props) {
     super(props);
     this.state = {
       isFavorite: false,
+      loading: false
     };
   }
 
   componentDidMount() {
+
+    //Affichage favoris navigateur
     let favs = cookies.get("favs")
     if (favs == undefined) {
       favs = []
@@ -32,36 +43,83 @@ class RecetteItem extends React.Component<MyProps, MyState> {
     var r = this.props.recette
     if (favs.find(elem => elem.id == r.id)) {
       this.setState({ isFavorite: true })
+      this.user = false
     }
 
-    
+    //Affichage favoris compte
+    let listeFav = this.props.listFav
+    let elem =  listeFav.find(elem => elem.recetteCompact.id == r.id)
+    if (listeFav && elem) {
+      this.setState({ isFavorite: true })
+      this.fid = elem.id
+      this.user = true
+    }
+
+
   }
 
   itemPressed() {
     Router.push('/recette?id=' + this.props.recette.id)
   }
 
-  namePressed(e,username) {
+  namePressed(e, username) {
     e.stopPropagation()
-    Router.push('/profil?username='+username)
+    Router.push('/profil?username=' + username)
   }
 
-  unfavoritePressed(e) {
+  async unfavoritePressed(e) {
     e.stopPropagation()
-    let favs = cookies.get("favs")
-    var r = this.props.recette
-    favs = favs.filter(function (el) { return el.id != r.id });
-    cookies.set('favs', favs)
-    this.props.update(r.id)
-    this.setState({ isFavorite: false, })
+
+    if (this.user) {
+      this.setState({loading: true})
+      let token = this.props.token
+      let username = this.props.username
+      let response = await removeFav(token,username,this.fid)
+
+      if (response.status != 204){
+        console.log("Une erreur c'est produite lors de la suppression d'un favoris")
+        console.log(response)
+      } else {
+        this.setState({ isFavorite: false, })
+      }
+
+      this.setState({loading: false})
+    } else {
+      let favs = cookies.get("favs")
+      var r = this.props.recette
+      favs = favs.filter(function (el) { return el.id != r.id });
+      cookies.set('favs', favs)
+      this.props.update(r.id)
+      this.setState({ isFavorite: false, })
+    }
   }
 
-  favoritePressed(e) {
+  async favoritePressed(e) {
     e.stopPropagation()
-    let favs = cookies.get("favs")
-    favs = favs.concat([this.props.recette])
-    cookies.set('favs', favs)
-    this.setState({ isFavorite: true })
+
+    if (this.props.username) {  
+      this.setState({loading: true})
+      let token = this.props.token
+      let username = this.props.username
+      let response = await addFav(token,username,this.props.recette.id)
+
+      if (response.status != 200){
+        console.log("Une erreur c'est produite lors de l'ajout d'un favoris")
+        console.log(response)
+      } else {
+        this.setState({ isFavorite: true })
+        let json = await response.json()
+        this.fid = json.id
+      }
+
+      this.setState({loading: false})
+    } else {
+      let favs = cookies.get("favs")
+      favs = favs.concat([this.props.recette])
+      cookies.set('favs', favs)
+      this.setState({ isFavorite: true })
+    }
+
   }
 
   render() {
@@ -70,8 +128,8 @@ class RecetteItem extends React.Component<MyProps, MyState> {
     if (a == null) {
       a = "Cette recette n'a pas de description"
     }
-    if (a.length < 3){
-      a = "Description: "+a
+    if (a.length < 3) {
+      a = "Description: " + a
     }
     return (
       <div id="container"
@@ -80,21 +138,23 @@ class RecetteItem extends React.Component<MyProps, MyState> {
           <div className="row">
             <h3 style={{ flexGrow: 1 }} id="trunc">{recette.nom}</h3>
             <ReactHoverObserver>
-              <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />
+                {this.state.loading ? 
+                  <CircularProgress/> :
+                  <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />}
             </ReactHoverObserver>
           </div>
-    De <span onClick={(e) => this.namePressed(e,recette.auteurUsername)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
+    De <span onClick={(e) => this.namePressed(e, recette.auteurUsername)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
           <div id="rating">
             <NoteDisplay name="Note" value={recette.note} />
             <NoteDisplay name="Ma note" value={this.props.notePerso} />
           </div>
-          <div style={{flexGrow: 1, display: "flex"}}>
-          <TextTruncate
-            line={2}
-            element="span"
-            truncateText="..."
-            text={a}
-          />
+          <div style={{ flexGrow: 1, display: "flex" }}>
+            <TextTruncate
+              line={2}
+              element="span"
+              truncateText="..."
+              text={a}
+            />
           </div>
         </div>
         <div id="right">

@@ -35,6 +35,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
     this.setState({loading: true})
     let link
 
+    //Upload de l'image si image précisé
     if (this.image != null) {
       let imgresponse = await uploadImage(this.image)
 
@@ -53,13 +54,13 @@ class AddForm extends React.Component<MyProps, MyState>  {
       }
 
       link = imgjson.data.link
-
     }
 
+
+    //Création de la recette
     let token = this.props.token
     let recette = this.createBody(event.target, link)
     let response = await addRecette(recette, token)
-
 
     if (response.status != 201) {
       console.log(response)
@@ -80,6 +81,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
     this.image = img
   }
 
+  //On crée le body de la requete a partir des events du formulaire
   createBody(listeData, link) {
     let n = listeData.length
     let recette = new Recette(listeData[0].value, listeData[1].value, listeData[3].value, listeData[n - 2].value, link)
@@ -157,6 +159,8 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(AddForm)
 
+
+//Objet du body de la requete d'ajout de recette
 class Recette {
   photo: string
   nom: string;

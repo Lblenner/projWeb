@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
 import theme from '../src/theme';
 import Head from 'next/head';
 
+//Fichier de configuration pour Material UI et la persitence de redux,
+// la plupart de la page a été trouvé sur les sites de material Ui et redux dans la partie integration a next 
 
 function MyApp(props) {
 
@@ -58,7 +60,6 @@ MyApp.getInitialProps = async ({ Component, ctx, }) => {
       ctx.store.dispatch(action)
     }
   }
-  //Anything returned here can be access by the client
   return { pageProps: pageProps };
 }
 

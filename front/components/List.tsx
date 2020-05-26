@@ -1,7 +1,7 @@
 import React from 'react'
 import RecetteItem from './RecetteItem';
 
-type MyProps = { liste: any, update: any, notesPerso, customItem };
+type MyProps = { liste: any, update: any, notesPerso, customItem, listeFav };
 type MyState = {};
 
 export default class List extends React.Component<MyProps, MyState> {
@@ -30,7 +30,7 @@ export default class List extends React.Component<MyProps, MyState> {
             let noteId = this.props.notesPerso ? this.props.notesPerso.findIndex(note => note.recetteId == elem.id) : null
             return (<div  key={elem.id} style={{display: "flex", flexDirection: "row"}} >
               { this.props.customItem && this.props.customItem(elem)} 
-              <RecetteItem recette={elem} update={this.props.update}
+              <RecetteItem recette={elem} update={this.props.update} listFav={this.props.listeFav}
                 notePerso={this.props.notesPerso ? this.props.notesPerso[noteId] ? this.props.notesPerso[noteId].valeur : null : null} />
             </div>)
 

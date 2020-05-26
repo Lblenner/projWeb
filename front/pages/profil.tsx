@@ -29,6 +29,7 @@ class Profil extends React.Component<MyProps, MyState> {
     }
   }
 
+  //Executé sur le serveur et le client
   static async getInitialProps(ctx) {
     let username = ctx.query.username
     let user = null
@@ -44,7 +45,8 @@ class Profil extends React.Component<MyProps, MyState> {
     let response = await getUser(username)
 
     if (response.status > 400) {
-      console.log("Erreur")
+      const action = { type: "REMOVE_SESSION" }
+      ctx.store.dispatch(action)
       return { user: null }
     }
 
@@ -53,11 +55,15 @@ class Profil extends React.Component<MyProps, MyState> {
     return { user: user }
   }
 
+  
   async componentDidMount() {
+
+    //Affiche deconnexion/modification
     if (this.props.user && this.props.username == this.props.user.username) {
       this.setState({ own: true })
     }
 
+    //Chargement des notes de la personne connecté
     let username = this.props.username
     if (!username) {
       return
@@ -65,15 +71,15 @@ class Profil extends React.Component<MyProps, MyState> {
 
     let response = await getUser(username)
 
-    if (response.status > 400) {
-      console.log("Vous n'etes pas connecté")
+    //Deconnexion si credential invalide
+    if (response.status != 200) {
+      const action = { type: "REMOVE_SESSION" }
+      this.props.dispatch(action)
       return
     }
     let user = await response.json()
 
-    console.log(user.notes)
     this.setState({ notesUser: user.notes })
-
 
   }
 
@@ -97,7 +103,7 @@ class Profil extends React.Component<MyProps, MyState> {
           </div>}
           <div style={{ width: '350px', height: '450px', borderWidth: 1, border: 'solid', }}>
             {p.photo != null &&
-                <img src={p.photo} id="photo" width='344px' height='444px' />}
+              <img src={p.photo} id="photo" width='344px' height='444px' />}
           </div>
           <div style={{ padding: '10px', paddingBottom: 0 }}>
             <h1 style={{ marginBottom: 0 }}>{p.fullname}</h1>
@@ -107,7 +113,7 @@ class Profil extends React.Component<MyProps, MyState> {
             {p.dateInscription && <h6>Inscription: {(new Date(p.dateInscription)).toLocaleDateString("fr-FR")} </h6>}
             <div id="button_container" style={{ marginTop: '20px' }}>
               <Button color="primary" variant="contained" >Favoris</Button>
-              <Button color="primary" variant="contained" onClick={() => Router.push("/recettes?username="+p.username)}>Liste des recettes</Button>
+              <Button color="primary" variant="contained" onClick={() => Router.push("/recettes?username=" + p.username)}>Liste des recettes</Button>
             </div>
             <h5 style={{ marginTop: 20 }}>Activités Récentes</h5>
           </div>
@@ -129,7 +135,7 @@ class Profil extends React.Component<MyProps, MyState> {
             {this.state.search && <SearchBar />}
           </div>
 
-          <List liste={p.recettesCompactes} update={() => null} notesPerso={this.state.notesUser} />
+          <List listeFav={p.favoris?p.favoris:[]} liste={p.recettesCompactes} update={() => null} notesPerso={this.state.notesUser} />
         </div>
       </div>
 

@@ -16,6 +16,7 @@ class Add extends React.Component<MyProps, MyState> {
 
   render() {
 
+    //Redirection
     if (!this.props.token) {
       Router.push('/login?msg=1')
       return <div></div>

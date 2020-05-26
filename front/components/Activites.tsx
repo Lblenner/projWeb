@@ -6,6 +6,7 @@ type MyProps = { listeRecette, listeComment, listeFavs, listeNote }
 
 type MyState = { liste, loadMore };
 
+//Pannea udes activités récente de l'utilisateur
 export default class Activites extends React.Component<MyProps, MyState> {
 
 
@@ -19,15 +20,17 @@ export default class Activites extends React.Component<MyProps, MyState> {
     };
   }
 
-  biglisteDate
-  taille
+  biglisteDate //liste d'activité
+  taille //Nombre d'element a afficher
 
   componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
+      //Si on modifie les les listes donné on recalcule la liste d'activité
       this.loadListe()
     }
   }
 
+  //Transforme les liste donné en props en une unique liste d'activité
   loadListe() {
     this.biglisteDate = []
     let formatRecette = []
@@ -48,6 +51,7 @@ export default class Activites extends React.Component<MyProps, MyState> {
     this.setState({ liste: this.biglisteDate.slice(0, this.taille) })
   }
 
+  //Gere l'affiche de l'element de bas de liste
   setLoadMore() {
     if (this.biglisteDate.length > this.taille) {
       this.setState({ loadMore: true })
@@ -60,6 +64,7 @@ export default class Activites extends React.Component<MyProps, MyState> {
     this.loadListe()
   }
 
+  //Ajoute 5 element a afficher dans la liste
   loadMore() {
     this.setState({ liste: this.biglisteDate.slice(0, this.taille + 5) })
     this.taille = this.taille + 5

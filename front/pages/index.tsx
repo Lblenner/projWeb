@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { getUser, getRecettes } from '../API/Api'
 
 type MyProps = any
-type MyState = { notesUser };
+type MyState = { notesUser, fav };
 
 const fetch = require('node-fetch');
 
@@ -29,6 +29,7 @@ class Index extends React.Component<MyProps, MyState> {
 
   async componentDidMount() {
 
+    //Affiche des notes de la perosnne connecté
     let username = this.props.username
     if (!username) {
       return
@@ -44,14 +45,15 @@ class Index extends React.Component<MyProps, MyState> {
 
     console.log(user.notes)
 
-    this.setState({ notesUser: user.notes })
+    this.setState({ notesUser: user.notes, fav: user.favoris })
   }
 
 
   constructor(props) {
     super(props)
     this.state = {
-      notesUser: []
+      notesUser: [],
+      fav: []
     }
   }
 
@@ -66,7 +68,7 @@ class Index extends React.Component<MyProps, MyState> {
           <div style={{ marginTop: 20, marginBottom: 10 }}>
             <SearchBar />
           </div>
-          <List liste={this.props.liste} update={() => 1} notesPerso={this.state.notesUser}/>
+          <List listeFav={this.state.fav} liste={this.props.liste} update={() => 1} notesPerso={this.state.notesUser}/>
         </Layout>
       </div>
     );
