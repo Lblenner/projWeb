@@ -62,6 +62,7 @@ class Index extends React.Component<MyProps, MyState> {
       <div>
         <Head>
           <title>Les recettes de Martine</title>
+          <link rel="shortcut icon" href="/favicons/favicon.ico" />
         </Head>
         <Layout>
           <div style={{ marginTop: 20, marginBottom: 10 }}>
