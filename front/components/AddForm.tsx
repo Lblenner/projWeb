@@ -34,6 +34,7 @@ class AddForm extends React.Component<MyProps, MyState>  {
 
     this.setState({loading: true})
     let link
+    let prepa = 2
 
     //Upload de l'image si image précisé
     if (this.image != null) {
@@ -54,12 +55,13 @@ class AddForm extends React.Component<MyProps, MyState>  {
       }
 
       link = imgjson.data.link
+      prepa = 1
     }
 
 
     //Création de la recette
     let token = this.props.token
-    let recette = this.createBody(event.target, link)
+    let recette = this.createBody(event.target, link, prepa)
     let response = await addRecette(recette, token)
 
     if (response.status != 201) {
@@ -82,9 +84,9 @@ class AddForm extends React.Component<MyProps, MyState>  {
   }
 
   //On crée le body de la requete a partir des events du formulaire
-  createBody(listeData, link) {
+  createBody(listeData, link,k) {
     let n = listeData.length
-    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[3].value, listeData[n - 2].value, link)
+    let recette = new Recette(listeData[0].value, listeData[1].value, listeData[3].value, listeData[n - k].value, link)
 
     recette.elements.push({ ingredient: { nom: listeData[6].value }, quantite: { nombre: listeData[4].value, unite: listeData[5].value } })
     for (let i = 7; i < n - 4; i += 4) {
