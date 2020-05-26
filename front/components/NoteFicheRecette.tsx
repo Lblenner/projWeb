@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import NoteDisplay from './NoteDisplay';
 import React from 'react';
 import DialogConnectionNote from './DialogConnectionNote';
+import { MySnackbar } from './Snackbar';
 
 type MyProps = { recetteNote, recetteid, username, token }
-type MyState = { myNote, loading, ajout, select, valueSelect, openLogin }
+type MyState = { myNote, loading, ajout, select, valueSelect, openLogin, erreur : any , erreurMsg : any }
 
 class NoteFicheRecette extends React.Component<MyProps, MyState> {
 
@@ -17,7 +18,9 @@ class NoteFicheRecette extends React.Component<MyProps, MyState> {
       ajout: false,
       select: false,
       valueSelect: 5,
-      openLogin: false
+      openLogin: false,
+      erreur: false,
+      erreurMsg: "Une erreur s'est produite",
     };
     ;
   }
@@ -47,7 +50,7 @@ class NoteFicheRecette extends React.Component<MyProps, MyState> {
 
     if (response.status > 400) {
       this.setState({loading: false})
-      console.log("Vous n'etes pas connecté")
+      this.setState({erreur: true, erreurMsg: "Vous n'êtes pas connecté"});
       return
     }
 
@@ -70,7 +73,7 @@ class NoteFicheRecette extends React.Component<MyProps, MyState> {
     let response = await addNote(this.props.recetteid, this.state.valueSelect, this.props.token)
 
     if (response.status > 202) {
-      console.log("Erreur")
+      this.setState({erreur: true, erreurMsg: "Une erreur s'est produite"});
       return
     }
     console.log(response)
@@ -84,6 +87,12 @@ class NoteFicheRecette extends React.Component<MyProps, MyState> {
     this.setState({ loading: true })
 
     let response = await getNotes(this.props.recetteid)
+
+    if (response.status != 200) {
+      this.setState({erreur: true, erreurMsg: "La recette est introuvable"});
+      return
+    }
+
     let liste = await response.json()
     console.log(liste)
 
@@ -91,14 +100,14 @@ class NoteFicheRecette extends React.Component<MyProps, MyState> {
     let noteId = liste.findIndex(note => note.auteurUsername == username)
 
     if (!liste[noteId]) {
-      console.log("Erreur pas de note")
+      this.setState({erreur: true, erreurMsg: "Erreur, vous n'avez pas de note"});
       return
     }
 
     let responseRemove = await removeNote(this.props.recetteid, liste[noteId].id, this.props.token)
 
     if (!responseRemove.ok) {
-      console.log("Erreur")
+      this.setState({erreur: true, erreurMsg: "Une erreur s'est produite"});
       return
     }
 
@@ -110,6 +119,8 @@ class NoteFicheRecette extends React.Component<MyProps, MyState> {
   render() {
     return (
       <div id="main">
+        <MySnackbar open={this.state.erreur} handleClose={() => this.setState({erreur: false})} msg={this.state.erreurMsg}/>
+
         <DialogConnectionNote open={this.state.openLogin} handleClose={() => this.setState({ openLogin: false })} />
 
         <div className="row" style={{ marginLeft: 1, height: 40 }}>

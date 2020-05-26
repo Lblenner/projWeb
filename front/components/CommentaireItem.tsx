@@ -2,9 +2,10 @@ import React from 'react'
 import gestionSautLigne from '../src/gestionFormatText';
 import Avatar from '@material-ui/core/Avatar';
 import { getUser } from '../API/Api';
+import { MySnackbar } from './Snackbar';
 
 type MyProps = { commentaire: any , token };
-type MyState = { photo : any };
+type MyState = { photo : any , erreur : any , erreurMsg : any };
 
 export default class CommentaireItem extends React.Component<MyProps, MyState> {
 
@@ -12,6 +13,8 @@ export default class CommentaireItem extends React.Component<MyProps, MyState> {
     super(props);
     this.state = {
       photo : null,
+      erreur: false,
+      erreurMsg: "Erreur dans le chargement des profils",
     };
   }
   
@@ -19,13 +22,13 @@ export default class CommentaireItem extends React.Component<MyProps, MyState> {
     let response = await getUser(this.props.commentaire.auteurUsername);
 
     if (response.status != 200) {
-      console.log("Erreur")
+      this.setState({erreur: true});
       return
     }
 
-
     let user = await response.json();
     this.setState({photo : user.photo});
+
   }
 
   componentDidMount(){
@@ -49,6 +52,7 @@ export default class CommentaireItem extends React.Component<MyProps, MyState> {
 
     return (
        <div id='container'>
+         <MySnackbar open={this.state.erreur} handleClose={() => this.setState({erreur: false})} msg={this.state.erreurMsg}/>
          <div id='profil'>
             {photoUser == null && <Avatar key="nopicture" id="avatar" style={{alignSelf: 'center', height: '100px', width: '100px'}}>{initiales}</Avatar>}
             {photoUser != null && <Avatar key="picture" id="avatar" src={photoUser} style={{alignSelf: 'center', height: '100px', width: '100px'}}>{initiales}</Avatar>}

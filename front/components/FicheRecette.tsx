@@ -62,10 +62,14 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         this.setState({ commentaire: "" });
         let newListe = await getCommentaires(this.props.recette.id)
 
-        // Gérer les cas d'erreur de newListe
+        if (newListe.status != 200) {
+          // Afficher un message d'erreur
+          this.setState({erreur: true});
 
-        let json = await newListe.json();
-        this.setState({ listeCom: json.reverse() });
+        } else {
+          let json = await newListe.json();
+          this.setState({ listeCom: json.reverse() });
+        }
       } else {
         this.setState({erreur: true})
       }
