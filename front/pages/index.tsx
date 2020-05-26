@@ -68,7 +68,7 @@ class Index extends React.Component<MyProps, MyState> {
           <div style={{ marginTop: 20, marginBottom: 10 }}>
             <SearchBar />
           </div>
-          <List listeFav={this.state.fav} liste={this.props.liste} update={() => 1} notesPerso={this.state.notesUser}/>
+          <List listeFav={this.state.fav} liste={this.props.liste.slice().reverse()} update={() => 1} notesPerso={this.state.notesUser}/>
         </Layout>
       </div>
     );
