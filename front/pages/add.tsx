@@ -14,34 +14,10 @@ type MyState = { favs: any };
 
 class Add extends React.Component<MyProps, MyState> {
 
-  static async getInitialProps(ctx) {
-
-    if (ctx.isServer) {
-
-      const token = cookie.parse(ctx.req.headers.cookie).logged
-      console.log(token)
-      console.log("HEy")
-      const { res } = ctx
-
-      if (token == null) {
-        res.writeHead(301, {
-          Location: '/login'
-        });
-        res.end();
-      }
-
-      return {}
-    }
-
-
-    return {}
-  }
-
-
   render() {
 
     if (!this.props.token) {
-      Router.push('/login')
+      Router.push('/login?msg=1')
       return <div></div>
     }
 

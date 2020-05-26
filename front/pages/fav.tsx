@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { connect } from 'react-redux'
 import { getUser } from '../API/Api';
 import cookie from "cookie"
-import Router from 'next/router'
 
 const cookies = new Cookies();
 
@@ -158,7 +157,7 @@ class Fav extends React.Component<MyProps, MyState> {
             Ils pourront donc être supprimé si vous nettoyez vos cookies. <br />
             Pour être sûr de conserver vos recettes,
             <Link href="/login"><a className="link"><strong> connectez vous</strong></a></Link> ou
-            <Link href="/login"><a className="link"><strong> inscrivez vous</strong></a></Link>.
+            <Link href="/register"><a className="link"><strong> inscrivez vous</strong></a></Link>.
           </Alert>
         }
         < List liste={this.state.cookieFavs} update={(id) => {
