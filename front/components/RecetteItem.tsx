@@ -1,7 +1,7 @@
 import React from 'react'
 import TextTruncate from 'react-text-truncate';
 import ReactHoverObserver from 'react-hover-observer';
-
+import { connect } from 'react-redux'
 
 type MyProps = { recette: any, update: any, notePerso: any };
 type MyState = { isFavorite: any };
@@ -13,7 +13,7 @@ import FavoriteStar from './FavoriteStar';
 
 const cookies = new Cookies();
 
-export default class RecetteItem extends React.Component<MyProps, MyState> {
+class RecetteItem extends React.Component<MyProps, MyState> {
 
   constructor(props) {
     super(props);
@@ -33,6 +33,8 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     if (favs.find(elem => elem.id == r.id)) {
       this.setState({ isFavorite: true })
     }
+
+    
   }
 
   itemPressed() {
@@ -176,3 +178,10 @@ export default class RecetteItem extends React.Component<MyProps, MyState> {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(RecetteItem)
+

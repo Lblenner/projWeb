@@ -50,7 +50,7 @@ export default class List extends React.Component<MyProps, MyState> {
                 border-right: 1px solid;
                 border-left: 1px solid;
                 flex-direction: column;
-                margin-bottom: 30px;
+                margin-bottom: 10px;
               }
               #end {
                 text-align: center;

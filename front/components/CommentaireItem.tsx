@@ -23,12 +23,16 @@ export default class CommentaireItem extends React.Component<MyProps, MyState> {
       return
     }
 
+
     let user = await response.json();
     this.setState({photo : user.photo});
   }
 
-  render() {
+  componentDidMount(){
     this.obtenirPhotoUser();
+  }
+  
+  render() {
     var photoUser = this.state.photo;
 
     const pourcentageProfil = 20;
