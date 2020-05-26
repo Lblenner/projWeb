@@ -43,7 +43,6 @@ class Index extends React.Component<MyProps, MyState> {
     }
     let user = await response.json()
 
-    console.log(user.notes)
 
     this.setState({ notesUser: user.notes, fav: user.favoris })
   }

@@ -31,8 +31,19 @@ class RecetteItem extends React.Component<MyProps, MyState> {
     };
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
+    if (this.props != prevProps) {
+      this.loadFav()
+    }
+  }
 
+  componentDidMount(){
+    this.loadFav()
+  }
+
+
+
+  loadFav() {
     //Affichage favoris navigateur
     let favs = cookies.get("favs")
     if (favs == undefined) {
@@ -48,14 +59,12 @@ class RecetteItem extends React.Component<MyProps, MyState> {
 
     //Affichage favoris compte
     let listeFav = this.props.listFav
-    let elem =  listeFav.find(elem => elem.recetteCompact.id == r.id)
+    let elem = listeFav.find(elem => elem.recetteCompact.id == r.id )
     if (listeFav && elem) {
       this.setState({ isFavorite: true })
       this.fid = elem.id
       this.user = true
     }
-
-
   }
 
   itemPressed() {
@@ -69,24 +78,26 @@ class RecetteItem extends React.Component<MyProps, MyState> {
 
   async unfavoritePressed(e) {
     e.stopPropagation()
+    var r = this.props.recette
+
 
     if (this.user) {
-      this.setState({loading: true})
+      this.setState({ loading: true })
       let token = this.props.token
       let username = this.props.username
-      let response = await removeFav(token,username,this.fid)
+      let response = await removeFav(token, username, this.fid)
 
-      if (response.status != 204){
+      if (response.status != 204) {
         console.log("Une erreur c'est produite lors de la suppression d'un favoris")
         console.log(response)
       } else {
         this.setState({ isFavorite: false, })
+        this.props.update(r.id)
       }
 
-      this.setState({loading: false})
+      this.setState({ loading: false })
     } else {
       let favs = cookies.get("favs")
-      var r = this.props.recette
       favs = favs.filter(function (el) { return el.id != r.id });
       cookies.set('favs', favs)
       this.props.update(r.id)
@@ -97,13 +108,13 @@ class RecetteItem extends React.Component<MyProps, MyState> {
   async favoritePressed(e) {
     e.stopPropagation()
 
-    if (this.props.username) {  
-      this.setState({loading: true})
+    if (this.props.username) {
+      this.setState({ loading: true })
       let token = this.props.token
       let username = this.props.username
-      let response = await addFav(token,username,this.props.recette.id)
+      let response = await addFav(token, username, this.props.recette.id)
 
-      if (response.status != 200){
+      if (response.status != 200) {
         console.log("Une erreur c'est produite lors de l'ajout d'un favoris")
         console.log(response)
       } else {
@@ -112,10 +123,12 @@ class RecetteItem extends React.Component<MyProps, MyState> {
         this.fid = json.id
       }
 
-      this.setState({loading: false})
+      this.setState({ loading: false })
     } else {
       let favs = cookies.get("favs")
-      favs = favs.concat([this.props.recette])
+      if (!favs.find(elem => elem.id == this.props.recette.id)) {
+        favs = favs.concat([this.props.recette])
+      }
       cookies.set('favs', favs)
       this.setState({ isFavorite: true })
     }
@@ -138,9 +151,9 @@ class RecetteItem extends React.Component<MyProps, MyState> {
           <div className="row">
             <h3 style={{ flexGrow: 1 }} id="trunc">{recette.nom}</h3>
             <ReactHoverObserver>
-                {this.state.loading ? 
-                  <CircularProgress/> :
-                  <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />}
+              {this.state.loading ?
+                <CircularProgress /> :
+                <FavoriteStar isHovering isFavorite={this.state.isFavorite} favorite={(e) => this.favoritePressed(e)} unfavorite={(e) => this.unfavoritePressed(e)} />}
             </ReactHoverObserver>
           </div>
     De <span onClick={(e) => this.namePressed(e, recette.auteurUsername)} id="name"> {recette.auteurFullname} (@{recette.auteurUsername})</span>
