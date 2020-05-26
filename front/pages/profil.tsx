@@ -112,7 +112,7 @@ class Profil extends React.Component<MyProps, MyState> {
             {p.dateNaissance && <h6>Date de Naissance: {(new Date(p.dateNaissance)).toLocaleDateString("fr-FR")} </h6>}
             {p.dateInscription && <h6>Inscription: {(new Date(p.dateInscription)).toLocaleDateString("fr-FR")} </h6>}
             <div id="button_container" style={{ marginTop: '20px' }}>
-              <Button color="primary" variant="contained" >Favoris</Button>
+              <Button color="primary" variant="contained" onClick={() => Router.push("/fav?username=" + p.username)}>Favoris</Button>
               <Button color="primary" variant="contained" onClick={() => Router.push("/recettes?username=" + p.username)}>Liste des recettes</Button>
             </div>
             <h5 style={{ marginTop: 20 }}>Activités Récentes</h5>
