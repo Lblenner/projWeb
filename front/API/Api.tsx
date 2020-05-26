@@ -253,3 +253,23 @@ export const getRecettes = () => {
 
   return fetch(url+"/api/v1/recettes", myInit)  
 }
+
+
+export const supprRecette = (id,token) => {
+
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set('Content-Type', 'application/json');
+  requestHeaders.set('accept', 'application/json');
+  requestHeaders.set('authorization', 'Basic ' + token);
+
+  var myInit = {
+    method: 'DELETE',
+    headers: requestHeaders,
+    mode: 'cors' as RequestMode,
+    cache: 'default' as RequestCache,
+    credentials: 'include' as RequestCredentials
+  };
+
+  return fetch(url + "/api/v1/recettes/" + id, myInit)
+
+}

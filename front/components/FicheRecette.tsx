@@ -3,15 +3,18 @@ import { CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import TextArea from './TextArea';
 import { connect } from 'react-redux'
-import { addCommentaire, getCommentaires } from '../API/Api'
+import { addCommentaire, getCommentaires, supprRecette } from '../API/Api'
 import DialogConnectionCom from './DialogConnectionCom';
 import CommentaireItem from './CommentaireItem';
 import gestionSautLigne from '../src/gestionFormatText';
 import NoteFicheRecette from './NoteFicheRecette';
 import Link from 'next/link'
+import DialogYesNo from './DialogYesNo';
+import Router from 'next/router';
+import { MySnackbar } from './Snackbar';
 
 type MyProps = any
-type MyState = { nbParts: any, open: boolean, listeCom: any, commentaire: any, buttonComLoading };
+type MyState = { nbParts: any, open: boolean, listeCom: any, commentaire: any, buttonComLoading, suppression, erreur, erreurMsg };
 
 class FicheRecette extends React.Component<MyProps, MyState> {
 
@@ -25,6 +28,9 @@ class FicheRecette extends React.Component<MyProps, MyState> {
       listeCom: this.props.recette.commentaires.slice().reverse(),
       buttonComLoading: false,
       commentaire: "",
+      suppression: false,
+      erreur: false,
+      erreurMsg: "Une erreur s'est produite"
     };
     ;
   }
@@ -42,7 +48,7 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     event.preventDefault();
     event.persist();
 
-    this.setState({buttonComLoading: true})
+    this.setState({ buttonComLoading: true })
     let token = this.props.token
 
     if (token != null) {
@@ -61,10 +67,10 @@ class FicheRecette extends React.Component<MyProps, MyState> {
         let json = await newListe.json();
         this.setState({ listeCom: json.reverse() });
       } else {
-        // Echec ajout comm
+        this.setState({erreur: true})
       }
 
-      this.setState({buttonComLoading: false})
+      this.setState({ buttonComLoading: false })
 
 
     } else {
@@ -75,6 +81,24 @@ class FicheRecette extends React.Component<MyProps, MyState> {
 
   handleClose = () => {
     this.setState({ open: false });
+  }
+
+
+  closeSuppr = () => {
+    this.setState({ suppression: false });
+  }
+
+  async suppr() {
+
+    let token = this.props.token
+    let response = await supprRecette(this.props.recette.id, token)
+
+    if (response.status != 204) {
+      this.setState({erreur: true})
+      return
+    }
+
+    Router.push('/')
   }
 
   fiche() {
@@ -104,6 +128,9 @@ class FicheRecette extends React.Component<MyProps, MyState> {
     var affichageRecette = gestionSautLigne(r.preparation)
     return (
       <div id="fiche_container">
+        <DialogYesNo msg="Voulez vous supprimer la recette ?" titre="Suppression" open={this.state.suppression}
+          handleClose={this.closeSuppr} handleYes={() => this.suppr()} />
+          <MySnackbar open={this.state.erreur} handleClose={() => this.setState({erreur: false})} msg={this.state.erreurMsg}/>
         <h1>{r.nom}</h1>
         <h6 id="nomPersonne">
           <Link href={"/profil?username=" + r.auteurUsername}>
@@ -115,7 +142,13 @@ class FicheRecette extends React.Component<MyProps, MyState> {
             <img src={photo} id="photo" />
           </div>}
 
-        <NoteFicheRecette recetteNote={r.note} recetteid={r.id} />
+        <div style={{ display: "flex", flexDirection: "row", }}>
+          <NoteFicheRecette recetteNote={r.note} recetteid={r.id} />
+          <div style={{ display: "flex", flex: 1 }}></div>
+          <div style={{ marginTop: 1 }}>
+            {this.props.username == r.auteurUsername && <button onClick={() => this.setState({ suppression: true })} className="btn btn-success" >Supprimer</button>}
+          </div>
+        </div>
 
         <div id="main">
           <div id="affichageIngrédients">
