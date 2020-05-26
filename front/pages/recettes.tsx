@@ -12,7 +12,7 @@ import RecetteItem from '../components/RecetteItem';
 
 
 type MyProps = any;
-type MyState = { type, icon, liste, fav };
+type MyState = { liste, fav };
 
 class MesRecettes extends React.Component<MyProps, MyState> {
 
@@ -23,8 +23,6 @@ class MesRecettes extends React.Component<MyProps, MyState> {
   constructor(props) {
     super(props)
     this.state = {
-      type: "neutre",
-      icon: <FaMinus style={{ marginLeft: 5 }} size={20} />,
       liste: this.props.user.recettesCompactes,
       fav : []
     }
@@ -64,81 +62,6 @@ class MesRecettes extends React.Component<MyProps, MyState> {
   }
 
 
-  //Item qui sera affiché dans la colonne de note
-  item(elem) {
-
-    let note = this.props.user.notes.find((note) => note.recetteId == elem.id)
-
-    let valeur = note ? note.valeur : null
-
-    return (<div id="note">
-
-      {valeur ? valeur : "--"}
-      <style jsx>{`
-          #note {
-            font-size: 35px;
-            width: 99px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: solid; 
-            border-width: 0px 1px 1px 0px;
-          }
-        `}</style>
-    </div>)
-  }
-
-  //Modifie l'etat du trieur de notes
-  changeType() {
-    switch (this.state.type) {
-      case "neutre":
-        this.setState({
-          type: "down",
-          icon: <FaChevronDown style={{ marginLeft: 5 }} size={20} />,
-          liste: this.listeDown
-        })
-        break;
-      case "up":
-        this.setState({
-          type: "neutre",
-          icon: <FaMinus style={{ marginLeft: 5 }} size={20} />,
-          liste: this.liste
-        })
-        break;
-      case "down":
-        this.setState({
-          type: "up",
-          icon: <FaChevronUp style={{ marginLeft: 5 }} size={20} />,
-          liste: this.listeUp
-        })
-        break
-    }
-  }
-
-
-  componentDidMount() {
-
-    //On créer les trois listes possiblement affiché en fonction du trieur de note
-    this.liste = this.props.user.recettesCompactes
-
-    this.listeDown = this.props.user.recettesCompactes.slice().sort((a, b) => {
-      let note1 = this.props.user.notes.find((note) => note.recetteId == a.id)
-      let note2 = this.props.user.notes.find((note) => note.recetteId == b.id)
-      let v1 = note1 ? note1.valeur : -1
-      let v2 = note2 ? note2.valeur : -1
-      return v1 < v2
-    })
-    this.listeUp = this.props.user.recettesCompactes.slice().sort((a, b) => {
-      let note1 = this.props.user.notes.find((note) => note.recetteId == a.id)
-      let note2 = this.props.user.notes.find((note) => note.recetteId == b.id)
-      let v1 = note1 ? note1.valeur : 11
-      let v2 = note2 ? note2.valeur : 11
-      return v1 > v2
-    })
-
-  }
-
-
   render() {
 
     let liste = this.state.liste
@@ -150,8 +73,7 @@ class MesRecettes extends React.Component<MyProps, MyState> {
         </Head>
         <Layout>
           <h1>Recettes de {this.props.user.fullname} (@{this.props.user.username})</h1>
-          <div onClick={() => this.changeType()} id="note" >Notes  {this.state.icon}</div>
-          <List listeFav={this.state.fav} liste={liste} notesPerso={[]} customItem={(elem => this.item(elem))} />
+          <List listeFav={this.state.fav} liste={liste} notesPerso={[]} />
         </Layout>
 
         <style jsx>{`

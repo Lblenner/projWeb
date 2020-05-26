@@ -8,17 +8,14 @@ import Link from 'next/link';
 import { connect } from 'react-redux'
 import { getUser, addFav } from '../API/Api';
 import cookie from "cookie"
+import { FaChevronDown, FaChevronUp, FaMinus } from "react-icons/fa"
+
 
 const cookies = new Cookies();
 
 type MyProps = any;
-type MyState = { cookieFavs: any, notesUser: any, accountFavs, masque };
+type MyState = { cookieFavs: any, notesUser: any, accountFavs, masque,};
 
-
-function getFavoris(username) {
-  let e = () => []
-  return { status: 401, json: e }
-}
 
 class Fav extends React.Component<MyProps, MyState> {
 
@@ -68,15 +65,16 @@ class Fav extends React.Component<MyProps, MyState> {
     var cookieFavs = cookies.get('favs')
     this.setState({ cookieFavs: cookieFavs })
 
-    if(cookieFavs.length == 0){
-      this.setState({masque:true})
+    if (cookieFavs.length == 0) {
+      this.setState({ masque: true })
     }
+
   }
 
   async sync() {
     cookies.set('favs', [])
     let username = this.props.username
-    for (let i = 0; i< this.state.cookieFavs.length; i++) {
+    for (let i = 0; i < this.state.cookieFavs.length; i++) {
       let fav = this.state.cookieFavs[i]
       let token = this.props.token
       let response = await addFav(token, username, fav.id)
@@ -94,11 +92,11 @@ class Fav extends React.Component<MyProps, MyState> {
     if (response.status != 200) {
       console.log("Erreur")
       console.log(response)
-      return 
+      return
     }
 
     let user = await response.json()
-    this.setState({accountFavs:user.favoris, masque:true})
+    this.setState({ accountFavs: user.favoris, masque: true })
   }
 
   render() {
@@ -121,7 +119,6 @@ class Fav extends React.Component<MyProps, MyState> {
 
       content = <div>
         <h1 style={{ marginTop: "10px" }}>Mes favoris </h1>
-
         <List liste={l} update={(id) =>
           this.setState({ accountFavs: this.state.accountFavs.filter((e) => e.recetteCompact.id != id) })}
           notesPerso={this.state.notesUser} listeFav={this.state.accountFavs} />
