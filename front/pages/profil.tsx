@@ -5,7 +5,6 @@ import { Button, IconButton, } from '@material-ui/core';
 import { connect } from 'react-redux'
 import Router from 'next/router'
 import List from '../components/List';
-import SearchBar from '../components/SearchBar';
 import { MdSearch } from 'react-icons/md'
 import { getUser } from '../API/Api';
 import cookie from "cookie"
@@ -126,13 +125,7 @@ class Profil extends React.Component<MyProps, MyState> {
         </div>
         <div style={{ border: 'solid', borderWidth: '1px 0px 0px 0px', margin: "10px", borderColor: '#D3D3D3' }}>
           <div style={{ paddingTop: "10px" }}>
-            <h1 style={{ marginBottom: 0 }}>Recettes ajoutées<label htmlFor="icon-button-file">
-              <IconButton onClick={() => this.setState({ search: !this.state.search })} color="primary" aria-label="upload picture" component="span">
-                <MdSearch size={33} color={this.state.search ? '#0099FF' : 'grey'} />
-              </IconButton>
-            </label></h1>
-
-            {this.state.search && <SearchBar />}
+            <h1 style={{ marginBottom: 0 }}>Recettes ajoutées</h1>
           </div>
 
           <List listeFav={p.favoris?p.favoris:[]} liste={p.recettesCompactes} update={() => null} notesPerso={this.state.notesUser} />
