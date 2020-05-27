@@ -56,9 +56,9 @@ class LoginForm extends React.Component<MyProps, MyState>  {
 
   render() {
     return (
+      <div>
+      <MySnackbar open={this.state.snackOpen} handleClose={() => this.closeSnack()} msg={this.state.msg} />
       <form onSubmit={this.handleSubmit} id="form">
-
-        <MySnackbar open={this.state.snackOpen} handleClose={() => this.closeSnack()} msg={this.state.msg} />
 
         <div className="form-group">
           <label htmlFor="id">Identifiant</label>
@@ -84,6 +84,7 @@ class LoginForm extends React.Component<MyProps, MyState>  {
         `}</style>
 
       </form>
+      </div>
     );
   }
 }
