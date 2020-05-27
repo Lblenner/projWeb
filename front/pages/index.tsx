@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { getUser, getRecettes } from '../API/Api'
 
 type MyProps = any
-type MyState = { notesUser, fav };
+type MyState = { notesUser, fav, liste };
 
 const fetch = require('node-fetch');
 
@@ -15,7 +15,7 @@ class Index extends React.Component<MyProps, MyState> {
 
   static async getInitialProps(ctx) {
 
-    var response = await getRecettes()
+    var response = await getRecettes("")
 
     if (response.status > 400) {
       return
@@ -52,8 +52,22 @@ class Index extends React.Component<MyProps, MyState> {
     super(props)
     this.state = {
       notesUser: [],
-      fav: []
+      fav: [],
+      liste : this.props.liste.slice().reverse()
     }
+  }
+
+  async search(texte) {
+    
+    var response = await getRecettes(texte)
+
+    if (response.status != 200) {
+      return
+    }
+
+    var json = await response.json()
+
+    this.setState({liste: json})
   }
 
   render() {
@@ -66,9 +80,9 @@ class Index extends React.Component<MyProps, MyState> {
         </Head>
         <Layout>
           <div style={{ marginTop: 20, marginBottom: 10 }}>
-            <SearchBar />
+            <SearchBar search={(texte => this.search(texte))}/>
           </div>
-          <List listeFav={this.state.fav} liste={this.props.liste.slice().reverse()} update={() => 1} notesPerso={this.state.notesUser}/>
+          <List listeFav={this.state.fav} liste={this.state.liste} update={() => 1} notesPerso={this.state.notesUser}/>
         </Layout>
       </div>
     );

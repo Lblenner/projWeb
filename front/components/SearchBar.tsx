@@ -3,13 +3,14 @@ import Paper from '@material-ui/core/Paper';
 import { Button, TextField, InputAdornment, Select, FormControl, InputLabel } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md'
 
-type MyProps = {};
-type MyState = { valueCat, valueTri};
+type MyProps = { search };
+type MyState = { valueCat, valueTri };
 
 export default class SearchBar extends React.Component<MyProps, MyState> {
 
     label
     labelCat
+    texte
 
     constructor(props) {
         super(props);
@@ -24,9 +25,10 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
     render() {
         return (
             <div id="main_containers">
-                <Paper style={{ display: 'flex', flex:1, height: 100, position: 'relative' }} elevation={3}>
+                <Paper style={{ display: 'flex', flex: 1, height: 100, position: 'relative' }} elevation={3}>
                     <TextField
-                        variant="outlined" 
+                        onChange={(e) => {this.texte = e.target.value}}
+                        variant="outlined"
                         style={{
                             position: 'absolute',
                             left: "30%", right: "30%",
@@ -38,7 +40,7 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                                     <MdSearch size={30} />
                                 </InputAdornment>
                             ),
-                        }}/>
+                        }} />
                     <FormControl
                         style={{
                             position: 'absolute',
@@ -64,7 +66,7 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                             <option value="apero">Apéritif</option>
                         </Select>
                     </FormControl>
-                    
+
                     <FormControl
                         style={{
                             position: 'absolute',
@@ -91,10 +93,12 @@ export default class SearchBar extends React.Component<MyProps, MyState> {
                     </FormControl>
                     <Button style={{
                         position: 'absolute',
-                        left: 0, right: 0,
+                        left: "50%", right: "50%",
                         marginLeft: "auto", marginRight: "auto",
-                        bottom: -20
-                    }} variant="contained">
+                        bottom: -20,
+                        transform: "translate(-50%, 0)"
+                    }} variant="contained"
+                        onClick={() => this.props.search(this.texte)}>
                         Rechercher
                 </Button>
                 </Paper>

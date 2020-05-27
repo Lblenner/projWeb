@@ -239,7 +239,7 @@ export const removeNote = (recetteid, noteid, token) => {
 
 }
 
-export const getRecettes = () => {
+export const getRecettes = (texte) => {
 
   const requestHeaders: HeadersInit = { 'Content-Type': 'application/json' }
 
@@ -251,7 +251,7 @@ export const getRecettes = () => {
     credentials: 'include' as RequestCredentials
   };
 
-  return fetch(url + "/api/v1/recettes", myInit)
+  return fetch(url + "/api/v1/recettes?nom=*"+texte+"*", myInit)
 }
 
 
